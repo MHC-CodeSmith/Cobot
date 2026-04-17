@@ -1,0 +1,9 @@
+mycobot_docker/custom_ws/build/
+mycobot_docker/custom_ws/install/
+mycobot_docker/custom_ws/log/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+*.user
+

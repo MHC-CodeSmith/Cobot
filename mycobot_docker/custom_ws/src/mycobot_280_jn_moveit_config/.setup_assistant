@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: mycobot_description
+    relative_path: urdf/mycobot_280_jn/mycobot_280_jn.urdf
+  srdf:
+    relative_path: config/mycobot_280_jn.srdf
+  package_settings:
+    author_name: ""
+    author_email: ""
+    generated_timestamp: 1776438303
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
