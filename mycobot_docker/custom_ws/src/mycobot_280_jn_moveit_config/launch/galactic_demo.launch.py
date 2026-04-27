@@ -2,7 +2,8 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
-from launch_ros.actions import Node
+from launch_ros.actions import Node, PushRosNamespace
+from launch.actions import DeclareLaunchArgument, GroupAction
 from ament_index_python.packages import get_package_share_directory
 import yaml
 
@@ -76,6 +77,25 @@ def generate_launch_description():
             trajectory_execution,
             {"publish_robot_description_semantic": True},
             {"planning_pipelines": ["ompl"]},
+            {"default_planning_pipeline": "ompl"},
+            # Parâmetros críticos para suportar o clock drift do Nano (Não mexe aqui!)
+            {
+                "robot_description_planning": {
+                    "current_state_monitor": {
+                        "timeout": 10.0,
+                        "wait_for_initial_state_timeout": 30.0
+                    }
+                },
+                "move_group": {
+                    "current_state_monitor": {
+                        "timeout": 10.0
+                    }
+                },
+                "trajectory_execution": {
+                    "wait_for_robot_state_timeout": 10.0,
+                    "allowed_start_tolerance": 0.1
+                }
+            }
         ],
     )
 
@@ -91,6 +111,11 @@ def generate_launch_description():
             robot_description,
             robot_description_semantic,
             kinematics_yaml,
+        ],
+        remappings=[
+            ("/tf", "/mycobot/tf"),
+            ("/tf_static", "/mycobot/tf_static"),
+            ("/joint_states", "/mycobot/joint_states"),
         ],
     )
 
@@ -111,10 +136,24 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
+    # 9. Joint State Relay (PC-side timestamp fixer)
+    joint_state_relay = Node(
+        package="mycobot_hw_interface",
+        executable="joint_state_relay",
+        output="screen",
+    )
+
+    # Wrapper for namespace
+    mycobot_namespace = PushRosNamespace('mycobot')
+    
     return LaunchDescription([
-        static_tf,
-        robot_state_publisher,
-        # mycobot_bridge,  <-- REMOVIDO PARA USAR A BRIDGE REAL DO NANO
-        move_group_node,
+        GroupAction([
+            mycobot_namespace,
+            static_tf,
+            robot_state_publisher,
+            joint_state_relay,
+            # mycobot_bridge,  <-- REMOVIDO PARA USAR A BRIDGE REAL DO NANO
+            move_group_node,
+        ]),
         rviz_node,
     ])

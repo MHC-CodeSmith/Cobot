@@ -43,7 +43,7 @@ class MyCobotBridge(Node):
         else:
             self.get_logger().info("Running in MOCK mode (No physical hardware connection).")
         
-        # Joint names (must match URDF)
+        # Joint names (must match URDF - revolute joints only)
         self.joint_names = [
             "joint2_to_joint1",
             "joint3_to_joint2",
@@ -54,14 +54,14 @@ class MyCobotBridge(Node):
         ]
         
         # Publishers
-        self.joint_pub = self.create_publisher(JointState, 'joint_states', 10)
-        self.timer = self.create_timer(0.1, self.publish_joint_states) # 10Hz
+        self.joint_pub = self.create_publisher(JointState, 'joint_states_raw', 10)
+        self.timer = self.create_timer(0.1, self.publish_joint_states) # 10Hz para evitar travar a Serial
         
-        # Action Server - Nome absoluto para garantir descoberta pelo MoveIt no PC
+        # Action Server - Removida barra inicial para respeitar namespace
         self._action_server = ActionServer(
             self,
             FollowJointTrajectory,
-            '/mycobot_arm_controller/follow_joint_trajectory',
+            'mycobot_arm_controller/follow_joint_trajectory',
             self.execute_callback
         )
         

@@ -1,0 +1,14 @@
+[Unit]
+Description=MyCobot ROS 2 Hardware Bridge
+After=network.target
+
+[Service]
+ExecStart=/bin/bash /home/er/start_mycobot.sh
+Restart=always
+RestartSec=5
+User=er
+Group=er
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

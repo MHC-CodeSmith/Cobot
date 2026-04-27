@@ -25,7 +25,9 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'mycobot_bridge = mycobot_hw_interface.mycobot_bridge:main'
+            'mycobot_bridge = mycobot_hw_interface.mycobot_bridge:main',
+            'joint_state_relay = mycobot_hw_interface.joint_state_relay:main',
+            'udp_bridge_pc = mycobot_hw_interface.udp_bridge_pc:main'
         ],
     },
 )
