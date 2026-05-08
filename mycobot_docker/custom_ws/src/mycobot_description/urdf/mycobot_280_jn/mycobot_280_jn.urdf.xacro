@@ -1,0 +1,55 @@
+<?xml version="1.1"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mycobot_280_jn">
+
+  <material name="white"><color rgba="1 1 1 1"/></material>
+  <material name="grey"><color rgba="0.5 0.5 0.5 1"/></material>
+
+  <link name="mycobot_base_link">
+    <visual>
+      <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint1_jet.dae"/></geometry>
+      <origin xyz="0.0 0 0" rpy="0 0 3.14159"/>
+    </visual>
+    <collision>
+      <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint1_jet.dae"/></geometry>
+      <origin xyz="0.0 0 0" rpy="0 0 3.14159"/>
+    </collision>
+  </link>
+
+  <link name="link1"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint2.dae"/></geometry><origin xyz="0.0 0 -0.06096" rpy="0 0 -1.5708"/></visual></link>
+  <link name="link2"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint3.dae"/></geometry><origin xyz="0.0 0 0.03256" rpy="0 -1.5708 0"/></visual></link>
+  <link name="link3"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint4.dae"/></geometry><origin xyz="0.0 0 0.03056" rpy="0 -1.5708 0"/></visual></link>
+  <link name="link4"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint5.dae"/></geometry><origin xyz="0.0 0 -0.03356" rpy="0 -1.5708 1.5708"/></visual></link>
+  <link name="link5"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint6.dae"/></geometry><origin xyz="0 0.00 -0.038" rpy="0 0 0"/></visual></link>
+  <link name="link6"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint7.dae"/></geometry><origin xyz="0.0 0 -0.012" rpy="0 0 0"/><material name="grey"/></visual></link>
+
+  <joint name="cobot_joint_1" type="revolute">
+    <axis xyz="0 0 1"/><limit effort="100.0" lower="-2.87" upper="2.87" velocity="1.0"/>
+    <parent link="mycobot_base_link"/><child link="link1"/><origin xyz="0 0 0.0706" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="cobot_joint_2" type="revolute">
+    <axis xyz="0 0 1"/><limit effort="100.0" lower="-2.87" upper="2.87" velocity="1.0"/>
+    <parent link="link1"/><child link="link2"/><origin xyz="0 0 0.15756" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="cobot_joint_3" type="revolute">
+    <axis xyz="0 0 1"/><limit effort="100.0" lower="-2.87" upper="2.87" velocity="1.0"/>
+    <parent link="link2"/><child link="link3"/><origin xyz="0 0 -0.001" rpy="0 1.5708 -1.5708"/>
+  </joint>
+
+  <joint name="cobot_joint_4" type="revolute">
+    <axis xyz="0 0 1"/><limit effort="100.0" lower="-2.87" upper="2.87" velocity="1.0"/>
+    <parent link="link3"/><child link="link4"/><origin xyz="-0.1104 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="cobot_joint_5" type="revolute">
+    <axis xyz="0 0 1"/><limit effort="100.0" lower="-2.87" upper="2.87" velocity="1.0"/>
+    <parent link="link4"/><child link="link5"/><origin xyz="-0.096 0 0.06462" rpy="0 0 -1.5708"/>
+  </joint>
+
+  <joint name="cobot_joint_6" type="revolute">
+    <axis xyz="0 0 1"/><limit effort="100.0" lower="-3.05" upper="3.05" velocity="1.0"/>
+    <parent link="link5"/><child link="link6"/><origin xyz="0 -0.07318 0" rpy="1.5708 -1.5708 0"/>
+  </joint>
+
+</robot>

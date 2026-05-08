@@ -6,9 +6,11 @@ services:
     container_name: mycobot_ros2
     network_mode: "host"
     privileged: true
+    shm_size: '2gb'
     environment:
       - DISPLAY=${DISPLAY}
       - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /dev:/dev:rw

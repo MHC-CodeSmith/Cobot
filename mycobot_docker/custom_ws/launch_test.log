@@ -1,0 +1,90 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-05-04-05-30-06-728744-mhc-lenovo-126
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [static_transform_publisher-1]: process started with pid [129]
+[INFO] [robot_state_publisher-2]: process started with pid [131]
+[INFO] [joint_state_relay-3]: process started with pid [133]
+[INFO] [move_group-4]: process started with pid [135]
+[INFO] [rviz2-5]: process started with pid [137]
+[static_transform_publisher-1] [INFO] [1777872607.229606312] [mycobot_anchor_publisher]: Spinning until killed publishing transform from 'world' to 'mycobot_base_link'
+[robot_state_publisher-2] Link joint1 had 1 children
+[robot_state_publisher-2] Link joint2 had 1 children
+[robot_state_publisher-2] Link joint3 had 1 children
+[robot_state_publisher-2] Link joint4 had 1 children
+[robot_state_publisher-2] Link joint5 had 1 children
+[robot_state_publisher-2] Link joint6 had 1 children
+[robot_state_publisher-2] Link joint6_flange had 0 children
+[robot_state_publisher-2] [INFO] [1777872607.238750363] [mycobot.robot_state_publisher]: got segment joint1
+[robot_state_publisher-2] [INFO] [1777872607.238978615] [mycobot.robot_state_publisher]: got segment joint2
+[robot_state_publisher-2] [INFO] [1777872607.238992721] [mycobot.robot_state_publisher]: got segment joint3
+[robot_state_publisher-2] [INFO] [1777872607.239000406] [mycobot.robot_state_publisher]: got segment joint4
+[robot_state_publisher-2] [INFO] [1777872607.239007189] [mycobot.robot_state_publisher]: got segment joint5
+[robot_state_publisher-2] [INFO] [1777872607.239013611] [mycobot.robot_state_publisher]: got segment joint6
+[robot_state_publisher-2] [INFO] [1777872607.239019763] [mycobot.robot_state_publisher]: got segment joint6_flange
+[robot_state_publisher-2] [INFO] [1777872607.239032577] [mycobot.robot_state_publisher]: got segment mycobot_base_link
+[move_group-4] [INFO] [1777872607.399371423] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00393442 seconds
+[move_group-4] [INFO] [1777872607.399520735] [moveit_robot_model.robot_model]: Loading robot model 'mycobot_280_jn'...
+[rviz2-5] Authorization required, but no authorization protocol specified
+[rviz2-5] qt.qpa.xcb: could not connect to display :1
+[rviz2-5] qt.qpa.plugin: Could not load the Qt platform plugin "xcb" in "" even though it was found.
+[rviz2-5] This application failed to start because no Qt platform plugin could be initialized. Reinstalling the application may fix this problem.
+[rviz2-5] 
+[rviz2-5] Available platform plugins are: eglfs, linuxfb, minimal, minimalegl, offscreen, vnc, xcb.
+[rviz2-5] 
+[ERROR] [rviz2-5]: process has died [pid 137, exit code -6, cmd '/opt/ros/galactic/lib/rviz2/rviz2 -d /root/custom_ws/install/mycobot_280_jn_moveit_config/share/mycobot_280_jn_moveit_config/config/moveit.rviz --ros-args -r __node:=rviz2 --params-file /tmp/launch_params_fbwvam92 --params-file /tmp/launch_params_67e92gdi --params-file /tmp/launch_params__70e7ino -r tf:=/tf -r tf_static:=/tf_static -r /joint_states:=/mycobot/joint_states'].
+[joint_state_relay-3] [INFO] [1777872607.863292724] [mycobot.joint_state_relay]: Joint State Relay initialized. Re-stamping hardware messages with PC time.
+[move_group-4] Link joint1 had 1 children
+[move_group-4] Link joint2 had 1 children
+[move_group-4] Link joint3 had 1 children
+[move_group-4] Link joint4 had 1 children
+[move_group-4] Link joint5 had 1 children
+[move_group-4] Link joint6 had 1 children
+[move_group-4] Link joint6_flange had 0 children
+[move_group-4] [INFO] [1777872608.422199539] [moveit.ros_planning_interface.moveit_cpp]: Listening to 'joint_states' for joint states
+[move_group-4] [INFO] [1777872608.423258200] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-4] [INFO] [1777872608.429385971] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/attached_collision_object' for attached collision objects
+[move_group-4] [INFO] [1777872608.429867050] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-4] [INFO] [1777872608.430182897] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[move_group-4] [INFO] [1777872608.430671681] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/planning_scene'
+[move_group-4] [INFO] [1777872608.430683083] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-4] [INFO] [1777872608.430860859] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-4] [INFO] [1777872608.431078740] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[move_group-4] [WARN] [1777872608.431808580] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[move_group-4] [ERROR] [1777872608.431828908] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[move_group-4] [INFO] [1777872609.415935384] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'ompl'
+[move_group-4] [INFO] [1777872609.419743040] [moveit.ros_planning.planning_pipeline]: Multiple planning plugins available. You should specify the '~planning_plugin' parameter. Using 'ompl_interface/OMPLPlanner' for now.
+[move_group-4] [INFO] [1777872609.453159063] [moveit.ros_planning.planning_pipeline]: Using planning interface 'OMPL'
+[move_group-4] [INFO] [1777872609.466378166] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for mycobot_arm_controller
+[move_group-4] [INFO] [1777872609.466654909] [moveit.plugins.moveit_simple_controller_manager]: Returned 1 controllers in list
+[move_group-4] [INFO] [1777872609.466929859] [moveit_ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-4] [INFO] [1777872609.466952662] [move_group.move_group]: MoveGroup debug mode is ON
+[move_group-4] [INFO] [1777872609.486665918] [move_group.move_group]: 
+[move_group-4] 
+[move_group-4] ********************************************************
+[move_group-4] * MoveGroup using: 
+[move_group-4] *     - ApplyPlanningSceneService
+[move_group-4] *     - ClearOctomapService
+[move_group-4] *     - CartesianPathService
+[move_group-4] *     - ExecuteTrajectoryAction
+[move_group-4] *     - GetPlanningSceneService
+[move_group-4] *     - KinematicsService
+[move_group-4] *     - MoveAction
+[move_group-4] *     - MotionPlanService
+[move_group-4] *     - QueryPlannersService
+[move_group-4] *     - StateValidationService
+[move_group-4] ********************************************************
+[move_group-4] 
+[move_group-4] [INFO] [1777872609.486772319] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context using planning plugin ompl_interface/OMPLPlanner
+[move_group-4] [INFO] [1777872609.486785594] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context initialization complete
+[move_group-4] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-4] [0m[92m
+[move_group-4] You can start planning now!
+[move_group-4] 

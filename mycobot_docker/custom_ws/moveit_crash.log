@@ -1,0 +1,196 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-05-04-08-26-06-174523-mhc-lenovo-8739
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [static_transform_publisher-1]: process started with pid [8743]
+[INFO] [robot_state_publisher-2]: process started with pid [8745]
+[INFO] [joint_state_relay-3]: process started with pid [8747]
+[INFO] [move_group-4]: process started with pid [8749]
+[INFO] [rviz2-5]: process started with pid [8751]
+[static_transform_publisher-1] [INFO] [1777883166.549567611] [mycobot_anchor_publisher]: Spinning until killed publishing transform from 'map' to 'mycobot_base_link'
+[robot_state_publisher-2] Link joint1 had 1 children
+[robot_state_publisher-2] Link joint2 had 1 children
+[robot_state_publisher-2] Link joint3 had 1 children
+[robot_state_publisher-2] Link joint4 had 1 children
+[robot_state_publisher-2] Link joint5 had 1 children
+[robot_state_publisher-2] Link joint6 had 1 children
+[robot_state_publisher-2] Link joint6_flange had 0 children
+[robot_state_publisher-2] [INFO] [1777883166.554091802] [robot_state_publisher]: got segment joint1
+[robot_state_publisher-2] [INFO] [1777883166.554265489] [robot_state_publisher]: got segment joint2
+[robot_state_publisher-2] [INFO] [1777883166.554277883] [robot_state_publisher]: got segment joint3
+[robot_state_publisher-2] [INFO] [1777883166.554283774] [robot_state_publisher]: got segment joint4
+[robot_state_publisher-2] [INFO] [1777883166.554288533] [robot_state_publisher]: got segment joint5
+[robot_state_publisher-2] [INFO] [1777883166.554293192] [robot_state_publisher]: got segment joint6
+[robot_state_publisher-2] [INFO] [1777883166.554297991] [robot_state_publisher]: got segment joint6_flange
+[robot_state_publisher-2] [INFO] [1777883166.554302910] [robot_state_publisher]: got segment mycobot_base_link
+[move_group-4] [INFO] [1777883166.624812938] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00414087 seconds
+[move_group-4] [INFO] [1777883166.624916744] [moveit_robot_model.robot_model]: Loading robot model 'mycobot_280_jn'...
+[rviz2-5] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[joint_state_relay-3] [INFO] [1777883166.991235235] [joint_state_relay]: Joint State Relay (30Hz Metronome) STARTED.
+[joint_state_relay-3] [WARN] [1777883167.005584062] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[move_group-4] Link joint1 had 1 children
+[move_group-4] Link joint2 had 1 children
+[move_group-4] Link joint3 had 1 children
+[move_group-4] Link joint4 had 1 children
+[move_group-4] Link joint5 had 1 children
+[move_group-4] Link joint6 had 1 children
+[move_group-4] Link joint6_flange had 0 children
+[rviz2-5] [INFO] [1777883167.114606573] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-5] [INFO] [1777883167.115117979] [rviz2]: OpenGl version: 3.1 (GLSL 1.4)
+[rviz2-5] [INFO] [1777883167.215030592] [rviz2]: Stereo is NOT SUPPORTED
+[move_group-4] [INFO] [1777883167.700291832] [moveit.ros_planning_interface.moveit_cpp]: Listening to 'joint_states' for joint states
+[move_group-4] [INFO] [1777883167.702048378] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-4] [INFO] [1777883167.705761668] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/attached_collision_object' for attached collision objects
+[move_group-4] [INFO] [1777883167.706065291] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-4] [INFO] [1777883167.706260389] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[move_group-4] [INFO] [1777883167.706643863] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/planning_scene'
+[move_group-4] [INFO] [1777883167.706658120] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-4] [INFO] [1777883167.706862195] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-4] [INFO] [1777883167.707074676] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[move_group-4] [WARN] [1777883167.707320560] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[move_group-4] [ERROR] [1777883167.707343103] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[rviz2-5] Warning: class_loader.impl: SEVERE WARNING!!! A namespace collision has occured with plugin factory for class rviz_default_plugins::displays::InteractiveMarkerDisplay. New factory will OVERWRITE existing one. This situation occurs when libraries containing plugins are directly linked against an executable (the one running right now generating this message). Please separate plugins out into their own library or just don't link against the library and use either class_loader::ClassLoader/MultiLibraryClassLoader to open.
+[rviz2-5]          at line 253 in /opt/ros/galactic/include/class_loader/class_loader_core.hpp
+[move_group-4] [INFO] [1777883168.598986064] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'ompl'
+[move_group-4] [INFO] [1777883168.600612735] [moveit.ros_planning.planning_pipeline]: Multiple planning plugins available. You should specify the '~planning_plugin' parameter. Using 'ompl_interface/OMPLPlanner' for now.
+[move_group-4] [INFO] [1777883168.622429771] [moveit.ros_planning.planning_pipeline]: Using planning interface 'OMPL'
+[move_group-4] [INFO] [1777883168.643201263] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for mycobot_arm_controller
+[move_group-4] [INFO] [1777883168.643548077] [moveit.plugins.moveit_simple_controller_manager]: Returned 1 controllers in list
+[move_group-4] [INFO] [1777883168.644076004] [moveit_ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-4] [INFO] [1777883168.644104939] [move_group.move_group]: MoveGroup debug mode is ON
+[move_group-4] [INFO] [1777883168.658256904] [move_group.move_group]: 
+[move_group-4] 
+[move_group-4] ********************************************************
+[move_group-4] * MoveGroup using: 
+[move_group-4] *     - ApplyPlanningSceneService
+[move_group-4] *     - ClearOctomapService
+[move_group-4] *     - CartesianPathService
+[move_group-4] *     - ExecuteTrajectoryAction
+[move_group-4] *     - GetPlanningSceneService
+[move_group-4] *     - KinematicsService
+[move_group-4] *     - MoveAction
+[move_group-4] *     - MotionPlanService
+[move_group-4] *     - QueryPlannersService
+[move_group-4] *     - StateValidationService
+[move_group-4] ********************************************************
+[move_group-4] 
+[move_group-4] [INFO] [1777883168.658339320] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context using planning plugin ompl_interface/OMPLPlanner
+[move_group-4] [INFO] [1777883168.658353437] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context initialization complete
+[move_group-4] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-4] [0m[92m
+[move_group-4] You can start planning now!
+[move_group-4] 
+[rviz2-5] [ERROR] [1777883170.789212502] [moveit_ros_visualization.motion_planning_frame]: Action server: /recognize_objects not available
+[rviz2-5] [INFO] [1777883170.950778534] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00435159 seconds
+[rviz2-5] [INFO] [1777883170.950928507] [moveit_robot_model.robot_model]: Loading robot model 'mycobot_280_jn'...
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] [INFO] [1777883171.826258944] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[rviz2-5] [INFO] [1777883171.827235748] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/monitored_planning_scene'
+[joint_state_relay-3] [WARN] [1777883172.004120057] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[rviz2-5] [INFO] [1777883172.532428030] [interactive_marker_display_107620074445136]: Connected on namespace: /mycobot/rviz_moveit_motion_planning_display/robot_interaction_interactive_marker_topic
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] [INFO] [1777883172.649510156] [interactive_marker_display_107620074445136]: Sending request for interactive markers
+[rviz2-5] [INFO] [1777883172.650182164] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopping planning scene monitor
+[rviz2-5] Warning: class_loader.ClassLoader: SEVERE WARNING!!! Attempting to unload library while objects created by this loader exist in the heap! You should delete your objects before attempting to unload the library or destroying the ClassLoader. The library will NOT be unloaded.
+[rviz2-5]          at line 127 in /tmp/binarydeb/ros-galactic-class-loader-2.1.2/src/class_loader.cpp
+[rviz2-5] [INFO] [1777883172.659198916] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00181114 seconds
+[rviz2-5] [INFO] [1777883172.659262456] [moveit_robot_model.robot_model]: Loading robot model 'mycobot_280_jn'...
+[rviz2-5] [INFO] [1777883172.776036200] [interactive_marker_display_107620074445136]: Service response received for initialization
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] [INFO] [1777883173.765409825] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[rviz2-5] [INFO] [1777883173.766758381] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/monitored_planning_scene'
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] [INFO] [1777883173.892433729] [moveit_ros_visualization.motion_planning_frame]: group mycobot_arm
+[rviz2-5] [INFO] [1777883173.892496257] [moveit_ros_visualization.motion_planning_frame]: Constructing new MoveGroup connection for group 'mycobot_arm' in namespace '/mycobot'
+[rviz2-5] [WARN] [1777883173.892840256] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[rviz2-5] [INFO] [1777883174.022130048] [move_group_interface]: Ready to take commands for planning group mycobot_arm.
+[rviz2-5] [INFO] [1777883174.022347258] [move_group_interface]: Looking around: no
+[rviz2-5] [INFO] [1777883174.022394437] [move_group_interface]: Replanning: no
+[rviz2-5] [INFO] [1777883174.027375150] [moveit_ros_visualization.motion_planning_frame]: group mycobot_arm
+[rviz2-5] [INFO] [1777883174.117528249] [moveit_ros_visualization.motion_planning_frame]: group mycobot_arm
+[joint_state_relay-3] [WARN] [1777883177.004764322] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883182.005117608] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883187.004473291] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883192.004182651] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883197.005494416] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[move_group-4] [INFO] [1777883201.942907244] [moveit_move_group_default_capabilities.move_action_capability]: Received request
+[move_group-4] [INFO] [1777883201.943599771] [moveit_move_group_default_capabilities.move_action_capability]: executing..
+[joint_state_relay-3] [WARN] [1777883202.004169744] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[rviz2-5] [INFO] [1777883202.243167621] [move_group_interface]: Plan and Execute request accepted
+[move_group-4] [INFO] [1777883202.943899563] [moveit_ros.current_state_monitor]: Didn't received robot state (joint angles) with recent timestamp within 1.000000 seconds.
+[move_group-4] Check clock synchronization if your are running ROS across multiple machines!
+[move_group-4] [WARN] [1777883202.943937354] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Failed to fetch current robot state.
+[move_group-4] [INFO] [1777883202.944059885] [moveit_move_group_default_capabilities.move_action_capability]: Combined planning and execution request received for MoveGroup action. Forwarding to planning and execution pipeline.
+[move_group-4] [INFO] [1777883202.945384997] [moveit_ros.plan_execution]: Planning attempt 1 of at most 1
+[move_group-4] [INFO] [1777883202.945583582] [moveit_move_group_capabilities_base.move_group_capability]: Using planning pipeline 'ompl'
+[move_group-4] [INFO] [1777883202.951293060] [moveit.ompl_planning.model_based_planning_context]: Planner configuration 'mycobot_arm' will use planner 'geometric::RRTConnect'. Additional configuration parameters will be set when the planner is constructed.
+[move_group-4] [INFO] [1777883202.971703290] [moveit.plugins.moveit_simple_controller_manager]: Returned 1 controllers in list
+[move_group-4] [INFO] [1777883202.972205448] [moveit_ros.trajectory_execution_manager]: Validating trajectory with allowed_start_tolerance 0.1
+[move_group-4] [INFO] [1777883203.972499613] [moveit_ros.current_state_monitor]: Didn't received robot state (joint angles) with recent timestamp within 1.000000 seconds.
+[move_group-4] Check clock synchronization if your are running ROS across multiple machines!
+[move_group-4] [WARN] [1777883203.972573292] [moveit_ros.trajectory_execution_manager]: Failed to validate trajectory: couldn't receive full current joint state within 1s
+[move_group-4] [INFO] [1777883203.972887786] [moveit_move_group_default_capabilities.move_action_capability]: Solution found but controller failed during execution
+[rviz2-5] [INFO] [1777883204.246465142] [move_group_interface]: Plan and Execute request aborted
+[rviz2-5] [ERROR] [1777883204.346699139] [move_group_interface]: MoveGroupInterface::move() failed or timeout reached
+[joint_state_relay-3] [WARN] [1777883207.004583030] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883212.004304847] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883217.004743226] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883222.004257922] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883227.004438265] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883232.004407759] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883237.004107825] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883242.004598493] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883247.005854967] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883252.004679430] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883257.004714418] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883262.004714690] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883267.004569258] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883272.004585931] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883277.004881491] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883282.004589843] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883287.005897333] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883292.004487543] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883297.004897519] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883302.004866663] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883307.005124151] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883312.004658033] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883317.004368258] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883322.004303147] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883327.004766644] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883332.004457002] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883337.004358668] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883342.004645832] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883347.005299939] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883352.004497977] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...
+[joint_state_relay-3] [WARN] [1777883357.004147126] [joint_state_relay]: WAITING FOR DATA FROM NANO (joint_states_raw)...

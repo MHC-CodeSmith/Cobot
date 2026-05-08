@@ -10,31 +10,19 @@ class JointStateRelay(Node):
     def __init__(self):
         super().__init__('joint_state_relay')
         
-        from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
-        
-        # O robô vai publicar em 'joint_states_raw'
-        qos = QoSProfile(
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=1)
-            
+        # O robô (Nano) vai publicar em 'joint_states_raw' via DDS
+        # O namespace '/mycobot' é aplicado pelo launch file
         self.subscription = self.create_subscription(
             JointState,
             'joint_states_raw',
             self.listener_callback,
-            qos)
-        
+            10)
+            
         # O MoveIt vai ler de 'joint_states' (com o carimbo do PC)
         self.publisher = self.create_publisher(JointState, 'joint_states', 10)
-        self.count = 0
-        self.get_logger().info('Joint State Relay initialized. Re-stamping hardware messages with PC time.')
+        self.get_logger().info('Joint State Relay DDS Mode: Re-stamping hardware messages with PC time.')
 
     def listener_callback(self, msg):
-        self.count += 1
-        # Diagnostic logging
-        if self.count % 10 == 0:
-            self.get_logger().info(f'Relayed {self.count} states. Original stamp: {msg.header.stamp.sec}')
-        
         # Override the stamp with PC time to satisfy MoveIt's "recent state" check
         msg.header.stamp = self.get_clock().now().to_msg()
         self.publisher.publish(msg)

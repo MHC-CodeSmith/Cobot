@@ -1,0 +1,373 @@
+[INFO] [launch]: All log files can be found below /root/.ros/log/2026-05-03-23-38-56-922810-mhc-lenovo-5168
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [static_transform_publisher-1]: process started with pid [5172]
+[INFO] [robot_state_publisher-2]: process started with pid [5174]
+[INFO] [joint_state_relay-3]: process started with pid [5176]
+[INFO] [move_group-4]: process started with pid [5178]
+[INFO] [rviz2-5]: process started with pid [5180]
+[static_transform_publisher-1] [INFO] [1777851537.226158427] [mycobot.mycobot_anchor_publisher]: Spinning until killed publishing transform from 'map' to 'mycobot_base_link'
+[robot_state_publisher-2] Link joint1 had 1 children
+[robot_state_publisher-2] Link joint2 had 1 children
+[robot_state_publisher-2] Link joint3 had 1 children
+[robot_state_publisher-2] Link joint4 had 1 children
+[robot_state_publisher-2] Link joint5 had 1 children
+[robot_state_publisher-2] Link joint6 had 1 children
+[robot_state_publisher-2] Link joint6_flange had 0 children
+[robot_state_publisher-2] [INFO] [1777851537.228813687] [mycobot.robot_state_publisher]: got segment joint1
+[robot_state_publisher-2] [INFO] [1777851537.228960695] [mycobot.robot_state_publisher]: got segment joint2
+[robot_state_publisher-2] [INFO] [1777851537.228970704] [mycobot.robot_state_publisher]: got segment joint3
+[robot_state_publisher-2] [INFO] [1777851537.228975903] [mycobot.robot_state_publisher]: got segment joint4
+[robot_state_publisher-2] [INFO] [1777851537.228980723] [mycobot.robot_state_publisher]: got segment joint5
+[robot_state_publisher-2] [INFO] [1777851537.228985271] [mycobot.robot_state_publisher]: got segment joint6
+[robot_state_publisher-2] [INFO] [1777851537.228989750] [mycobot.robot_state_publisher]: got segment joint6_flange
+[robot_state_publisher-2] [INFO] [1777851537.228994388] [mycobot.robot_state_publisher]: got segment mycobot_base_link
+[rviz2-5] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[move_group-4] [INFO] [1777851537.285616571] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00365944 seconds
+[move_group-4] [INFO] [1777851537.285776513] [moveit_robot_model.robot_model]: Loading robot model 'mycobot_280_jn'...
+[rviz2-5] [INFO] [1777851537.469080990] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-5] [INFO] [1777851537.469295465] [rviz2]: OpenGl version: 3.1 (GLSL 1.4)
+[rviz2-5] [INFO] [1777851537.534697877] [rviz2]: Stereo is NOT SUPPORTED
+[joint_state_relay-3] [INFO] [1777851537.588502683] [mycobot.joint_state_relay]: Joint State Relay initialized. Re-stamping hardware messages with PC time.
+[rviz2-5] Warning: class_loader.impl: SEVERE WARNING!!! A namespace collision has occured with plugin factory for class rviz_default_plugins::displays::InteractiveMarkerDisplay. New factory will OVERWRITE existing one. This situation occurs when libraries containing plugins are directly linked against an executable (the one running right now generating this message). Please separate plugins out into their own library or just don't link against the library and use either class_loader::ClassLoader/MultiLibraryClassLoader to open.
+[rviz2-5]          at line 253 in /opt/ros/galactic/include/class_loader/class_loader_core.hpp
+[move_group-4] Link joint1 had 1 children
+[move_group-4] Link joint2 had 1 children
+[move_group-4] Link joint3 had 1 children
+[move_group-4] Link joint4 had 1 children
+[move_group-4] Link joint5 had 1 children
+[move_group-4] Link joint6 had 1 children
+[move_group-4] Link joint6_flange had 0 children
+[move_group-4] [INFO] [1777851538.096391028] [moveit.ros_planning_interface.moveit_cpp]: Listening to 'joint_states' for joint states
+[move_group-4] [INFO] [1777851538.097534616] [moveit_ros.current_state_monitor]: Listening to joint states on topic 'joint_states'
+[move_group-4] [INFO] [1777851538.099835808] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/attached_collision_object' for attached collision objects
+[move_group-4] [INFO] [1777851538.100285527] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Publishing maintained planning scene on 'monitored_planning_scene'
+[move_group-4] [INFO] [1777851538.100493750] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[move_group-4] [INFO] [1777851538.100945202] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/mycobot/planning_scene'
+[move_group-4] [INFO] [1777851538.100958367] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting world geometry update monitor for collision objects, attached objects, octomap updates.
+[move_group-4] [INFO] [1777851538.101136383] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'collision_object'
+[move_group-4] [INFO] [1777851538.101359013] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to 'planning_scene_world' for planning scene world geometry
+[move_group-4] [WARN] [1777851538.101578627] [moveit.ros.occupancy_map_monitor.middleware_handle]: Resolution not specified for Octomap. Assuming resolution = 0.1 instead
+[move_group-4] [ERROR] [1777851538.101593596] [moveit.ros.occupancy_map_monitor.middleware_handle]: No 3D sensor plugin(s) defined for octomap updates
+[move_group-4] [INFO] [1777851539.043773750] [moveit.ros_planning_interface.moveit_cpp]: Loading planning pipeline 'ompl'
+[move_group-4] [INFO] [1777851539.045684486] [moveit.ros_planning.planning_pipeline]: Multiple planning plugins available. You should specify the '~planning_plugin' parameter. Using 'ompl_interface/OMPLPlanner' for now.
+[move_group-4] [INFO] [1777851539.066322292] [moveit.ros_planning.planning_pipeline]: Using planning interface 'OMPL'
+[move_group-4] [INFO] [1777851539.078092063] [moveit.plugins.moveit_simple_controller_manager]: Added FollowJointTrajectory controller for mycobot_arm_controller
+[move_group-4] [INFO] [1777851539.078485185] [moveit.plugins.moveit_simple_controller_manager]: Returned 1 controllers in list
+[move_group-4] [INFO] [1777851539.078822591] [moveit_ros.trajectory_execution_manager]: Trajectory execution is managing controllers
+[move_group-4] [INFO] [1777851539.078848991] [move_group.move_group]: MoveGroup debug mode is ON
+[move_group-4] [INFO] [1777851539.097554120] [move_group.move_group]: 
+[move_group-4] 
+[move_group-4] ********************************************************
+[move_group-4] * MoveGroup using: 
+[move_group-4] *     - ApplyPlanningSceneService
+[move_group-4] *     - ClearOctomapService
+[move_group-4] *     - CartesianPathService
+[move_group-4] *     - ExecuteTrajectoryAction
+[move_group-4] *     - GetPlanningSceneService
+[move_group-4] *     - KinematicsService
+[move_group-4] *     - MoveAction
+[move_group-4] *     - MotionPlanService
+[move_group-4] *     - QueryPlannersService
+[move_group-4] *     - StateValidationService
+[move_group-4] ********************************************************
+[move_group-4] 
+[move_group-4] [INFO] [1777851539.097663336] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context using planning plugin ompl_interface/OMPLPlanner
+[move_group-4] [INFO] [1777851539.097681671] [moveit_move_group_capabilities_base.move_group_context]: MoveGroup context initialization complete
+[move_group-4] [96mLoading 'move_group/ApplyPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/ClearOctomapService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupCartesianPathService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupExecuteTrajectoryAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupGetPlanningSceneService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupKinematicsService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupMoveAction'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupPlanService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupQueryPlannersService'...
+[move_group-4] [0m[96mLoading 'move_group/MoveGroupStateValidationService'...
+[move_group-4] [0m[92m
+[move_group-4] You can start planning now!
+[move_group-4] 
+[rviz2-5] [ERROR] [1777851540.655819950] [moveit_ros_visualization.motion_planning_frame]: Action server: /recognize_objects not available
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] [INFO] [1777851540.795497007] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00352579 seconds
+[rviz2-5] [INFO] [1777851540.795630199] [moveit_robot_model.robot_model]: Loading robot model 'mycobot_280_jn'...
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] [INFO] [1777851541.755509213] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[rviz2-5] [INFO] [1777851541.756980990] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/monitored_planning_scene'
+[rviz2-5] [INFO] [1777851542.249439497] [interactive_marker_display_96163283497232]: Connected on namespace: /mycobot/rviz_moveit_motion_planning_display/robot_interaction_interactive_marker_topic
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] [INFO] [1777851542.348271415] [interactive_marker_display_96163283497232]: Sending request for interactive markers
+[rviz2-5] [INFO] [1777851542.348878050] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopping planning scene monitor
+[rviz2-5] Warning: class_loader.ClassLoader: SEVERE WARNING!!! Attempting to unload library while objects created by this loader exist in the heap! You should delete your objects before attempting to unload the library or destroying the ClassLoader. The library will NOT be unloaded.
+[rviz2-5]          at line 127 in /tmp/binarydeb/ros-galactic-class-loader-2.1.2/src/class_loader.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] [INFO] [1777851542.351370784] [moveit_rdf_loader.rdf_loader]: Loaded robot model in 0.00108248 seconds
+[rviz2-5] [INFO] [1777851542.351410058] [moveit_robot_model.robot_model]: Loading robot model 'mycobot_280_jn'...
+[rviz2-5] [INFO] [1777851542.431457146] [interactive_marker_display_96163283497232]: Service response received for initialization
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] [INFO] [1777851543.325899664] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Starting planning scene monitor
+[rviz2-5] [INFO] [1777851543.327555158] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Listening to '/monitored_planning_scene'
+[rviz2-5] Link joint1 had 1 children
+[rviz2-5] Link joint2 had 1 children
+[rviz2-5] Link joint3 had 1 children
+[rviz2-5] Link joint4 had 1 children
+[rviz2-5] Link joint5 had 1 children
+[rviz2-5] Link joint6 had 1 children
+[rviz2-5] Link joint6_flange had 0 children
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] [INFO] [1777851548.340622545] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Failed to call service /mycobot/get_planning_scene, have you launched move_group or called psm.providePlanningSceneService()?
+[rviz2-5] [INFO] [1777851548.340752770] [moveit_ros_visualization.motion_planning_frame]: group mycobot_arm
+[rviz2-5] [INFO] [1777851548.340764252] [moveit_ros_visualization.motion_planning_frame]: Constructing new MoveGroup connection for group 'mycobot_arm' in namespace '/mycobot'
+[rviz2-5] [WARN] [1777851548.340949973] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] Warning: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-5]          at line 156 in /tmp/binarydeb/ros-galactic-tf2-0.17.5/src/buffer_core.cpp
+[rviz2-5] [ERROR] [1777851551.472317721] [rviz2.rclcpp_action]: Error in destruction of rcl action client handle: action client implementation is invalid, at /tmp/binarydeb/ros-galactic-rcl-action-3.1.4/src/rcl_action/action_client.c:472
+[rviz2-5] [ERROR] [1777851551.485646574] [moveit_ros_visualization.motion_planning_frame]: could not initialize rcl action client: rcl node's context is invalid, at /tmp/binarydeb/ros-galactic-rcl-3.1.4/src/rcl/node.c:426
+[rviz2-5] [INFO] [1777851551.490407178] [moveit_ros.planning_scene_monitor.planning_scene_monitor]: Stopping planning scene monitor
+[INFO] [rviz2-5]: process has finished cleanly [pid 5180]
