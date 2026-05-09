@@ -1,19 +1,17 @@
 #!/bin/bash
 # ============================================================
-# RUN_ROBOT_NANO.sh — Inicia a bridge de hardware no Jetson Nano
-# (O Nano agora inicia seu próprio Discovery Server)
+# RUN_ROBOT_NANO.sh — Inicia Discovery Server + Bridge no Nano
+# Delega ao start_bridge.sh que já existe e está configurado.
+# O Nano é o servidor de descoberta (porta 11811).
 # ============================================================
-
-echo "========================================"
-echo "  Ligando bridge de hardware no Nano (SERVER MODE)"
-echo "========================================"
 
 NANO_USER="er"
 NANO_IP="192.168.0.250"
 NANO_PASS="Elephant"
 
-# Limpa o Discovery Server local do PC (se houver) para evitar conflitos
-pkill -f fastdds || true
+echo "========================================"
+echo "  Ligando DS + Bridge no Nano"
+echo "  SSH: ${NANO_USER}@${NANO_IP}"
+echo "========================================"
 
-# Dispara o script no Nano
-sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no ${NANO_USER}@${NANO_IP} "./start_bridge.sh"
+sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -t ${NANO_USER}@${NANO_IP} "~/start_bridge.sh"

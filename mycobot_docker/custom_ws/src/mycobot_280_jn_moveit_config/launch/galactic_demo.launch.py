@@ -30,7 +30,8 @@ def generate_launch_description():
 
     robot_description_content = Command([
         FindExecutable(name="xacro"), " ",
-        os.path.join(get_package_share_directory(description_pkg), "urdf/mycobot_280_jn/mycobot_280_jn.urdf.xacro"),
+        os.path.join(get_package_share_directory(description_pkg),
+                     "urdf/mycobot_280_jn/mycobot_280_jn.urdf.xacro"),
     ])
     robot_description = {"robot_description": ParameterValue(robot_description_content, value_type=str)}
 
@@ -45,26 +46,54 @@ def generate_launch_description():
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
     }
 
-    # Remapeamento Global para purificar os dados
-    joint_remappings = [("/joint_states", "/joint_states_clean")]
-
     return LaunchDescription([
-        # Tradutor de Juntas (Ouve /joint_states global, publica /joint_states_clean)
-        Node(package="mycobot_description", executable="joint_rebrander.py", name="rebrander", output="screen"),
-        
-        # Static TF
-        Node(package="tf2_ros", executable="static_transform_publisher", arguments=["0", "0", "0", "0", "0", "0", "map", "mycobot_base_link"]),
-        
-        # Robot State Publisher (Ouve /joint_states_clean)
-        Node(package="robot_state_publisher", executable="robot_state_publisher", parameters=[robot_description], remappings=joint_remappings),
-        
-        # MoveGroup (Ouve /joint_states_clean)
-        Node(package="moveit_ros_move_group", executable="move_group", output="screen", 
-             parameters=[robot_description, robot_description_semantic, moveit_controller_manager, {"robot_description_kinematics": kinematics_yaml}, {"publish_robot_description_semantic": True}],
-             remappings=joint_remappings),
-        
-        # RViz (Ouve /joint_states_clean)
-        Node(package="rviz2", executable="rviz2", arguments=["-d", os.path.join(get_package_share_directory(config_pkg), "config/moveit.rviz")],
-             parameters=[robot_description, robot_description_semantic, {"robot_description_kinematics": kinematics_yaml}],
-             remappings=joint_remappings),
+        # Re-carimba timestamps do Nano com clock local do PC
+        # (evita que MoveIt rejeite estados como "stale")
+        Node(
+            package="mycobot_hw_interface",
+            executable="joint_state_relay",
+            name="joint_state_relay",
+            output="screen"
+        ),
+
+        # Static TF: map → mycobot_base_link
+        Node(
+            package="tf2_ros",
+            executable="static_transform_publisher",
+            arguments=["0", "0", "0", "0", "0", "0", "map", "mycobot_base_link"]
+        ),
+
+        # Robot State Publisher (lê /joint_states)
+        Node(
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            parameters=[robot_description]
+        ),
+
+        # MoveGroup (lê /joint_states)
+        Node(
+            package="moveit_ros_move_group",
+            executable="move_group",
+            output="screen",
+            parameters=[
+                robot_description,
+                robot_description_semantic,
+                moveit_controller_manager,
+                {"robot_description_kinematics": kinematics_yaml},
+                {"publish_robot_description_semantic": True}
+            ]
+        ),
+
+        # RViz com plugin MoveIt
+        Node(
+            package="rviz2",
+            executable="rviz2",
+            arguments=["-d", os.path.join(
+                get_package_share_directory(config_pkg), "config/moveit.rviz")],
+            parameters=[
+                robot_description,
+                robot_description_semantic,
+                {"robot_description_kinematics": kinematics_yaml}
+            ]
+        ),
     ])

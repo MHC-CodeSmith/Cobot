@@ -7,13 +7,13 @@ Visualization Manager:
     - Class: rviz_default_plugins/RobotModel
       Name: RobotModel
       Robot Description: robot_description
-      Joint States Topic: /joint_states_clean
+      Joint States Topic: /joint_states
       Value: true
     - Class: moveit_rviz_plugin/MotionPlanning
       Name: MotionPlanning
       Robot Description: robot_description
       Planning Group: mycobot_arm
-      Joint States Topic: /joint_states_clean
+      Joint States Topic: /joint_states
       Value: true
   Global Options:
     Fixed Frame: map

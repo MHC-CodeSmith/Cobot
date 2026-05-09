@@ -1,90 +1,85 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.action import ActionServer
 from sensor_msgs.msg import JointState
 from control_msgs.action import FollowJointTrajectory
-from rclpy.action import ActionServer
-from pymycobot.mycobot import MyCobot
-try:
-    from pymycobot.mycobot280 import MyCobot280
-except ImportError:
-    MyCobot280 = MyCobot
+from pymycobot.mycobot280 import MyCobot280
 import math
 import time
 
 class MyCobotBridge(Node):
     def __init__(self):
         super().__init__('mycobot_bridge')
-        
-        # Parâmetros
-        self.declare_parameter('port', '/dev/ttyTHS1') # No Nano é THS1
+        self.declare_parameter('port', '/dev/ttyTHS1')
         self.declare_parameter('baud', 1000000)
-        
-        port = self.get_parameter('port').get_parameter_value().string_value
-        baud = self.get_parameter('baud').get_parameter_value().integer_value
-        
-        self.get_logger().info(f'Iniciando Bridge na porta {port} com baud {baud}')
-        
-        try:
-            try:
-                self.mc = MyCobot280(port, baud)
-            except:
-                self.mc = MyCobot(port, baud)
-            time.sleep(1.0)
-            self.get_logger().info('Conexão com MyCobot estabelecida!')
-        except Exception as e:
-            self.get_logger().error(f'ERRO CRÍTICO DE CONEXÃO: {e}')
-            exit(1)
+        self.declare_parameter('mock', False)
 
-        # Nomes padrão do MoveIt
-        self.standard_names = ["joint1", "joint2", "joint3", "joint4", "joint5", "joint6"]
-        
-        # Publisher de JointStates (Topic padrão ROS 2)
-        self.joint_pub = self.create_publisher(JointState, 'joint_states', 10)
-        self.timer = self.create_timer(0.05, self.publish_joint_states) # 20Hz
-        
-        # Servidor de Ação para Movimento
+        self.port = self.get_parameter('port').get_parameter_value().string_value
+        self.baud = self.get_parameter('baud').get_parameter_value().integer_value
+        self.mock = self.get_parameter('mock').get_parameter_value().bool_value
+
+        if not self.mock:
+            self.mc = MyCobot280(self.port, str(self.baud))
+            time.sleep(1.0)
+
+        # Nomes oficiais do driver elephantrobotics
+        self.joint_names = [
+            "joint2_to_joint1", "joint3_to_joint2", "joint4_to_joint3",
+            "joint5_to_joint4", "joint6_to_joint5", "joint6output_to_joint6"
+        ]
+
+        # Publica raw para o relay no PC re-carimbar com clock local
+        self.joint_pub = self.create_publisher(JointState, 'joint_states_raw', 10)
+        self.timer = self.create_timer(0.1, self.publish_joint_states)  # 10Hz
+
+        # Subscriber para controle direto (GUI / teleop)
+        self.cmd_sub = self.create_subscription(
+            JointState, 'joint_states_commands', self.command_callback, 10)
+
         self._action_server = ActionServer(
-            self,
-            FollowJointTrajectory,
+            self, FollowJointTrajectory,
             'mycobot_arm_controller/follow_joint_trajectory',
-            self.execute_callback
-        )
-        self.get_logger().info("Bridge Mestre pronto para o MoveIt!")
+            self.execute_callback)
+
+        self.get_logger().info(
+            f'MyCobot Bridge ativa | mock={self.mock} | port={self.port} | baud={self.baud}')
+
+    def command_callback(self, msg):
+        if self.mock:
+            return
+        angles = [math.degrees(x) for x in msg.position]
+        if len(angles) >= 6:
+            self.mc.send_angles(angles[:6], 80)
 
     def publish_joint_states(self):
-        angles = self.mc.get_angles()
-        if angles and len(angles) == 6:
-            msg = JointState()
-            msg.header.stamp = self.get_clock().now().to_msg()
-            msg.header.frame_id = "mycobot_base_link"
-            msg.name = self.standard_names
-            # Converte de GRAUS (Hardware) para RADIANOS (ROS 2)
-            msg.position = [math.radians(a) for a in angles]
-            self.joint_pub.publish(msg)
+        msg = JointState()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.name = self.joint_names
+        if self.mock:
+            msg.position = [0.0] * 6
+        else:
+            angles = self.mc.get_angles()
+            if isinstance(angles, list) and len(angles) == 6:
+                msg.position = [math.radians(x) for x in angles]
+            else:
+                return
+        self.joint_pub.publish(msg)
 
     async def execute_callback(self, goal_handle):
-        self.get_logger().info('Recebida trajetória do MoveIt...')
+        self.get_logger().info('Trajetória recebida do MoveIt')
         trajectory = goal_handle.request.trajectory
-        
         for point in trajectory.points:
-            # Converte de RADIANOS (ROS 2) para GRAUS (Hardware)
             angles_deg = [math.degrees(p) for p in point.positions]
-            # Envia para o robô (Velocidade 80)
-            self.mc.send_angles(angles_deg, 80)
-            # Pequeno delay para suavidade
+            if not self.mock:
+                self.mc.send_angles(angles_deg, 80)
             time.sleep(0.02)
-        
         goal_handle.succeed()
-        result = FollowJointTrajectory.Result()
-        return result
+        return FollowJointTrajectory.Result()
 
-def main():
-    rclpy.init()
+def main(args=None):
+    rclpy.init(args=args)
     node = MyCobotBridge()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
+    rclpy.spin(node)
     rclpy.shutdown()
 
 if __name__ == '__main__':
