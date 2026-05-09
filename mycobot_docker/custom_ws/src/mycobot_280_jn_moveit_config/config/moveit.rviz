@@ -39,7 +39,7 @@ Visualization Manager:
         Colliding Link Color: 255; 0; 0
         Goal State Alpha: 1
         Goal State Color: 250; 128; 0
-        Interactive Marker Size: 0
+        Interactive Marker Size: 0.15
         Planning Group: mycobot_arm
         Query Goal State: true
         Query Start State: false
