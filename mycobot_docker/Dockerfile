@@ -20,6 +20,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip3 install pymycobot --upgrade
 
+# Vision teleop dependencies
+# mediapipe 0.10.5 = última versão compatível com Python 3.8 (Ubuntu 20.04 / Galactic)
+# cv_bridge via apt para integração com ROS 2
+RUN apt-get update && apt-get install -y ros-galactic-cv-bridge && rm -rf /var/lib/apt/lists/*
+RUN pip3 install "mediapipe==0.10.5" numpy opencv-python
+
 # custom_ws é montado como volume em runtime — o build é feito lá dentro
 RUN mkdir -p /root/custom_ws/src
 

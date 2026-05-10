@@ -15,20 +15,29 @@ NANO_PASS="Elephant"
 echo "========================================"
 echo "  [1/3] Reiniciando bridge no Nano"
 echo "========================================"
-sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no ${NANO_USER}@${NANO_IP} '
-  pkill -9 -f mycobot_bridge 2>/dev/null || true
-  pkill -9 -f "ros2 launch mycobot_hw_interface" 2>/dev/null || true
-  sleep 2
-  truncate -s 0 /tmp/bridge.log
-  setsid bash -c "bash ~/start_bridge.sh > /tmp/bridge.log 2>&1" < /dev/null > /dev/null 2>&1 &
-  disown -a
-'
+# Passo 1: mata processos antigos (SSH rápido, sem background)
+echo "  Matando bridge anterior..."
+timeout 10 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=8 ${NANO_USER}@${NANO_IP} \
+  'pkill -9 -f mycobot_bridge 2>/dev/null; pkill -9 -f "ros2 launch mycobot_hw_interface" 2>/dev/null; truncate -s 0 /tmp/bridge.log; echo killed' \
+  2>/dev/null || true
+
+sleep 2
+
+# Passo 2: inicia bridge — redireciona TODOS os fds do bash filho para /dev/null
+# antes de disparar o nohup, para que o SSH não fique esperando os fds do processo ROS
+echo "  Iniciando bridge..."
+timeout 12 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=8 ${NANO_USER}@${NANO_IP} \
+  'bash -c "nohup bash ~/start_bridge.sh >/tmp/bridge.log 2>&1 </dev/null &" </dev/null >/dev/null 2>/dev/null' \
+  2>/dev/null || true
+
 sleep 6
-BRIDGE_OK=$(sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no ${NANO_USER}@${NANO_IP} 'ps aux | grep -v grep | grep -c mycobot_bridge')
-if [ "$BRIDGE_OK" -gt 0 ]; then
-  echo "  Bridge OK (mycobot_bridge running on Nano)"
+
+BRIDGE_OK=$(timeout 8 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=6 ${NANO_USER}@${NANO_IP} \
+  'ps aux | grep -v grep | grep -c mycobot_bridge' 2>/dev/null || echo 0)
+if [ "${BRIDGE_OK:-0}" -gt 0 ]; then
+  echo "  Bridge OK (mycobot_bridge rodando no Nano)"
 else
-  echo "  Bridge FAILED — check via: sshpass -p Elephant ssh er@192.168.0.250 'cat /tmp/bridge.log'"
+  echo "  Bridge FAILED — verifique: sshpass -p Elephant ssh er@192.168.0.250 'cat /tmp/bridge.log'"
   exit 1
 fi
 
