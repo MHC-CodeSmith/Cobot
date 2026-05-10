@@ -44,6 +44,7 @@ class VisionNode(Node):
         self.declare_parameter('min_detection_confidence',  0.6)
         self.declare_parameter('min_tracking_confidence',   0.6)
         self.declare_parameter('publish_debug_image',       True)
+        self.declare_parameter('target_window',             0.06)  # deadband fraction — matches face_follower
         # Modo câmera do braço: subscreve tópico em vez de abrir câmera local
         self.declare_parameter('use_image_topic',   False)
         self.declare_parameter('image_topic',       '/arm_camera/image_raw')
@@ -131,11 +132,45 @@ class VisionNode(Node):
     # Processamento MediaPipe (comum a ambos os modos)
     # ──────────────────────────────────────────────────────────────────
 
+    def _draw_target_overlay(self, frame, nose_x: float, nose_y: float, tracking_ok: bool):
+        """Draw target window (deadband) and nose crosshair on frame."""
+        h, w = frame.shape[:2]
+        cx, cy = w // 2, h // 2
+        win = self.get_parameter('target_window').value
+
+        # Target window rectangle (deadband zone)
+        rx = int(win * w)
+        ry = int(win * h)
+        inside = (abs(nose_x - 0.5) <= win and abs(nose_y - 0.5) <= win) if tracking_ok else False
+        box_color = (0, 220, 0) if inside else (0, 140, 255)
+        cv2.rectangle(frame, (cx - rx, cy - ry), (cx + rx, cy + ry), box_color, 2)
+
+        # Center crosshair (small)
+        cv2.line(frame, (cx - 8, cy), (cx + 8, cy), (180, 180, 180), 1)
+        cv2.line(frame, (cx, cy - 8), (cx, cy + 8), (180, 180, 180), 1)
+
+        if tracking_ok:
+            # Nose position dot
+            nx = int(nose_x * w)
+            ny = int(nose_y * h)
+            dot_color = (0, 220, 0) if inside else (0, 80, 255)
+            cv2.circle(frame, (nx, ny), 6, dot_color, -1)
+            cv2.circle(frame, (nx, ny), 8, (255, 255, 255), 1)
+
+            # Error vector from center to nose
+            cv2.line(frame, (cx, cy), (nx, ny), (100, 100, 255), 1)
+
+        # Status label
+        label = "OK" if (tracking_ok and inside) else ("TRACKING" if tracking_ok else "NO FACE")
+        color = (0, 220, 0) if (tracking_ok and inside) else ((0, 200, 255) if tracking_ok else (0, 0, 220))
+        cv2.putText(frame, label, (8, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.65, color, 2)
+
     def _process_frame(self, frame):
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.pose.process(rgb)
 
         tracking_ok = results.pose_landmarks is not None
+        nose_x, nose_y = 0.5, 0.5
 
         if tracking_ok:
             wl = results.pose_world_landmarks.landmark
@@ -144,6 +179,7 @@ class VisionNode(Node):
             self._publish_landmark(wl[16], self.pub_wrist)     # RIGHT_WRIST
 
             nose = results.pose_landmarks.landmark[0]
+            nose_x, nose_y = nose.x, nose.y
             self.pub_face.publish(Point(x=nose.x, y=nose.y, z=nose.z))
 
             if self._debug:
@@ -154,6 +190,7 @@ class VisionNode(Node):
         self.pub_tracking_ok.publish(Bool(data=tracking_ok))
 
         if self._debug:
+            self._draw_target_overlay(frame, nose_x, nose_y, tracking_ok)
             img_msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
             img_msg.header.stamp    = self.get_clock().now().to_msg()
             img_msg.header.frame_id = 'camera_frame'

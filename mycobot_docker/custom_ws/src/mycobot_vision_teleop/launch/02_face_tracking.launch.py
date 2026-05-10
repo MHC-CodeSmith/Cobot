@@ -46,6 +46,7 @@ def generate_launch_description():
             'min_detection_confidence':  0.6,
             'min_tracking_confidence':   0.6,
             'publish_debug_image':       True,
+            'target_window':             0.06,  # must match face_follower deadband
             'use_image_topic':           use_arm_camera,
             'image_topic':               '/arm_camera/image_raw',
         }],

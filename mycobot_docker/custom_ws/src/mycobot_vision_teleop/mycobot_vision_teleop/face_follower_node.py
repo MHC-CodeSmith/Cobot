@@ -32,6 +32,7 @@ criando movimento contínuo sem stop-start.
 
 import math
 import rclpy
+
 from rclpy.node import Node
 from rclpy.action import ActionClient
 from geometry_msgs.msg import Point
@@ -55,6 +56,21 @@ JOINT_LIMITS = {
 
 def clamp(value, lo, hi):
     return max(lo, min(hi, value))
+
+
+def _ease_inout_cubic(t: float) -> float:
+    """Smooth S-curve: t∈[0,1] → [0,1]. Slow at edges, fast in middle."""
+    if t <= 0.5:
+        return 4.0 * t ** 3
+    return 1.0 - (-2.0 * t + 2.0) ** 3 / 2.0
+
+
+def ease_error(error: float, deadband: float, max_error: float = 0.5) -> float:
+    """Map raw error to eased output in [-1, 1], zero inside deadband."""
+    if abs(error) <= deadband:
+        return 0.0
+    t = min(1.0, (abs(error) - deadband) / (max_error - deadband))
+    return math.copysign(_ease_inout_cubic(t), error)
 
 
 class FaceFollowerNode(Node):
@@ -156,8 +172,11 @@ class FaceFollowerNode(Node):
         if inv_x:
             ex = -ex
 
-        delta_j1 = clamp(-kp_x * ex, -max_d, max_d) if abs(ex) > deadband else 0.0
-        delta_j2 = clamp( kp_y * ey, -max_d, max_d) if abs(ey) > deadband else 0.0
+        # Cubic easing: gentle near center, aggressive when far off-center
+        ex_eased = ease_error(ex, deadband)
+        ey_eased = ease_error(ey, deadband)
+        delta_j1 = clamp(-kp_x * ex_eased, -max_d, max_d)
+        delta_j2 = clamp( kp_y * ey_eased, -max_d, max_d)
 
         if abs(delta_j1) < 0.008 and abs(delta_j2) < 0.008:
             return

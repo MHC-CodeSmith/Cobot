@@ -5,6 +5,7 @@
 # Câmera do braço (Nano /dev/video0) → visão com MediaPipe →
 # face_follower move joint1/joint2 para centralizar o rosto.
 # O RViz mostra o que o robô está vendo (painel "Olho do Robo").
+# O overlay mostra o alvo (retangulo verde = rosto centrado).
 #
 # PRÉ-REQUISITO: RUN_PLANNING_PC.sh rodando
 # ============================================================
@@ -19,9 +20,9 @@ echo "  Robot Eye — o robo ve voce"
 echo "  Camera: braco do robo (Nano)"
 echo "========================================"
 
-# ── [1/3] Câmera no Nano ─────────────────────────────────────
+# ── [1/4] Câmera no Nano ─────────────────────────────────────
 echo ""
-echo "[1/3] Iniciando câmera do braço no Nano..."
+echo "[1/4] Iniciando câmera do braço no Nano..."
 
 timeout 8 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=6 \
   ${NANO_USER}@${NANO_IP} \
@@ -53,12 +54,13 @@ else
   echo "  Verifique: sshpass -p Elephant ssh er@192.168.0.250 'cat /tmp/arm_camera.log'"
 fi
 
-# ── [2/3] Vision + face follower no Docker ───────────────────
+# ── [2/4] Vision + face follower no Docker ───────────────────
 echo ""
-echo "[2/3] Iniciando vision_node + face_follower no Docker..."
+echo "[2/4] Iniciando vision_node + face_follower no Docker..."
 
 docker exec mycobot_ros2 pkill -9 -f vision_node   2>/dev/null || true
 docker exec mycobot_ros2 pkill -9 -f face_follower 2>/dev/null || true
+docker exec mycobot_ros2 pkill -9 -f showimage     2>/dev/null || true
 sleep 1
 
 docker exec -d mycobot_ros2 bash -c "
@@ -72,19 +74,11 @@ docker exec -d mycobot_ros2 bash -c "
     2>&1 | tee /tmp/teleop.log
 "
 
-# ── [3/3] Instruções ─────────────────────────────────────────
+# ── [3/4] Habilita movimento ─────────────────────────────────
 echo ""
-echo "[3/3] Aguardando nós subirem..."
-sleep 4
+echo "[3/4] Aguardando nós subirem e habilitando movimento..."
+sleep 5
 
-echo ""
-echo "========================================"
-echo "  PRONTO"
-echo "========================================"
-echo ""
-echo "  No RViz: painel 'Olho do Robo' mostra o que o robo ve"
-echo ""
-echo "  Habilitar movimento (robo segue seu rosto):"
 docker exec mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
   export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
@@ -92,7 +86,37 @@ docker exec mycobot_ros2 bash -c "
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash
   ros2 topic pub --once /face_follower/enabled std_msgs/Bool 'data: true'
-" 2>/dev/null && echo "  Movimento HABILITADO automaticamente" || echo "  (habilite manualmente quando os nos subirem)"
+" 2>/dev/null && echo "  Movimento HABILITADO" \
+             || echo "  (habilite manualmente quando os nos subirem)"
+
+# ── [4/4] Abre janela com o que o robô vê ────────────────────
+echo ""
+echo "[4/4] Abrindo câmera do robô..."
+
+if [ -n "$DISPLAY" ]; then
+  docker exec -d mycobot_ros2 bash -c "
+    export ROS_DOMAIN_ID=42
+    export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+    export CYCLONEDDS_URI=$CYCLONE_XML
+    export DISPLAY=$DISPLAY
+    source /opt/ros/galactic/setup.bash
+    source /root/custom_ws/install/setup.bash
+    ros2 run image_tools showimage --ros-args -r image:=/human/image_debug \
+      2>&1 | tee /tmp/showimage.log
+  " 2>/dev/null && echo "  Janela de camera aberta (overlay com alvo visivel)"
+else
+  echo "  DISPLAY nao configurado — veja o painel 'Olho do Robo' no RViz"
+fi
+
+echo ""
+echo "========================================"
+echo "  PRONTO — Robo esta te seguindo"
+echo "========================================"
+echo ""
+echo "  Overlay na camera:"
+echo "    - Retangulo VERDE  = rosto centrado na janela alvo"
+echo "    - Retangulo LARANJA = robo corrigindo posicao"
+echo "    - Ponto = nariz detectado"
 echo ""
 echo "  Log em tempo real:"
 echo "    docker exec mycobot_ros2 tail -f /tmp/teleop.log"
