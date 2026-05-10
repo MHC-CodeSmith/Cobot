@@ -28,6 +28,19 @@ Visualization Manager:
     - Class: rviz_default_plugins/TF
       Name: TF
       Value: false
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Min Value: 0
+      Name: "Olho do Robo"
+      Normalize Range: true
+      Topic:
+        Depth: 2
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /human/image_debug
+      Value: true
     - Class: moveit_rviz_plugin/MotionPlanning
       Name: MotionPlanning
       Robot Description: robot_description
