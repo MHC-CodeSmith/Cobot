@@ -19,11 +19,15 @@ Parâmetros ROS:
   kp_x          (float, default 0.5)   ganho horizontal → joint1 [rad/unit]
   kp_y          (float, default 0.3)   ganho vertical   → joint2 [rad/unit]
   deadband      (float, default 0.06)  zona morta (6% da imagem)
-  max_delta_rad (float, default 0.15)  movimento máximo por step [rad]
-  rate_hz       (float, default 10.0)  frequência do controlador
-  traj_ms       (int,   default 120)   duração de cada trajectory [ms]
+  max_delta_rad (float, default 0.12)  movimento máximo por step [rad]
+  rate_hz       (float, default 20.0)  frequência do controlador
+  traj_ms       (int,   default 300)   duração de cada trajectory [ms] — deve ser > 1/rate_hz
   j2_offset     (float, default 0.4)   inclinação base do joint2 [rad]
   invert_x      (bool,  default False) inverte sentido horizontal
+
+Modo streaming: trajetórias de 300 ms enviadas a 20 Hz (sobrepostas).
+O servidor FollowJointTrajectory faz preempt automático do goal anterior,
+criando movimento contínuo sem stop-start.
 """
 
 import math
@@ -61,9 +65,9 @@ class FaceFollowerNode(Node):
         self.declare_parameter('kp_x',          0.5)
         self.declare_parameter('kp_y',          0.3)
         self.declare_parameter('deadband',       0.06)
-        self.declare_parameter('max_delta_rad',  0.15)
-        self.declare_parameter('rate_hz',        10.0)
-        self.declare_parameter('traj_ms',        120)
+        self.declare_parameter('max_delta_rad',  0.12)
+        self.declare_parameter('rate_hz',        20.0)
+        self.declare_parameter('traj_ms',        300)
         self.declare_parameter('j2_offset',      0.4)
         self.declare_parameter('invert_x',       False)
 
@@ -74,9 +78,8 @@ class FaceFollowerNode(Node):
         self.tracking_ok = False
         self.joint_positions = {}
         self.enabled = False
-        self._goal_handle = None       # handle do goal atual (para cancelar)
-        self._goal_active = False
         self._last_target = (0.0, 0.0)
+        self._pending = False   # evita flood se action server estiver lento
 
         # ── Subscribers ───────────────────────────────────────────────
         self.create_subscription(Point,      '/human/face_center',     self._face_cb,     10)
@@ -98,7 +101,7 @@ class FaceFollowerNode(Node):
         self.create_timer(1.0 / rate, self._control_loop)
 
         self.get_logger().info(
-            f'FaceFollower pronto — {rate:.0f} Hz | '
+            f'FaceFollower pronto — {rate:.0f} Hz streaming | '
             f'traj={self.get_parameter("traj_ms").value} ms | '
             f'deadband={self.get_parameter("deadband").value:.0%}\n'
             '  Habilitar:   ros2 topic pub --once /face_follower/enabled std_msgs/Bool "data: true"\n'
@@ -126,7 +129,6 @@ class FaceFollowerNode(Node):
             self.get_logger().info('Face follower HABILITADO')
         elif not msg.data and self.enabled:
             self.get_logger().info('Face follower DESABILITADO')
-            self._cancel_current_goal()
         self.enabled = msg.data
 
     # ──────────────────────────────────────────────────────────────────
@@ -157,7 +159,7 @@ class FaceFollowerNode(Node):
         delta_j1 = clamp(-kp_x * ex, -max_d, max_d) if abs(ex) > deadband else 0.0
         delta_j2 = clamp( kp_y * ey, -max_d, max_d) if abs(ey) > deadband else 0.0
 
-        if abs(delta_j1) < 0.01 and abs(delta_j2) < 0.01:
+        if abs(delta_j1) < 0.008 and abs(delta_j2) < 0.008:
             return
 
         j1_now = self.joint_positions.get('cobot_joint_1', 0.0)
@@ -166,35 +168,27 @@ class FaceFollowerNode(Node):
         j1_target = clamp(j1_now + delta_j1, *JOINT_LIMITS['cobot_joint_1'])
         j2_target = clamp(j2_now + delta_j2, *JOINT_LIMITS['cobot_joint_2'])
 
-        # Ignora se mudança mínima (evita oscilação)
-        if (abs(j1_target - self._last_target[0]) < 0.015 and
-                abs(j2_target - self._last_target[1]) < 0.015):
+        if (abs(j1_target - self._last_target[0]) < 0.01 and
+                abs(j2_target - self._last_target[1]) < 0.01):
             return
+
+        if self._pending:
+            return  # já tem um goal no ar, aguarda o ack
 
         self._last_target = (j1_target, j2_target)
         self._send_joints(j1_target, j2_target)
 
     # ──────────────────────────────────────────────────────────────────
-    # Envio da trajetória com cancelamento do goal anterior
+    # Envio da trajetória — modo streaming (sem cancelamento explícito)
+    # O servidor FollowJointTrajectory faz preempt automático.
+    # Trajetória de 300 ms enviada a 20 Hz → robot "persegue" o target
+    # de forma contínua sem stop-start.
     # ──────────────────────────────────────────────────────────────────
-
-    def _cancel_current_goal(self):
-        """Cancela o goal em execução, se houver."""
-        if self._goal_handle is not None and self._goal_active:
-            try:
-                self._goal_handle.cancel_goal_async()
-            except Exception:
-                pass
-        self._goal_active = False
-        self._goal_handle = None
 
     def _send_joints(self, j1_rad: float, j2_rad: float):
         if not self._ac.server_is_ready():
             self.get_logger().warn('Bridge não disponível', throttle_duration_sec=5.0)
             return
-
-        # Cancela goal anterior → movimento fluido contínuo
-        self._cancel_current_goal()
 
         positions = []
         for name in JOINT_NAMES:
@@ -217,7 +211,7 @@ class FaceFollowerNode(Node):
         goal = FollowJointTrajectory.Goal()
         goal.trajectory = traj
 
-        self._goal_active = True
+        self._pending = True
         future = self._ac.send_goal_async(goal)
         future.add_done_callback(self._goal_sent_cb)
 
@@ -226,17 +220,11 @@ class FaceFollowerNode(Node):
         )
 
     def _goal_sent_cb(self, future):
-        goal_handle = future.result()
-        if not goal_handle.accepted:
-            self._goal_active = False
-            return
-        self._goal_handle = goal_handle
-        result_future = goal_handle.get_result_async()
-        result_future.add_done_callback(self._result_cb)
+        # Goal aceito/rejeitado pelo bridge — libera para próximo envio
+        self._pending = False
 
     def _result_cb(self, future):
-        self._goal_active = False
-        self._goal_handle = None
+        pass  # não usado no modo streaming
 
 
 def main(args=None):
