@@ -29,4 +29,7 @@ RUN pip3 install "mediapipe==0.10.5" numpy opencv-python
 # custom_ws é montado como volume em runtime — o build é feito lá dentro
 RUN mkdir -p /root/custom_ws/src
 
+# XDG_RUNTIME_DIR necessário para Qt/RViz2 (evita SIGSEGV no moveit_rviz_plugin)
+RUN mkdir -p /tmp/runtime-root && chmod 700 /tmp/runtime-root
+
 CMD ["bash"]
