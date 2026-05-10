@@ -2,45 +2,38 @@
 """
 face_follower_node.py
 =====================
-Controlador proporcional: lê a posição do rosto e move joint1/joint2 do
-myCobot para que o braço "aponte" na direção do rosto — como uma cobra
-seguindo a presa.
+Controlador proporcional com easing cúbico: detecta posição do rosto e move
+joint1/joint2 do myCobot para que o braço "aponte" na direção do rosto.
 
-Modo fluido (10 Hz + cancelamento de goal):
-  A cada ciclo, cancela o goal anterior e envia um novo, com
-  time_from_start curto (120 ms). Isso cria movimento contínuo
-  sem esperar o goal anterior terminar.
+Arquitetura de controle (modo direto — sem overhead de action):
+  Publica JointState em /joint_states_commands (topic, fire-and-forget).
+  A bridge no Nano (set_fresh_mode=1) sempre executa o comando mais recente,
+  descartando comandos antigos — efeito de "velocity control" contínuo.
+
+Easing cúbico In/Out:
+  Movimentos suaves perto do centro (baixo erro), agressivos longe (alto erro).
+  Implementação baseada em: DOI 10.3390/s22020572 (eq. 25).
 
 Ativação:
   ros2 topic pub --once /face_follower/enabled std_msgs/Bool "data: true"
   ros2 topic pub --once /face_follower/enabled std_msgs/Bool "data: false"
 
 Parâmetros ROS:
-  kp_x          (float, default 0.5)   ganho horizontal → joint1 [rad/unit]
-  kp_y          (float, default 0.3)   ganho vertical   → joint2 [rad/unit]
+  kp_x          (float, default 0.5)   ganho horizontal → joint1
+  kp_y          (float, default 0.3)   ganho vertical   → joint2
   deadband      (float, default 0.06)  zona morta (6% da imagem)
-  max_delta_rad (float, default 0.12)  movimento máximo por step [rad]
+  max_delta_rad (float, default 0.08)  movimento máximo por step [rad]
   rate_hz       (float, default 20.0)  frequência do controlador
-  traj_ms       (int,   default 300)   duração de cada trajectory [ms] — deve ser > 1/rate_hz
   j2_offset     (float, default 0.4)   inclinação base do joint2 [rad]
   invert_x      (bool,  default False) inverte sentido horizontal
-
-Modo streaming: trajetórias de 300 ms enviadas a 20 Hz (sobrepostas).
-O servidor FollowJointTrajectory faz preempt automático do goal anterior,
-criando movimento contínuo sem stop-start.
 """
 
 import math
 import rclpy
-
 from rclpy.node import Node
-from rclpy.action import ActionClient
 from geometry_msgs.msg import Point
 from sensor_msgs.msg import JointState
 from std_msgs.msg import Bool
-from control_msgs.action import FollowJointTrajectory
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-from builtin_interfaces.msg import Duration
 
 
 JOINT_NAMES = [
@@ -59,7 +52,7 @@ def clamp(value, lo, hi):
 
 
 def _ease_inout_cubic(t: float) -> float:
-    """Smooth S-curve: t∈[0,1] → [0,1]. Slow at edges, fast in middle."""
+    """Smooth S-curve: t∈[0,1] → [0,1]. Gentle at edges, fast in middle."""
     if t <= 0.5:
         return 4.0 * t ** 3
     return 1.0 - (-2.0 * t + 2.0) ** 3 / 2.0
@@ -81,9 +74,8 @@ class FaceFollowerNode(Node):
         self.declare_parameter('kp_x',          0.5)
         self.declare_parameter('kp_y',          0.3)
         self.declare_parameter('deadband',       0.06)
-        self.declare_parameter('max_delta_rad',  0.12)
+        self.declare_parameter('max_delta_rad',  0.08)
         self.declare_parameter('rate_hz',        20.0)
-        self.declare_parameter('traj_ms',        300)
         self.declare_parameter('j2_offset',      0.4)
         self.declare_parameter('invert_x',       False)
 
@@ -94,8 +86,6 @@ class FaceFollowerNode(Node):
         self.tracking_ok = False
         self.joint_positions = {}
         self.enabled = False
-        self._last_target = (0.0, 0.0)
-        self._pending = False   # evita flood se action server estiver lento
 
         # ── Subscribers ───────────────────────────────────────────────
         self.create_subscription(Point,      '/human/face_center',     self._face_cb,     10)
@@ -103,23 +93,18 @@ class FaceFollowerNode(Node):
         self.create_subscription(JointState, '/joint_states',          self._js_cb,       10)
         self.create_subscription(Bool,       '/face_follower/enabled', self._enable_cb,   10)
 
-        # ── Action client ─────────────────────────────────────────────
-        self._ac = ActionClient(
-            self,
-            FollowJointTrajectory,
-            '/mycobot_arm_controller/follow_joint_trajectory',
-        )
-
-        # ── Status ────────────────────────────────────────────────────
+        # ── Publicadores ─────────────────────────────────────────────
+        # Controle direto: bridge executa imediatamente (fresh_mode=1 no Nano)
+        self._cmd_pub   = self.create_publisher(JointState, '/joint_states_commands', 10)
         self._pub_status = self.create_publisher(Bool, '/face_follower/active', 10)
 
         # ── Timer de controle ─────────────────────────────────────────
         self.create_timer(1.0 / rate, self._control_loop)
 
         self.get_logger().info(
-            f'FaceFollower pronto — {rate:.0f} Hz streaming | '
-            f'traj={self.get_parameter("traj_ms").value} ms | '
-            f'deadband={self.get_parameter("deadband").value:.0%}\n'
+            f'FaceFollower pronto — {rate:.0f} Hz | '
+            f'deadband={self.get_parameter("deadband").value:.0%} | '
+            f'max_delta={math.degrees(self.get_parameter("max_delta_rad").value):.1f}°\n'
             '  Habilitar:   ros2 topic pub --once /face_follower/enabled std_msgs/Bool "data: true"\n'
             '  Desabilitar: ros2 topic pub --once /face_follower/enabled std_msgs/Bool "data: false"'
         )
@@ -134,7 +119,7 @@ class FaceFollowerNode(Node):
     def _tracking_cb(self, msg: Bool):
         self.tracking_ok = msg.data
         if not msg.data and self.enabled:
-            self.get_logger().warn('Tracking perdido', throttle_duration_sec=2.0)
+            self.get_logger().warn('Tracking perdido — aguardando rosto', throttle_duration_sec=2.0)
 
     def _js_cb(self, msg: JointState):
         for name, pos in zip(msg.name, msg.position):
@@ -148,7 +133,7 @@ class FaceFollowerNode(Node):
         self.enabled = msg.data
 
     # ──────────────────────────────────────────────────────────────────
-    # Loop de controle (10 Hz)
+    # Loop de controle
     # ──────────────────────────────────────────────────────────────────
 
     def _control_loop(self):
@@ -172,13 +157,13 @@ class FaceFollowerNode(Node):
         if inv_x:
             ex = -ex
 
-        # Cubic easing: gentle near center, aggressive when far off-center
+        # Easing cúbico: suave perto do centro, agressivo longe
         ex_eased = ease_error(ex, deadband)
         ey_eased = ease_error(ey, deadband)
         delta_j1 = clamp(-kp_x * ex_eased, -max_d, max_d)
         delta_j2 = clamp( kp_y * ey_eased, -max_d, max_d)
 
-        if abs(delta_j1) < 0.008 and abs(delta_j2) < 0.008:
+        if abs(delta_j1) < 0.005 and abs(delta_j2) < 0.005:
             return
 
         j1_now = self.joint_positions.get('cobot_joint_1', 0.0)
@@ -187,28 +172,19 @@ class FaceFollowerNode(Node):
         j1_target = clamp(j1_now + delta_j1, *JOINT_LIMITS['cobot_joint_1'])
         j2_target = clamp(j2_now + delta_j2, *JOINT_LIMITS['cobot_joint_2'])
 
-        if (abs(j1_target - self._last_target[0]) < 0.01 and
-                abs(j2_target - self._last_target[1]) < 0.01):
-            return
-
-        if self._pending:
-            return  # já tem um goal no ar, aguarda o ack
-
-        self._last_target = (j1_target, j2_target)
         self._send_joints(j1_target, j2_target)
 
+        self.get_logger().debug(
+            f'ex={ex:.3f} ey={ey:.3f} | '
+            f'j1={math.degrees(j1_target):.1f}° j2={math.degrees(j2_target):.1f}°'
+        )
+
     # ──────────────────────────────────────────────────────────────────
-    # Envio da trajetória — modo streaming (sem cancelamento explícito)
-    # O servidor FollowJointTrajectory faz preempt automático.
-    # Trajetória de 300 ms enviada a 20 Hz → robot "persegue" o target
-    # de forma contínua sem stop-start.
+    # Envio direto (sem action, sem fila)
+    # A bridge no Nano usa fresh_mode=1: sempre executa o mais recente.
     # ──────────────────────────────────────────────────────────────────
 
     def _send_joints(self, j1_rad: float, j2_rad: float):
-        if not self._ac.server_is_ready():
-            self.get_logger().warn('Bridge não disponível', throttle_duration_sec=5.0)
-            return
-
         positions = []
         for name in JOINT_NAMES:
             if name == 'cobot_joint_1':
@@ -218,32 +194,11 @@ class FaceFollowerNode(Node):
             else:
                 positions.append(self.joint_positions.get(name, 0.0))
 
-        traj_ms = self.get_parameter('traj_ms').value
-
-        traj = JointTrajectory()
-        traj.joint_names = JOINT_NAMES
-        pt = JointTrajectoryPoint()
-        pt.positions = positions
-        pt.time_from_start = Duration(sec=0, nanosec=traj_ms * 1_000_000)
-        traj.points = [pt]
-
-        goal = FollowJointTrajectory.Goal()
-        goal.trajectory = traj
-
-        self._pending = True
-        future = self._ac.send_goal_async(goal)
-        future.add_done_callback(self._goal_sent_cb)
-
-        self.get_logger().debug(
-            f'j1={math.degrees(j1_rad):.1f}° j2={math.degrees(j2_rad):.1f}°'
-        )
-
-    def _goal_sent_cb(self, future):
-        # Goal aceito/rejeitado pelo bridge — libera para próximo envio
-        self._pending = False
-
-    def _result_cb(self, future):
-        pass  # não usado no modo streaming
+        msg = JointState()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.name = JOINT_NAMES
+        msg.position = positions
+        self._cmd_pub.publish(msg)
 
 
 def main(args=None):

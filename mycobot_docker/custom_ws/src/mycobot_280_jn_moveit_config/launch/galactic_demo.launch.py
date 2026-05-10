@@ -80,7 +80,12 @@ def generate_launch_description():
                 robot_description_semantic,
                 moveit_controller_manager,
                 {"robot_description_kinematics": kinematics_yaml},
-                {"publish_robot_description_semantic": True}
+                {"publish_robot_description_semantic": True},
+                # Timeout generoso: o myCobot físico é lento (1-3s por move)
+                # Sem isso o MoveIt cancela a execução em 0.5s (TIMED_OUT).
+                {"trajectory_execution.allowed_execution_duration_scaling": 5.0},
+                {"trajectory_execution.allowed_goal_duration_margin": 10.0},
+                {"trajectory_execution.execution_duration_monitoring": True},
             ]
         ),
 

@@ -5,9 +5,10 @@
 # Câmera do braço (Nano /dev/video0) → visão com MediaPipe →
 # face_follower move joint1/joint2 para centralizar o rosto.
 # O RViz mostra o que o robô está vendo (painel "Olho do Robo").
-# O overlay mostra o alvo (retangulo verde = rosto centrado).
+# Overlay mostra zona alvo: verde = centrado, laranja = corrigindo.
 #
 # PRÉ-REQUISITO: RUN_PLANNING_PC.sh rodando
+# Se editou mycobot_bridge.py: rode DEPLOY_TO_NANO.sh antes.
 # ============================================================
 
 CYCLONE_XML="/root/custom_ws/cyclonedds_pc.xml"
@@ -20,9 +21,20 @@ echo "  Robot Eye — o robo ve voce"
 echo "  Camera: braco do robo (Nano)"
 echo "========================================"
 
-# ── [1/4] Câmera no Nano ─────────────────────────────────────
+# ── [1/5] Rebuild Python no Docker (< 15s, pega código novo) ──
 echo ""
-echo "[1/4] Iniciando câmera do braço no Nano..."
+echo "[1/5] Atualizando código no Docker..."
+docker exec mycobot_ros2 bash -c "
+  source /opt/ros/galactic/setup.bash
+  cd /root/custom_ws
+  colcon build --symlink-install \
+    --packages-select mycobot_vision_teleop \
+    2>&1 | tail -4
+" && echo "  Docker: build OK" || echo "  Docker: build falhou (mas continuando com versao anterior)"
+
+# ── [2/5] Câmera no Nano ─────────────────────────────────────
+echo ""
+echo "[2/5] Iniciando câmera do braço no Nano..."
 
 timeout 8 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=6 \
   ${NANO_USER}@${NANO_IP} \
@@ -54,9 +66,9 @@ else
   echo "  Verifique: sshpass -p Elephant ssh er@192.168.0.250 'cat /tmp/arm_camera.log'"
 fi
 
-# ── [2/4] Vision + face follower no Docker ───────────────────
+# ── [3/5] Vision + face follower no Docker ───────────────────
 echo ""
-echo "[2/4] Iniciando vision_node + face_follower no Docker..."
+echo "[3/5] Iniciando vision_node + face_follower no Docker..."
 
 docker exec mycobot_ros2 pkill -9 -f vision_node   2>/dev/null || true
 docker exec mycobot_ros2 pkill -9 -f face_follower 2>/dev/null || true
@@ -74,10 +86,10 @@ docker exec -d mycobot_ros2 bash -c "
     2>&1 | tee /tmp/teleop.log
 "
 
-# ── [3/4] Habilita movimento ─────────────────────────────────
+# ── [4/5] Habilita movimento ─────────────────────────────────
 echo ""
-echo "[3/4] Aguardando nós subirem e habilitando movimento..."
-sleep 5
+echo "[4/5] Aguardando nós subirem e habilitando movimento..."
+sleep 6
 
 docker exec mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
@@ -89,9 +101,9 @@ docker exec mycobot_ros2 bash -c "
 " 2>/dev/null && echo "  Movimento HABILITADO" \
              || echo "  (habilite manualmente quando os nos subirem)"
 
-# ── [4/4] Abre janela com o que o robô vê ────────────────────
+# ── [5/5] Abre janela com o que o robô vê ────────────────────
 echo ""
-echo "[4/4] Abrindo câmera do robô..."
+echo "[5/5] Abrindo câmera do robô..."
 
 if [ -n "$DISPLAY" ]; then
   docker exec -d mycobot_ros2 bash -c "
@@ -114,13 +126,20 @@ echo "  PRONTO — Robo esta te seguindo"
 echo "========================================"
 echo ""
 echo "  Overlay na camera:"
-echo "    - Retangulo VERDE  = rosto centrado na janela alvo"
+echo "    - Retangulo VERDE  = rosto centrado (robo para)"
 echo "    - Retangulo LARANJA = robo corrigindo posicao"
-echo "    - Ponto = nariz detectado"
+echo "    - Ponto + linha = nariz e erro de posicao"
 echo ""
-echo "  Log em tempo real:"
-echo "    docker exec mycobot_ros2 tail -f /tmp/teleop.log"
+echo "  Se o bridge mudou no Nano, rode primeiro:"
+echo "    ./DEPLOY_TO_NANO.sh"
 echo ""
 echo "  Parar tudo:"
+echo "    Ctrl+C aqui, depois:"
 echo "    docker exec mycobot_ros2 pkill -9 -f vision_node"
 echo "    sshpass -p Elephant ssh er@192.168.0.250 'pkill -9 -f arm_camera_node'"
+echo ""
+echo "════════════════════════════════════════"
+echo "  LOG EM TEMPO REAL (Ctrl+C para sair)"
+echo "════════════════════════════════════════"
+sleep 1
+docker exec mycobot_ros2 tail -f /tmp/teleop.log
