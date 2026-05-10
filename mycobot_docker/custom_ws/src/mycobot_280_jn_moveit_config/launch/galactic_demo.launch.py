@@ -90,8 +90,6 @@ def generate_launch_description():
         ),
 
         # RViz com plugin MoveIt
-        # LIBGL_ALWAYS_SOFTWARE=1: força software rendering (evita SIGSEGV
-        # com drivers OpenGL no Docker — crash recorrente com exit code -11)
         Node(
             package="rviz2",
             executable="rviz2",
@@ -101,10 +99,6 @@ def generate_launch_description():
                 robot_description,
                 robot_description_semantic,
                 {"robot_description_kinematics": kinematics_yaml}
-            ],
-            additional_env={
-                'LIBGL_ALWAYS_SOFTWARE': '1',
-                'GALLIUM_DRIVER': 'llvmpipe',
-            }
+            ]
         ),
     ])
