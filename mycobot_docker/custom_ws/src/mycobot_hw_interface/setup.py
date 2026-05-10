@@ -17,6 +17,7 @@ setup(
         'console_scripts': [
             'mycobot_bridge = mycobot_hw_interface.mycobot_bridge:main',
             'joint_state_relay = mycobot_hw_interface.joint_state_relay:main',
+            'arm_camera_node = mycobot_hw_interface.arm_camera_node:main',
         ],
     },
 )
