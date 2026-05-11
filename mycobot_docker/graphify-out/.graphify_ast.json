@@ -1,0 +1,3421 @@
+{
+  "nodes": [
+    {
+      "id": "mycobot_vision_teleop_setup_py",
+      "label": "setup.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/setup.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "label": "face_detector_node.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "label": "FaceDetectorNode",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L50"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_vision_teleop_face_detector_node_facedetectornode_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L52"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_detector_node_facedetectornode_image_cb",
+      "label": "._image_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L88"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_detector_node_facedetectornode_process",
+      "label": "._process()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L96"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_detector_node_facedetectornode_draw_debug",
+      "label": "._draw_debug()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L142"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_detector_node_facedetectornode_destroy_node",
+      "label": ".destroy_node()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L182"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_detector_node_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L186"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "label": "face_follower_node.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_clamp",
+      "label": "clamp()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L57"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_ease_inout_cubic",
+      "label": "_ease_inout_cubic()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L61"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_ease_error",
+      "label": "ease_error()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L68"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "label": "FaceFollowerNode",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L78"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L79"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_face_cb",
+      "label": "._face_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L136"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_tracking_cb",
+      "label": "._tracking_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L139"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_js_cb",
+      "label": "._js_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L142"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_enable_cb",
+      "label": "._enable_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L146"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_control_loop",
+      "label": "._control_loop()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L162"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_track",
+      "label": "._do_track()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L200"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_search",
+      "label": "._do_search()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L235"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_facefollowernode_send_joints",
+      "label": "._send_joints()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L254"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L271"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_rationale_62",
+      "label": "S-curve: suave perto do centro, agressivo longe.",
+      "file_type": "rationale",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L62"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_rationale_69",
+      "label": "Mapeia erro \u2192 sa\u00edda eased em [-1,1], zero dentro do deadband.     max_error alin",
+      "file_type": "rationale",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L69"
+    },
+    {
+      "id": "mycobot_vision_teleop_face_follower_node_rationale_236",
+      "label": "Extrapola na \u00faltima dire\u00e7\u00e3o de ex para tentar re-encontrar o rosto.",
+      "file_type": "rationale",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L236"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "label": "visual_servo_controller_node.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_state",
+      "label": "State",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L73"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_clamp",
+      "label": "clamp()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L97"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "label": "VisualServoControllerNode",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L103"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L105"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_center_cb",
+      "label": "._center_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L185"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_detected_cb",
+      "label": "._detected_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L188"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_js_cb",
+      "label": "._js_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L191"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_enable_cb",
+      "label": "._enable_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L195"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_control_loop",
+      "label": "._control_loop()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L208"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_waiting",
+      "label": "._tick_waiting()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L243"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_tracking",
+      "label": "._tick_tracking()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L295"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_lost",
+      "label": "._tick_lost()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L316"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_do_control",
+      "label": "._do_control()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L347"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_send_joints",
+      "label": "._send_joints()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L403"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_reset",
+      "label": "._reset()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L432"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L444"
+    },
+    {
+      "id": "mycobot_vision_teleop_visual_servo_controller_node_rationale_433",
+      "label": "Reseta toda a state machine e integrador.",
+      "file_type": "rationale",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L433"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "label": "vision_node.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_visionnode",
+      "label": "VisionNode",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L17"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_visionnode_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L35"
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_visionnode_local_cb",
+      "label": "._local_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L92"
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_visionnode_topic_cb",
+      "label": "._topic_cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L99"
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_visionnode_process",
+      "label": "._process()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L109"
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_visionnode_destroy_node",
+      "label": ".destroy_node()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L205"
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L211"
+    },
+    {
+      "id": "mycobot_vision_teleop_vision_node_rationale_18",
+      "label": "Detecta rosto via MediaPipe FaceMesh e publica posi\u00e7\u00e3o normalizada do nariz.",
+      "file_type": "rationale",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L18"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_arm_mapper_node_py",
+      "label": "arm_mapper_node.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/arm_mapper_node.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_arm_mapper_node_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/arm_mapper_node.py",
+      "source_location": "L9"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_target_follower_node_py",
+      "label": "target_follower_node.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/target_follower_node.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_target_follower_node_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/target_follower_node.py",
+      "source_location": "L9"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_init_py",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/__init__.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "label": "show_face.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_show_face_showface",
+      "label": "ShowFace",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L48"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_vision_teleop_show_face_showface_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L49"
+    },
+    {
+      "id": "mycobot_vision_teleop_show_face_showface_cb",
+      "label": "._cb()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L66"
+    },
+    {
+      "id": "mycobot_vision_teleop_show_face_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L138"
+    },
+    {
+      "id": "mycobot_vision_teleop_launch_02_face_tracking_launch_py",
+      "label": "02_face_tracking.launch.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "launch_02_face_tracking_launch_generate_launch_description",
+      "label": "generate_launch_description()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L23"
+    },
+    {
+      "id": "launch_02_face_tracking_launch_rationale_1",
+      "label": "02_face_tracking.launch.py ========================== vision_node + face_followe",
+      "file_type": "rationale",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_vision_teleop_launch_01_vision_test_launch_py",
+      "label": "01_vision_test.launch.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/launch/01_vision_test.launch.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "launch_01_vision_test_launch_generate_launch_description",
+      "label": "generate_launch_description()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/launch/01_vision_test.launch.py",
+      "source_location": "L5"
+    },
+    {
+      "id": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "label": "03_visual_servo.launch.py",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "launch_03_visual_servo_launch_generate_launch_description",
+      "label": "generate_launch_description()",
+      "file_type": "code",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L44"
+    },
+    {
+      "id": "launch_03_visual_servo_launch_rationale_1",
+      "label": "03_visual_servo.launch.py ========================== Pipeline completo de visual",
+      "file_type": "rationale",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "label": "galactic_demo.launch.py",
+      "file_type": "code",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "launch_galactic_demo_launch_load_file",
+      "label": "load_file()",
+      "file_type": "code",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L9"
+    },
+    {
+      "id": "launch_galactic_demo_launch_load_yaml",
+      "label": "load_yaml()",
+      "file_type": "code",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L18"
+    },
+    {
+      "id": "launch_galactic_demo_launch_generate_launch_description",
+      "label": "generate_launch_description()",
+      "file_type": "code",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L27"
+    },
+    {
+      "id": "mycobot_hw_interface_setup_py",
+      "label": "setup.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/setup.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_hw_interface_test_test_pep257_py",
+      "label": "test_pep257.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/test/test_pep257.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "test_test_pep257_test_pep257",
+      "label": "test_pep257()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/test/test_pep257.py",
+      "source_location": "L21"
+    },
+    {
+      "id": "mycobot_hw_interface_test_test_copyright_py",
+      "label": "test_copyright.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/test/test_copyright.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "test_test_copyright_test_copyright",
+      "label": "test_copyright()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/test/test_copyright.py",
+      "source_location": "L23"
+    },
+    {
+      "id": "mycobot_hw_interface_test_test_flake8_py",
+      "label": "test_flake8.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/test/test_flake8.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "test_test_flake8_test_flake8",
+      "label": "test_flake8()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/test/test_flake8.py",
+      "source_location": "L21"
+    },
+    {
+      "id": "mycobot_hw_interface_launch_mycobot_hw_launch_py",
+      "label": "mycobot_hw.launch.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/launch/mycobot_hw.launch.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "launch_mycobot_hw_launch_generate_launch_description",
+      "label": "generate_launch_description()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/launch/mycobot_hw.launch.py",
+      "source_location": "L6"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_hw_interface_joint_state_relay_py",
+      "label": "joint_state_relay.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_hw_interface_joint_state_relay_jointstaterelay",
+      "label": "JointStateRelay",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L5"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_hw_interface_joint_state_relay_jointstaterelay_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L10"
+    },
+    {
+      "id": "mycobot_hw_interface_joint_state_relay_jointstaterelay_listener_callback",
+      "label": ".listener_callback()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L25"
+    },
+    {
+      "id": "mycobot_hw_interface_joint_state_relay_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L30"
+    },
+    {
+      "id": "mycobot_hw_interface_joint_state_relay_rationale_6",
+      "label": "Relay node to fix timestamp synchronization issues in distributed ROS 2 systems.",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L6"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "label": "mycobot_bridge.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "label": "MyCobotBridge",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L11"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L12"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_command_callback",
+      "label": ".command_callback()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L66"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_publish_joint_states",
+      "label": ".publish_joint_states()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L74"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_execute_callback",
+      "label": ".execute_callback()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L88"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L104"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_rationale_67",
+      "label": "Controle direto para face tracking \u2014 executa imediatamente.",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L67"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_bridge_rationale_89",
+      "label": "Executa traject\u00f3ria do MoveIt (plan+execute do RViz).",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L89"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "label": "arm_camera_node.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "label": "ArmCameraNode",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L32"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_hw_interface_arm_camera_node_armcameranode_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L33"
+    },
+    {
+      "id": "mycobot_hw_interface_arm_camera_node_armcameranode_capture_loop",
+      "label": "._capture_loop()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L81"
+    },
+    {
+      "id": "mycobot_hw_interface_arm_camera_node_armcameranode_publish_frame",
+      "label": "._publish_frame()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L99"
+    },
+    {
+      "id": "mycobot_hw_interface_arm_camera_node_armcameranode_destroy_node",
+      "label": ".destroy_node()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L123"
+    },
+    {
+      "id": "mycobot_hw_interface_arm_camera_node_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L132"
+    },
+    {
+      "id": "mycobot_hw_interface_arm_camera_node_rationale_82",
+      "label": "Captura frames continuamente e armazena o mais recente.",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L82"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "label": "simple_master_bridge.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "label": "SimpleMasterBridge",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L50"
+    },
+    {
+      "id": "node",
+      "label": "Node",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L51"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_publish_joint_states",
+      "label": "._publish_joint_states()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L110"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_read_angles",
+      "label": "._read_angles()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L124"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_goal_callback",
+      "label": "._goal_callback()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L140"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_cancel_callback",
+      "label": "._cancel_callback()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L144"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_execute_trajectory",
+      "label": "._execute_trajectory()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L152"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_build_reorder_map",
+      "label": "._build_reorder_map()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L216"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_reorder",
+      "label": "._reorder()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L227"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_async_sleep",
+      "label": "._async_sleep()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L233"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_wait_for_arrival",
+      "label": "._wait_for_arrival()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L238"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L251"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_rationale_125",
+      "label": "Retorna lista de 6 floats (graus) ou None se falhar.",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L125"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_rationale_217",
+      "label": "Mapeia \u00edndice de incoming_names \u2192 \u00edndice em JOINT_NAMES.",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L217"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_rationale_234",
+      "label": "Sleep n\u00e3o-bloqueante compat\u00edvel com o executor rclpy.",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L234"
+    },
+    {
+      "id": "mycobot_hw_interface_simple_master_bridge_rationale_239",
+      "label": "Aguarda at\u00e9 o rob\u00f4 atingir o alvo ou esgotar o timeout.",
+      "file_type": "rationale",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L239"
+    },
+    {
+      "id": "mycobot_hw_interface_mycobot_hw_interface_init_py",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/__init__.py",
+      "source_location": "L1"
+    }
+  ],
+  "edges": [
+    {
+      "source": "mycobot_vision_teleop_setup_py",
+      "target": "setuptools",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/setup.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_setup_py",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/setup.py",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_setup_py",
+      "target": "glob",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/setup.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "matplotlib",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "rclpy_qos",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "cv2",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "mediapipe",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "numpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "geometry_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "std_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "cv_bridge",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_image_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_process",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_draw_debug",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_destroy_node",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L182",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_detector_node_py",
+      "target": "mycobot_vision_teleop_face_detector_node_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L186",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode_image_cb",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_process",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_facedetectornode_process",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_draw_debug",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_main",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L190",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_detector_node_main",
+      "target": "mycobot_vision_teleop_face_detector_node_facedetectornode_destroy_node",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_detector_node.py",
+      "source_location": "L199",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "math",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "geometry_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "std_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "mycobot_vision_teleop_face_follower_node_clamp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "mycobot_vision_teleop_face_follower_node_ease_inout_cubic",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "mycobot_vision_teleop_face_follower_node_ease_error",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_face_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_tracking_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L139",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_js_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L142",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_enable_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L146",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_control_loop",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_track",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L200",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_search",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L235",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_send_joints",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L254",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_face_follower_node_py",
+      "target": "mycobot_vision_teleop_face_follower_node_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L271",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_ease_error",
+      "target": "mycobot_vision_teleop_face_follower_node_ease_inout_cubic",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode_control_loop",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_track",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L184",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode_control_loop",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_search",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L189",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_track",
+      "target": "mycobot_vision_teleop_face_follower_node_ease_error",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L215",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_track",
+      "target": "mycobot_vision_teleop_face_follower_node_clamp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L219",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_track",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_send_joints",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L227",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_search",
+      "target": "mycobot_vision_teleop_face_follower_node_clamp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L239",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_search",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_send_joints",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L241",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_main",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L275",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_rationale_62",
+      "target": "mycobot_vision_teleop_face_follower_node_ease_inout_cubic",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_rationale_69",
+      "target": "mycobot_vision_teleop_face_follower_node_ease_error",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_face_follower_node_rationale_236",
+      "target": "mycobot_vision_teleop_face_follower_node_facefollowernode_do_search",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py",
+      "source_location": "L236",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "math",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "enum",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L64",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "geometry_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "std_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_state",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_clamp",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_center_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L185",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_detected_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_js_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L191",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_enable_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_control_loop",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L208",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_waiting",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L243",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_tracking",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L295",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_lost",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L316",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_do_control",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L347",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_send_joints",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L403",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_reset",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L432",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_visual_servo_controller_node_py",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L444",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_enable_cb",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_reset",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L198",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_control_loop",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_waiting",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L219",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_control_loop",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_tracking",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L235",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_control_loop",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_lost",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L237",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_waiting",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_clamp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L261",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_waiting",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_send_joints",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L269",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_tick_tracking",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_do_control",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L301",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_do_control",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_clamp",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L377",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_do_control",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_send_joints",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L389",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_main",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L448",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_visual_servo_controller_node_rationale_433",
+      "target": "mycobot_vision_teleop_visual_servo_controller_node_visualservocontrollernode_reset",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/visual_servo_controller_node.py",
+      "source_location": "L433",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "matplotlib",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "cv2",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "mediapipe",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "numpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "geometry_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "std_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "cv_bridge",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "mycobot_vision_teleop_vision_node_visionnode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_local_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_topic_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_process",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_destroy_node",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L205",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_vision_node_py",
+      "target": "mycobot_vision_teleop_vision_node_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L211",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode_local_cb",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_process",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L97",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_visionnode_topic_cb",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_process",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_main",
+      "target": "mycobot_vision_teleop_vision_node_visionnode",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L215",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_main",
+      "target": "mycobot_vision_teleop_vision_node_visionnode_destroy_node",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L224",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_vision_node_rationale_18",
+      "target": "mycobot_vision_teleop_vision_node_visionnode",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/vision_node.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_arm_mapper_node_py",
+      "target": "mycobot_vision_teleop_arm_mapper_node_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/arm_mapper_node.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_target_follower_node_py",
+      "target": "mycobot_vision_teleop_target_follower_node_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/target_follower_node.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "matplotlib",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "cv_bridge",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "cv2",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "mediapipe",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "numpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "mycobot_vision_teleop_show_face_showface",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_show_face_showface",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_show_face_showface",
+      "target": "mycobot_vision_teleop_show_face_showface_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_show_face_showface",
+      "target": "mycobot_vision_teleop_show_face_showface_cb",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_mycobot_vision_teleop_show_face_py",
+      "target": "mycobot_vision_teleop_show_face_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L138",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_show_face_main",
+      "target": "mycobot_vision_teleop_show_face_showface",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/mycobot_vision_teleop/show_face.py",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_02_face_tracking_launch_py",
+      "target": "launch",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_02_face_tracking_launch_py",
+      "target": "launch_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_02_face_tracking_launch_py",
+      "target": "launch_substitutions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_02_face_tracking_launch_py",
+      "target": "launch_ros_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_02_face_tracking_launch_py",
+      "target": "launch_02_face_tracking_launch_generate_launch_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "launch_02_face_tracking_launch_rationale_1",
+      "target": "mycobot_vision_teleop_launch_02_face_tracking_launch_py",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/02_face_tracking.launch.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_01_vision_test_launch_py",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/01_vision_test.launch.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_01_vision_test_launch_py",
+      "target": "launch",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/01_vision_test.launch.py",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_01_vision_test_launch_py",
+      "target": "launch_ros_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/01_vision_test.launch.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_01_vision_test_launch_py",
+      "target": "launch_01_vision_test_launch_generate_launch_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/01_vision_test.launch.py",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "launch",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "launch_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "launch_conditions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "launch_substitutions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "launch_ros_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "launch_ros_substitutions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "ament_index_python_packages",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "target": "launch_03_visual_servo_launch_generate_launch_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "launch_03_visual_servo_launch_rationale_1",
+      "target": "mycobot_vision_teleop_launch_03_visual_servo_launch_py",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_vision_teleop/launch/03_visual_servo.launch.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "launch",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "launch_ros_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "launch_substitutions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "launch_ros_parameter_descriptions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "ament_index_python_packages",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "yaml",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "launch_galactic_demo_launch_load_file",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "launch_galactic_demo_launch_load_yaml",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_280_jn_moveit_config_launch_galactic_demo_launch_py",
+      "target": "launch_galactic_demo_launch_generate_launch_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "launch_galactic_demo_launch_generate_launch_description",
+      "target": "launch_galactic_demo_launch_load_file",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "launch_galactic_demo_launch_generate_launch_description",
+      "target": "launch_galactic_demo_launch_load_yaml",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_280_jn_moveit_config/launch/galactic_demo.launch.py",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_setup_py",
+      "target": "setuptools",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/setup.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_pep257_py",
+      "target": "ament_pep257_main",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_pep257.py",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_pep257_py",
+      "target": "pytest",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_pep257.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_pep257_py",
+      "target": "test_test_pep257_test_pep257",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_pep257.py",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_copyright_py",
+      "target": "ament_copyright_main",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_copyright.py",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_copyright_py",
+      "target": "pytest",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_copyright.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_copyright_py",
+      "target": "test_test_copyright_test_copyright",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_copyright.py",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_flake8_py",
+      "target": "ament_flake8_main",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_flake8.py",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_flake8_py",
+      "target": "pytest",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_flake8.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_test_test_flake8_py",
+      "target": "test_test_flake8_test_flake8",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/test/test_flake8.py",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_launch_mycobot_hw_launch_py",
+      "target": "launch",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/launch/mycobot_hw.launch.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_launch_mycobot_hw_launch_py",
+      "target": "launch_ros_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/launch/mycobot_hw.launch.py",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_launch_mycobot_hw_launch_py",
+      "target": "launch_actions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/launch/mycobot_hw.launch.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_launch_mycobot_hw_launch_py",
+      "target": "launch_substitutions",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/launch/mycobot_hw.launch.py",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_launch_mycobot_hw_launch_py",
+      "target": "launch_mycobot_hw_launch_generate_launch_description",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/launch/mycobot_hw.launch.py",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_joint_state_relay_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_joint_state_relay_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_joint_state_relay_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_joint_state_relay_py",
+      "target": "mycobot_hw_interface_joint_state_relay_jointstaterelay",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_joint_state_relay_jointstaterelay",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_joint_state_relay_jointstaterelay",
+      "target": "mycobot_hw_interface_joint_state_relay_jointstaterelay_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_joint_state_relay_jointstaterelay",
+      "target": "mycobot_hw_interface_joint_state_relay_jointstaterelay_listener_callback",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_joint_state_relay_py",
+      "target": "mycobot_hw_interface_joint_state_relay_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_joint_state_relay_main",
+      "target": "mycobot_hw_interface_joint_state_relay_jointstaterelay",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_joint_state_relay_rationale_6",
+      "target": "mycobot_hw_interface_joint_state_relay_jointstaterelay",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/joint_state_relay.py",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "rclpy_action",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "control_msgs_action",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "pymycobot_mycobot280",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "math",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "time",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_command_callback",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_publish_joint_states",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_execute_callback",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_mycobot_bridge_py",
+      "target": "mycobot_hw_interface_mycobot_bridge_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_main",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_rationale_67",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_command_callback",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_bridge_rationale_89",
+      "target": "mycobot_hw_interface_mycobot_bridge_mycobotbridge_execute_callback",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/mycobot_bridge.py",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "threading",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "rclpy_qos",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "cv2",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode_capture_loop",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode_publish_frame",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode_destroy_node",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_arm_camera_node_py",
+      "target": "mycobot_hw_interface_arm_camera_node_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L132",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_main",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_main",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode_destroy_node",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_arm_camera_node_rationale_82",
+      "target": "mycobot_hw_interface_arm_camera_node_armcameranode_capture_loop",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/arm_camera_node.py",
+      "source_location": "L82",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "rclpy",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "rclpy_node",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "rclpy_action",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "sensor_msgs_msg",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "control_msgs_action",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "math",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "time",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "pymycobot_mycobot280",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "pymycobot_mycobot",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "node",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_publish_joint_states",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L110",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_read_angles",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_goal_callback",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_cancel_callback",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_execute_trajectory",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_build_reorder_map",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L216",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_reorder",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L227",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_async_sleep",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L233",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_wait_for_arrival",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L238",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_mycobot_hw_interface_simple_master_bridge_py",
+      "target": "mycobot_hw_interface_simple_master_bridge_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L251",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_publish_joint_states",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_read_angles",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_execute_trajectory",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_build_reorder_map",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L161",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_execute_trajectory",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_reorder",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_execute_trajectory",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_async_sleep",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L201",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_execute_trajectory",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_wait_for_arrival",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L205",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_wait_for_arrival",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_read_angles",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L242",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_wait_for_arrival",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_async_sleep",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L247",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_main",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L253",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_rationale_125",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_read_angles",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_rationale_217",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_build_reorder_map",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L217",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_rationale_234",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_async_sleep",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L234",
+      "weight": 1.0
+    },
+    {
+      "source": "mycobot_hw_interface_simple_master_bridge_rationale_239",
+      "target": "mycobot_hw_interface_simple_master_bridge_simplemasterbridge_wait_for_arrival",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "mycobot_hw_interface/mycobot_hw_interface/simple_master_bridge.py",
+      "source_location": "L239",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

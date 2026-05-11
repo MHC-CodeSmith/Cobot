@@ -1,0 +1,17 @@
+---
+source_file: "mycobot_vision_teleop/mycobot_vision_teleop/face_follower_node.py"
+type: "code"
+community: "FaceFollower Legacy Servo"
+location: "L271"
+tags:
+  - graphify/code
+  - graphify/EXTRACTED
+  - community/FaceFollower_Legacy_Servo
+---
+
+# main()
+
+## Connections
+- [[FaceFollowerNode]] - `calls` [EXTRACTED]
+
+#graphify/code #graphify/EXTRACTED #community/FaceFollower_Legacy_Servo
