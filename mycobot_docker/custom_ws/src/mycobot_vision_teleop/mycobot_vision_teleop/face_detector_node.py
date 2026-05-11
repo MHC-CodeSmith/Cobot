@@ -64,8 +64,10 @@ class FaceDetectorNode(Node):
         image_topic = self.get_parameter('image_topic').value
 
         # ── MediaPipe FaceMesh ────────────────────────────────────────
+        # max_num_faces=2: quando dois rostos visíveis, seleciona o mais próximo
+        # (maior área de bounding box = mais perto da câmera)
         self._face_mesh = mp.solutions.face_mesh.FaceMesh(
-            max_num_faces=1,
+            max_num_faces=2,
             refine_landmarks=False,
             min_detection_confidence=det_conf,
             min_tracking_confidence=trk_conf,
@@ -106,17 +108,38 @@ class FaceDetectorNode(Node):
 
         if results.multi_face_landmarks:
             detected = True
-            lms      = results.multi_face_landmarks[0].landmark
 
-            # Ponta do nariz (landmark 4) como centro do rosto
+            # Seleciona o rosto mais próximo (maior área de bounding box).
+            # box_area é proxy de distância: maior área = mais perto da câmera.
+            best_lms  = None
+            best_area = -1.0
+            for face_lms in results.multi_face_landmarks:
+                face_lms_list = face_lms.landmark
+                xs_f = [lm.x for lm in face_lms_list]
+                ys_f = [lm.y for lm in face_lms_list]
+                area_f = float((max(xs_f) - min(xs_f)) * (max(ys_f) - min(ys_f)))
+                if area_f > best_area:
+                    best_area = area_f
+                    best_lms  = face_lms_list
+
+            lms = best_lms
+
+            # Ponta do nariz (landmark 4) como centro do rosto selecionado
             nose     = lms[4]
             center_x = float(nose.x)
             center_y = float(nose.y)
 
-            # Área normalizada da bounding box dos landmarks
+            # Área normalizada da bounding box
             xs       = [lm.x for lm in lms]
             ys       = [lm.y for lm in lms]
             box_area = float((max(xs) - min(xs)) * (max(ys) - min(ys)))
+
+            if len(results.multi_face_landmarks) > 1:
+                self.get_logger().info(
+                    f'[FACE SELECT] {len(results.multi_face_landmarks)} rostos — '
+                    f'selecionado o mais próximo (área={box_area:.3f})',
+                    throttle_duration_sec=1.0
+                )
 
         # Publica estado de detecção
         self._pub_detected.publish(Bool(data=detected))
@@ -132,18 +155,38 @@ class FaceDetectorNode(Node):
 
         # Debug image
         if self._debug:
-            self._draw_debug(frame, detected, center_x, center_y, box_area, lms, w, h)
+            # Passa todos os rostos para desenhar os rejeitados a vermelho
+            all_faces = results.multi_face_landmarks if results.multi_face_landmarks else []
+            self._draw_debug(frame, detected, center_x, center_y, box_area, lms, w, h, all_faces)
             img_msg             = self._bridge.cv2_to_imgmsg(frame, encoding='bgr8')
             img_msg.header      = header
             self._pub_img.publish(img_msg)
 
     # ──────────────────────────────────────────────────────────────────
 
-    def _draw_debug(self, frame, detected, cx_n, cy_n, area, lms, w, h):
+    def _draw_debug(self, frame, detected, cx_n, cy_n, area, lms, w, h, all_faces=None):
         cx, cy = w // 2, h // 2   # pixel centro
 
+        # Rostos rejeitados (mais distantes) a vermelho tracejado
+        if all_faces and lms is not None:
+            for face in all_faces:
+                if face.landmark is lms:
+                    continue  # skip o selecionado — desenhado abaixo
+                f_lms = face.landmark
+                xs_f = [lm.x for lm in f_lms]
+                ys_f = [lm.y for lm in f_lms]
+                rx = int(np.mean(xs_f) * w)
+                ry = int(np.mean(ys_f) * h)
+                side_r = int(np.sqrt((max(xs_f)-min(xs_f))*(max(ys_f)-min(ys_f))) * min(w,h))
+                cv2.rectangle(frame,
+                              (rx - side_r//2, ry - side_r//2),
+                              (rx + side_r//2, ry + side_r//2),
+                              (0, 60, 200), 1)
+                cv2.putText(frame, 'LONGE', (rx - side_r//2, ry - side_r//2 - 4),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 60, 200), 1)
+
         if detected and lms is not None:
-            # Contorno mínimo do rosto
+            # Contorno mínimo do rosto selecionado
             for i in [10, 338, 297, 332, 284, 251, 389, 356, 454,
                       323, 361, 288, 397, 365, 379, 378, 400, 377,
                       152, 148, 176, 149, 150, 136, 172, 58, 132,
@@ -165,11 +208,13 @@ class FaceDetectorNode(Node):
             cv2.circle(frame, (nx, ny), 8, (255, 255, 255), 1)
             cv2.line(frame, (cx, cy), (nx, ny), (80, 80, 220), 2)
 
-            # Erro normalizado
+            # Erro normalizado + nº de rostos
+            n_faces = len(all_faces) if all_faces else 1
             ex = cx_n - 0.5
             ey = cy_n - 0.5
-            cv2.putText(frame, f'ex={ex:+.3f}  ey={ey:+.3f}  area={area:.3f}',
-                        (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (180, 180, 180), 1)
+            face_label = f'PERTO (de {n_faces})' if n_faces > 1 else 'DETECTADO'
+            cv2.putText(frame, f'ex={ex:+.3f}  ey={ey:+.3f}  area={area:.3f}  [{face_label}]',
+                        (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.40, (180, 180, 180), 1)
 
         # Crosshair central
         cv2.line(frame, (cx - 15, cy), (cx + 15, cy), (160, 160, 160), 1)
