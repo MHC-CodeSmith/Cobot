@@ -1,0 +1,58 @@
+# visual_servo.yaml
+# ==================
+# Parâmetros para face_detector_node e visual_servo_controller_node.
+#
+# Estágios de calibração recomendados:
+#   1. Rode apenas face_detector e confirme /face_detection/center está correto.
+#   2. Habilite o controlador com kx/ky baixos (0.2) e max_delta pequeno (0.04).
+#   3. Aumente gradualmente após comportamento estável confirmado.
+#   4. Ajuste sign_x / sign_y se o robô fugir do rosto em vez de seguir.
+#   5. Ajuste alpha: menor = mais suave mas mais lento; maior = mais responsivo mas mais ruidoso.
+
+face_detector:
+  ros__parameters:
+    image_topic: /arm_camera/image_raw
+    # Thresholds baixos → FaceMesh detecta em mais condições (distância, ângulo, luz)
+    min_detection_confidence: 0.35
+    min_tracking_confidence:  0.35
+    publish_debug_image: true
+
+visual_servo_controller:
+  ros__parameters:
+
+    rate_hz: 30.0
+
+    # ── Ganhos ───────────────────────────────────────────────────────
+    kx: 0.8
+    ky: 0.5
+
+    # ── EMA ──────────────────────────────────────────────────────────
+    alpha: 0.45
+
+    # ── Deadband ─────────────────────────────────────────────────────
+    # 0.10 = 10% cada lado → zona central de 20% da imagem (64px em 320px)
+    # Rosto dentro da caixa central → braço para completamente
+    deadband_x: 0.10
+    deadband_y: 0.10
+
+    # ── Limite de passo ───────────────────────────────────────────────
+    # 0.025 rad = 1.43°/tick → erro de 20% → 13.7°/s (suave e visível)
+    max_delta_rad: 0.025
+
+    # ── Sinais de direção ─────────────────────────────────────────────
+    # CONFIRMADO: ex<0 (face esquerda) → dj1>0 → j1 sobe → câmera vira esq → face centra
+    sign_x: -1.0
+    # sign_y=-1.0: ey<0 (face acima) → dj2>0 → j2 aumenta → câmera olha cima → face centra
+    sign_y: -1.0
+
+    # ── Posição de repouso ────────────────────────────────────────────
+    j2_offset: 0.4
+
+    # ── State machine ─────────────────────────────────────────────────
+    # 2 detecções = entrada rápida em TRACKING
+    required_consecutive: 2
+
+    # 25 frames = 833ms — tolerante a FaceMesh falhando alguns frames
+    lost_frames_threshold: 25
+
+    lost_timeout_s: 3.0

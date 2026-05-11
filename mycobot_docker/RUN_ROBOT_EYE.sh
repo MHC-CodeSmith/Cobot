@@ -50,6 +50,7 @@ timeout 10 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTim
     source /opt/ros/galactic/setup.bash
     source \$HOME/custom_ws/install/setup.bash
     nohup ros2 run mycobot_hw_interface arm_camera_node \
+      --ros-args -p width:=320 -p height:=240 -p fps:=20 \
       >/tmp/arm_camera.log 2>&1 </dev/null &
   " </dev/null >/dev/null 2>/dev/null' 2>/dev/null || true
 

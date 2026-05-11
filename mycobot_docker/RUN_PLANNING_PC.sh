@@ -18,7 +18,7 @@ echo "========================================"
 # Passo 1: mata processos antigos (SSH rápido, sem background)
 echo "  Matando bridge anterior..."
 timeout 10 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=8 ${NANO_USER}@${NANO_IP} \
-  'pkill -9 -f mycobot_bridge 2>/dev/null; pkill -9 -f "ros2 launch mycobot_hw_interface" 2>/dev/null; truncate -s 0 /tmp/bridge.log; echo killed' \
+  'pkill -9 -f mycobot_bridge 2>/dev/null; pkill -9 -f arm_camera_node 2>/dev/null; pkill -9 -f "ros2 launch mycobot_hw_interface" 2>/dev/null; truncate -s 0 /tmp/bridge.log; echo killed' \
   2>/dev/null || true
 
 sleep 2
