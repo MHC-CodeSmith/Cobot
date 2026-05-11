@@ -167,24 +167,6 @@ class FaceDetectorNode(Node):
     def _draw_debug(self, frame, detected, cx_n, cy_n, area, lms, w, h, all_faces=None):
         cx, cy = w // 2, h // 2   # pixel centro
 
-        # Rostos rejeitados (mais distantes) a vermelho tracejado
-        if all_faces and lms is not None:
-            for face in all_faces:
-                if face.landmark is lms:
-                    continue  # skip o selecionado — desenhado abaixo
-                f_lms = face.landmark
-                xs_f = [lm.x for lm in f_lms]
-                ys_f = [lm.y for lm in f_lms]
-                rx = int(np.mean(xs_f) * w)
-                ry = int(np.mean(ys_f) * h)
-                side_r = int(np.sqrt((max(xs_f)-min(xs_f))*(max(ys_f)-min(ys_f))) * min(w,h))
-                cv2.rectangle(frame,
-                              (rx - side_r//2, ry - side_r//2),
-                              (rx + side_r//2, ry + side_r//2),
-                              (0, 60, 200), 1)
-                cv2.putText(frame, 'LONGE', (rx - side_r//2, ry - side_r//2 - 4),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 60, 200), 1)
-
         if detected and lms is not None:
             # Contorno mínimo do rosto selecionado
             for i in [10, 338, 297, 332, 284, 251, 389, 356, 454,
@@ -208,13 +190,11 @@ class FaceDetectorNode(Node):
             cv2.circle(frame, (nx, ny), 8, (255, 255, 255), 1)
             cv2.line(frame, (cx, cy), (nx, ny), (80, 80, 220), 2)
 
-            # Erro normalizado + nº de rostos
-            n_faces = len(all_faces) if all_faces else 1
+            # Erro normalizado
             ex = cx_n - 0.5
             ey = cy_n - 0.5
-            face_label = f'PERTO (de {n_faces})' if n_faces > 1 else 'DETECTADO'
-            cv2.putText(frame, f'ex={ex:+.3f}  ey={ey:+.3f}  area={area:.3f}  [{face_label}]',
-                        (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.40, (180, 180, 180), 1)
+            cv2.putText(frame, f'ex={ex:+.3f}  ey={ey:+.3f}  area={area:.3f}',
+                        (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (180, 180, 180), 1)
 
         # Crosshair central
         cv2.line(frame, (cx - 15, cy), (cx + 15, cy), (160, 160, 160), 1)
