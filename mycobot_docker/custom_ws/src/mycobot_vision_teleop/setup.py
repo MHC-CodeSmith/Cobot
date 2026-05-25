@@ -25,11 +25,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'vision_node = mycobot_vision_teleop.vision_node:main',
-            'face_follower_node = mycobot_vision_teleop.face_follower_node:main',
-            'arm_mapper_node = mycobot_vision_teleop.arm_mapper_node:main',
-            'target_follower_node = mycobot_vision_teleop.target_follower_node:main',
-            # Visual servoing (nova arquitetura)
             'face_detector_node = mycobot_vision_teleop.face_detector_node:main',
             'visual_servo_controller_node = mycobot_vision_teleop.visual_servo_controller_node:main',
         ],

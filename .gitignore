@@ -8,3 +8,7 @@ __pycache__/
 *.user
 .claude/
 scratch/
+CC-Session-Logs/
+mycobot_docker/tmp_repo
+mycobot_docker/graphify-out/
+mycobot_docker/custom_ws/src/graphify-out/

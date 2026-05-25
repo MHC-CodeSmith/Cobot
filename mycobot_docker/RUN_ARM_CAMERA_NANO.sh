@@ -7,7 +7,7 @@
 # PRÉ-REQUISITO: RUN_PLANNING_PC.sh rodando (bridge + MoveIt ativos)
 #
 # Depois desse script, rode no PC:
-#   ./mycobot_docker/RUN_TELEOP.sh use_arm_camera
+#   ./mycobot_docker/RUN_VISUAL_SERVO.sh
 # ============================================================
 
 NANO_USER="er"
@@ -53,7 +53,7 @@ if [ "${CAM_OK:-0}" -gt 0 ]; then
   echo "  Câmera OK — /arm_camera/image_raw publicando"
   echo ""
   echo "  Agora rode no PC:"
-  echo "    ./mycobot_docker/RUN_TELEOP.sh arm"
+  echo "    ./mycobot_docker/RUN_VISUAL_SERVO.sh"
   echo ""
   echo "  Ver log câmera:"
   echo "    sshpass -p Elephant ssh er@192.168.0.250 'tail -f /tmp/arm_camera.log'"
