@@ -1,0 +1,13 @@
+[Unit]
+Description=MyCobot Attention Dance Hotkey
+After=multi-user.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/python3 /usr/local/bin/listen_keyboard_service.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

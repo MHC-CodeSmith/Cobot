@@ -25,6 +25,7 @@ class MyCobotBridge(Node):
         self.mock           = self.get_parameter('mock').get_parameter_value().bool_value
         self.tracking_speed = self.get_parameter('tracking_speed').value
         self.moveit_speed   = self.get_parameter('moveit_speed').value
+        self._mock_angles_deg = [0.0] * 6
 
         if not self.mock:
             self.mc = MyCobot280(self.port, str(self.baud))
@@ -65,18 +66,20 @@ class MyCobotBridge(Node):
 
     def command_callback(self, msg):
         """Controle direto para face tracking — executa imediatamente."""
-        if self.mock:
-            return
         angles = [math.degrees(x) for x in msg.position]
-        if len(angles) >= 6:
-            self.mc.send_angles(angles[:6], self.tracking_speed)
+        if len(angles) < 6:
+            return
+        if self.mock:
+            self._mock_angles_deg = angles[:6]
+            return
+        self.mc.send_angles(angles[:6], self.tracking_speed)
 
     def publish_joint_states(self):
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
         msg.name = self.joint_names
         if self.mock:
-            msg.position = [0.0] * 6
+            msg.position = [math.radians(x) for x in self._mock_angles_deg]
         else:
             angles = self.mc.get_angles()
             if isinstance(angles, list) and len(angles) == 6:
@@ -94,7 +97,9 @@ class MyCobotBridge(Node):
                 goal_handle.canceled()
                 return FollowJointTrajectory.Result()
             angles_deg = [math.degrees(p) for p in point.positions]
-            if not self.mock:
+            if self.mock:
+                self._mock_angles_deg = angles_deg[:6]
+            else:
                 self.mc.send_angles(angles_deg, self.moveit_speed)
             time.sleep(0.05)
         goal_handle.succeed()

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-# IMPORTANT: matplotlib.use('Agg') MUST come before any mediapipe import
-# to prevent tkinter/display error in headless Docker environment.
+# MUST come before any mediapipe import — prevents tkinter error in headless Docker
 import matplotlib
 matplotlib.use('Agg')
 
@@ -9,7 +8,7 @@ from rclpy.node import Node
 import cv2
 import mediapipe as mp
 import numpy as np
-from geometry_msgs.msg import PointStamped, Point
+from geometry_msgs.msg import Point
 from std_msgs.msg import Bool
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
@@ -17,200 +16,195 @@ from cv_bridge import CvBridge
 
 class VisionNode(Node):
     """
-    Detecta pose humana via MediaPipe e publica landmarks normalizados.
+    Detecta rosto via MediaPipe FaceMesh e publica posição normalizada do nariz.
 
-    Modos de entrada (parâmetro use_image_topic):
-      False (padrão) — abre câmera local via OpenCV (camera_id)
-      True           — subscreve a um tópico de imagem ROS2 (image_topic)
-                       Usado quando a câmera está no braço do robô (Nano).
+    Zonas:
+      inner_zone  — deadband central: rosto centrado, robô para
+      outer_zone  — limite de rastreio: fora disso tracking_ok=False, robô para
+
+    Modos de entrada:
+      use_image_topic=False  — câmera local (camera_id)
+      use_image_topic=True   — subscreve image_topic ROS (câmera do Nano)
 
     Tópicos publicados:
-      /human/face_center    (Point)        — nariz normalizado [0,1]
-      /human/tracking_ok    (Bool)         — pose detectada?
-      /human/right_shoulder (PointStamped) — ombro direito (coords mundo)
-      /human/right_elbow    (PointStamped) — cotovelo direito
-      /human/right_wrist    (PointStamped) — pulso direito
-      /human/image_debug    (Image)        — frame com landmarks desenhados
+      /human/face_center   (Point)  — nariz normalizado [0,1], só quando rastreável
+      /human/tracking_ok   (Bool)   — True = rosto dentro da outer_zone
+      /human/image_debug   (Image)  — frame anotado (sem cv2.imshow, sem bloqueio)
     """
 
     def __init__(self):
         super().__init__('vision_node')
 
         # ── Parâmetros ────────────────────────────────────────────────
-        self.declare_parameter('camera_id',                 0)
-        self.declare_parameter('width',                     640)
-        self.declare_parameter('height',                    480)
-        self.declare_parameter('model_complexity',          1)
-        self.declare_parameter('min_detection_confidence',  0.6)
-        self.declare_parameter('min_tracking_confidence',   0.6)
-        self.declare_parameter('publish_debug_image',       True)
-        self.declare_parameter('target_window',             0.06)  # deadband fraction — matches face_follower
-        # Modo câmera do braço: subscreve tópico em vez de abrir câmera local
-        self.declare_parameter('use_image_topic',   False)
-        self.declare_parameter('image_topic',       '/arm_camera/image_raw')
+        self.declare_parameter('camera_id',                0)
+        self.declare_parameter('width',                    640)
+        self.declare_parameter('height',                   480)
+        self.declare_parameter('min_detection_confidence', 0.5)
+        self.declare_parameter('min_tracking_confidence',  0.5)
+        self.declare_parameter('publish_debug_image',      True)
+        self.declare_parameter('inner_zone',               0.08)  # deadband — robô para
+        self.declare_parameter('outer_zone',               0.42)  # limite — fora disso para
+        self.declare_parameter('use_image_topic',          False)
+        self.declare_parameter('image_topic',              '/arm_camera/image_raw')
 
-        complexity = self.get_parameter('model_complexity').value
-        det_conf   = self.get_parameter('min_detection_confidence').value
-        trk_conf   = self.get_parameter('min_tracking_confidence').value
-        self._debug = self.get_parameter('publish_debug_image').value
+        det_conf  = self.get_parameter('min_detection_confidence').value
+        trk_conf  = self.get_parameter('min_tracking_confidence').value
+        self._debug     = self.get_parameter('publish_debug_image').value
         self._use_topic = self.get_parameter('use_image_topic').value
 
-        # ── MediaPipe ─────────────────────────────────────────────────
-        self.mp_pose = mp.solutions.pose
-        self.pose = self.mp_pose.Pose(
-            model_complexity=complexity,
+        # ── MediaPipe FaceMesh ────────────────────────────────────────
+        self._face_mesh = mp.solutions.face_mesh.FaceMesh(
+            max_num_faces=1,
+            refine_landmarks=False,
             min_detection_confidence=det_conf,
             min_tracking_confidence=trk_conf,
         )
-        self.mp_draw = mp.solutions.drawing_utils
 
         # ── Publishers ────────────────────────────────────────────────
-        self.pub_shoulder    = self.create_publisher(PointStamped, '/human/right_shoulder', 10)
-        self.pub_elbow       = self.create_publisher(PointStamped, '/human/right_elbow',    10)
-        self.pub_wrist       = self.create_publisher(PointStamped, '/human/right_wrist',    10)
-        self.pub_face        = self.create_publisher(Point,        '/human/face_center',    10)
-        self.pub_tracking_ok = self.create_publisher(Bool,         '/human/tracking_ok',    10)
-
+        self.pub_face        = self.create_publisher(Point, '/human/face_center',  10)
+        self.pub_tracking_ok = self.create_publisher(Bool,  '/human/tracking_ok',  10)
         self.bridge = CvBridge()
         if self._debug:
-            self.pub_image = self.create_publisher(Image, '/human/image_debug', 10)
+            self.pub_image = self.create_publisher(Image, '/human/image_debug', 5)
 
         # ── Fonte de imagem ───────────────────────────────────────────
         self.cap = None
-
         if self._use_topic:
-            # Câmera no braço do Nano — subscreve tópico ROS2
-            image_topic = self.get_parameter('image_topic').value
-            self.create_subscription(Image, image_topic, self._image_topic_cb, 10)
-            self.get_logger().info(
-                f'Vision Node (tópico) — subscrito a "{image_topic}" | '
-                f'mediapipe complexity={complexity}'
-            )
+            topic = self.get_parameter('image_topic').value
+            self.create_subscription(Image, topic, self._topic_cb, 10)
+            self.get_logger().info(f'VisionNode (FaceMesh) — subscrito a "{topic}"')
         else:
-            # Câmera local (PC ou Docker)
-            camera_id = self.get_parameter('camera_id').value
-            width     = self.get_parameter('width').value
-            height    = self.get_parameter('height').value
-
-            self.cap = cv2.VideoCapture(camera_id, cv2.CAP_V4L2)
+            cam_id = self.get_parameter('camera_id').value
+            w      = self.get_parameter('width').value
+            h      = self.get_parameter('height').value
+            self.cap = cv2.VideoCapture(cam_id, cv2.CAP_V4L2)
             if not self.cap.isOpened():
-                self.cap = cv2.VideoCapture(f'/dev/video{camera_id}', cv2.CAP_V4L2)
+                self.cap = cv2.VideoCapture(cam_id)
             if not self.cap.isOpened():
-                raise RuntimeError(f'Não conseguiu abrir câmera {camera_id}')
+                raise RuntimeError(f'Câmera {cam_id} não encontrada')
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,  w)
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, h)
+            self.create_timer(1.0 / 30.0, self._local_cb)
+            self.get_logger().info(f'VisionNode (FaceMesh) — câmera local {cam_id}')
 
-            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,  width)
-            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+    # ── Callbacks de entrada ──────────────────────────────────────────
 
-            self.create_timer(1.0 / 30.0, self._local_camera_cb)
-            self.get_logger().info(
-                f'Vision Node (câmera local) — device {camera_id} ({width}x{height}) | '
-                f'mediapipe complexity={complexity}'
-            )
-
-    # ──────────────────────────────────────────────────────────────────
-    # Callbacks de entrada
-    # ──────────────────────────────────────────────────────────────────
-
-    def _local_camera_cb(self):
-        """Timer callback — lê frame da câmera local."""
+    def _local_cb(self):
         ret, frame = self.cap.read()
         if not ret:
             self.get_logger().warn('Frame falhou', throttle_duration_sec=2.0)
             return
-        self._process_frame(frame)
+        self._process(frame)
 
-    def _image_topic_cb(self, msg: Image):
-        """Subscriber callback — recebe frame do Nano via ROS2."""
+    def _topic_cb(self, msg: Image):
         try:
-            frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            frame = self.bridge.imgmsg_to_cv2(msg, 'bgr8')
         except Exception as e:
-            self.get_logger().error(f'cv_bridge: {e}', throttle_duration_sec=2.0)
+            self.get_logger().error(str(e), throttle_duration_sec=2.0)
             return
-        self._process_frame(frame)
+        self._process(frame)
 
-    # ──────────────────────────────────────────────────────────────────
-    # Processamento MediaPipe (comum a ambos os modos)
-    # ──────────────────────────────────────────────────────────────────
+    # ── Processamento ─────────────────────────────────────────────────
 
-    def _draw_target_overlay(self, frame, nose_x: float, nose_y: float, tracking_ok: bool):
-        """Draw target window (deadband) and nose crosshair on frame."""
+    def _process(self, frame):
+        inner = self.get_parameter('inner_zone').value
+        outer = self.get_parameter('outer_zone').value
+
+        rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = self._face_mesh.process(rgb)
+
         h, w = frame.shape[:2]
         cx, cy = w // 2, h // 2
-        win = self.get_parameter('target_window').value
 
-        # Target window rectangle (deadband zone)
-        rx = int(win * w)
-        ry = int(win * h)
-        inside = (abs(nose_x - 0.5) <= win and abs(nose_y - 0.5) <= win) if tracking_ok else False
-        box_color = (0, 220, 0) if inside else (0, 140, 255)
-        cv2.rectangle(frame, (cx - rx, cy - ry), (cx + rx, cy + ry), box_color, 2)
-
-        # Center crosshair (small)
-        cv2.line(frame, (cx - 8, cy), (cx + 8, cy), (180, 180, 180), 1)
-        cv2.line(frame, (cx, cy - 8), (cx, cy + 8), (180, 180, 180), 1)
-
-        if tracking_ok:
-            # Nose position dot
-            nx = int(nose_x * w)
-            ny = int(nose_y * h)
-            dot_color = (0, 220, 0) if inside else (0, 80, 255)
-            cv2.circle(frame, (nx, ny), 6, dot_color, -1)
-            cv2.circle(frame, (nx, ny), 8, (255, 255, 255), 1)
-
-            # Error vector from center to nose
-            cv2.line(frame, (cx, cy), (nx, ny), (100, 100, 255), 1)
-
-        # Status label
-        label = "OK" if (tracking_ok and inside) else ("TRACKING" if tracking_ok else "NO FACE")
-        color = (0, 220, 0) if (tracking_ok and inside) else ((0, 200, 255) if tracking_ok else (0, 0, 220))
-        cv2.putText(frame, label, (8, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.65, color, 2)
-
-    def _process_frame(self, frame):
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = self.pose.process(rgb)
-
-        tracking_ok = results.pose_landmarks is not None
         nose_x, nose_y = 0.5, 0.5
+        face_detected = False
 
-        if tracking_ok:
-            wl = results.pose_world_landmarks.landmark
-            self._publish_landmark(wl[12], self.pub_shoulder)  # RIGHT_SHOULDER
-            self._publish_landmark(wl[14], self.pub_elbow)     # RIGHT_ELBOW
-            self._publish_landmark(wl[16], self.pub_wrist)     # RIGHT_WRIST
-
-            nose = results.pose_landmarks.landmark[0]
+        if results.multi_face_landmarks:
+            face_detected = True
+            lms  = results.multi_face_landmarks[0].landmark
+            nose = lms[4]  # ponta do nariz
             nose_x, nose_y = nose.x, nose.y
-            self.pub_face.publish(Point(x=nose.x, y=nose.y, z=nose.z))
 
-            if self._debug:
-                self.mp_draw.draw_landmarks(
-                    frame, results.pose_landmarks, self.mp_pose.POSE_CONNECTIONS
-                )
+        # Zonas (fração do frame, medidas do centro)
+        ex = nose_x - 0.5
+        ey = nose_y - 0.5
 
+        in_inner = face_detected and abs(ex) <= inner and abs(ey) <= inner
+        in_outer = face_detected and abs(ex) <= outer and abs(ey) <= outer
+        tracking_ok = in_outer  # só rastreável se dentro da outer zone
+
+        # Publica dados
         self.pub_tracking_ok.publish(Bool(data=tracking_ok))
+        if face_detected:
+            self.pub_face.publish(Point(x=nose_x, y=nose_y, z=0.0))
 
+        # ── Overlay visual ────────────────────────────────────────────
         if self._debug:
-            self._draw_target_overlay(frame, nose_x, nose_y, tracking_ok)
+            if face_detected:
+                # Landmarks faciais mínimos (contorno do rosto)
+                for i in [10, 338, 297, 332, 284, 251, 389, 356, 454,
+                          323, 361, 288, 397, 365, 379, 378, 400, 377,
+                          152, 148, 176, 149, 150, 136, 172, 58, 132,
+                          93, 234, 127, 162, 21, 54, 103, 67, 109]:
+                    lm = lms[i]
+                    cv2.circle(frame, (int(lm.x * w), int(lm.y * h)),
+                               1, (0, 200, 255), -1)
+
+            # Outer zone box — zona de rastreio (azul acinzentado)
+            orx, ory = int(outer * w), int(outer * h)
+            cv2.rectangle(frame,
+                          (cx - orx, cy - ory), (cx + orx, cy + ory),
+                          (120, 120, 80), 1)
+
+            # Inner zone box — deadband (verde = centrado, laranja = corrigindo)
+            irx, iry = int(inner * w), int(inner * h)
+            if in_inner:
+                inner_color = (0, 230, 0)      # verde: centrado
+            elif tracking_ok:
+                inner_color = (0, 140, 255)    # laranja: corrigindo
+            else:
+                inner_color = (60, 60, 200)    # vermelho-escuro: fora do alcance
+            cv2.rectangle(frame,
+                          (cx - irx, cy - iry), (cx + irx, cy + iry),
+                          inner_color, 2)
+
+            # Crosshair central
+            cv2.line(frame, (cx - 10, cy), (cx + 10, cy), (160, 160, 160), 1)
+            cv2.line(frame, (cx, cy - 10), (cx, cy + 10), (160, 160, 160), 1)
+
+            if face_detected:
+                nx, ny = int(nose_x * w), int(nose_y * h)
+                dot_color = (0, 230, 0) if in_inner else (0, 80, 255)
+                cv2.circle(frame, (nx, ny), 6, dot_color, -1)
+                cv2.circle(frame, (nx, ny), 8, (255, 255, 255), 1)
+                if not in_inner:
+                    cv2.line(frame, (cx, cy), (nx, ny), (80, 80, 220), 2)
+
+            # Status
+            if in_inner:
+                label, col = 'CENTRADO',  (0, 230, 0)
+            elif tracking_ok:
+                label, col = 'SEGUINDO',  (0, 180, 255)
+            elif face_detected:
+                label, col = 'FORA',      (0, 0, 200)
+            else:
+                label, col = 'SEM ROSTO', (80, 80, 80)
+            cv2.putText(frame, label, (10, 28),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, col, 2)
+
+            if face_detected:
+                cv2.putText(frame, f'ex={ex:+.3f}  ey={ey:+.3f}',
+                            (10, h - 10), cv2.FONT_HERSHEY_SIMPLEX,
+                            0.5, (180, 180, 180), 1)
+
             img_msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
             img_msg.header.stamp    = self.get_clock().now().to_msg()
             img_msg.header.frame_id = 'camera_frame'
             self.pub_image.publish(img_msg)
 
-    # ──────────────────────────────────────────────────────────────────
-    # Helpers
-    # ──────────────────────────────────────────────────────────────────
-
-    def _publish_landmark(self, lm, publisher):
-        msg = PointStamped()
-        msg.header.stamp    = self.get_clock().now().to_msg()
-        msg.header.frame_id = 'mediapipe_world'
-        msg.point.x, msg.point.y, msg.point.z = lm.x, lm.y, lm.z
-        publisher.publish(msg)
-
     def destroy_node(self):
         if self.cap is not None and self.cap.isOpened():
             self.cap.release()
-            self.get_logger().info('Câmera liberada')
         super().destroy_node()
 
 
@@ -223,9 +217,8 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     except Exception as e:
-        print(f'[vision_node] Error: {e}')
-        import traceback
-        traceback.print_exc()
+        print(f'[vision_node] {e}')
+        import traceback; traceback.print_exc()
     finally:
         if node is not None:
             node.destroy_node()

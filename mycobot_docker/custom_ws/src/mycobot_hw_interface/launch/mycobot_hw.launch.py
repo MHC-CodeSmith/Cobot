@@ -28,7 +28,9 @@ def generate_launch_description():
             parameters=[{
                 'port': LaunchConfiguration('port'),
                 'baud': LaunchConfiguration('baud'),
-                'mock': LaunchConfiguration('mock')
+                'mock': LaunchConfiguration('mock'),
+                'tracking_speed': 75,   # velocidade para visual servoing (era 30 — muito lento)
+                'moveit_speed':   60,   # velocidade para MoveIt plan+execute
             }]
         )
     ])

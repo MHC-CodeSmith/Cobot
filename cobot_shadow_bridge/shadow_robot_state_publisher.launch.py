@@ -1,4 +1,5 @@
-import os
+from pathlib import Path
+
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.substitutions import Command, FindExecutable
@@ -8,11 +9,12 @@ from launch_ros.parameter_descriptions import ParameterValue
 from launch.actions import ExecuteProcess
 
 def generate_launch_description():
-    # Caminho do workspace do cobot para pegar o URDF do Galactic e usar no Humble
-    urdf_path = "/home/mhc/Germany/Cobot/mycobot_docker/custom_ws/src/mycobot_description/urdf/mycobot_280_jn/mycobot_280_jn.urdf.xacro"
+    root_dir = Path(__file__).resolve().parents[1]
+    urdf_path = root_dir / "mycobot_docker" / "custom_ws" / "src" / "mycobot_description" / "urdf" / "mycobot_280_jn" / "mycobot_280_jn.urdf.xacro"
+    importer_path = root_dir / "cobot_shadow_bridge" / "cobot_importer_jazzy.py"
     
     robot_description_content = ParameterValue(Command([
-        FindExecutable(name="xacro"), " ", urdf_path
+        FindExecutable(name="xacro"), " ", str(urdf_path)
     ]), value_type=str)
 
     return LaunchDescription([
@@ -29,7 +31,7 @@ def generate_launch_description():
         
         # O Importer UDP executado diretamente pois não está em um pacote
         ExecuteProcess(
-            cmd=['python3', '/home/mhc/Germany/Cobot/cobot_shadow_bridge/cobot_importer_jazzy.py'],
+            cmd=['python3', str(importer_path)],
             name='cobot_importer_jazzy',
             output='screen'
         ),

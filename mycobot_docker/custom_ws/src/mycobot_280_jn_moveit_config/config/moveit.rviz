@@ -28,19 +28,6 @@ Visualization Manager:
     - Class: rviz_default_plugins/TF
       Name: TF
       Value: false
-    - Class: rviz_default_plugins/Image
-      Enabled: true
-      Max Value: 1
-      Min Value: 0
-      Name: "Olho do Robo"
-      Normalize Range: true
-      Topic:
-        Depth: 2
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Best Effort
-        Value: /human/image_debug
-      Value: true
     - Class: moveit_rviz_plugin/MotionPlanning
       Name: MotionPlanning
       Robot Description: robot_description
@@ -52,7 +39,7 @@ Visualization Manager:
         Colliding Link Color: 255; 0; 0
         Goal State Alpha: 1
         Goal State Color: 250; 128; 0
-        Interactive Marker Size: 0.15
+        Interactive Marker Size: 0.08
         Planning Group: mycobot_arm
         Query Goal State: true
         Query Start State: false
@@ -99,9 +86,9 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-        Robot Alpha: 0.0
+        Robot Alpha: 0.5
         Show Robot Collision: false
-        Show Robot Visual: false
+        Show Robot Visual: true
       Value: true
   Enabled: true
   Global Options:

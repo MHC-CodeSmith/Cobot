@@ -42,11 +42,11 @@ def generate_launch_description():
             'camera_id':                 0,
             'width':                     640,
             'height':                    480,
-            'model_complexity':          1,
-            'min_detection_confidence':  0.6,
-            'min_tracking_confidence':   0.6,
+            'min_detection_confidence':  0.5,
+            'min_tracking_confidence':   0.5,
             'publish_debug_image':       True,
-            'target_window':             0.06,  # must match face_follower deadband
+            'inner_zone':                0.08,  # deadband: rosto centrado, robô para
+            'outer_zone':                0.42,  # limite: fora disso robô para
             'use_image_topic':           use_arm_camera,
             'image_topic':               '/arm_camera/image_raw',
         }],
@@ -58,20 +58,31 @@ def generate_launch_description():
         name='face_follower',
         output='screen',
         parameters=[{
-            'kp_x':          0.5,
-            'kp_y':          0.3,
-            'deadband':      0.06,
-            'max_delta_rad': 0.12,
-            'rate_hz':       20.0,
-            'traj_ms':       300,
-            'j2_offset':     0.4,
-            'invert_x':      False,
+            'kp_x':               1.0,    # ganho horizontal (joint1)
+            'kp_y':               0.6,    # ganho vertical   (joint2)
+            'deadband':           0.08,   # deve bater com inner_zone do vision_node
+            'max_delta_rad':      0.20,   # passo máximo por tick em rastreio
+            'rate_hz':            30.0,
+            'j2_offset':          0.4,
+            'invert_x':           False,
+            'search_delta_rad':   0.04,   # passo por tick em modo busca (~1.4°/tick suave)
+            'search_timeout_s':   3.0,    # segundos buscando antes de parar
         }],
+    )
+
+    # Re-carimba timestamps do Nano com clock do PC
+    # (face_follower precisa de /joint_states para saber posição atual)
+    joint_state_relay = Node(
+        package='mycobot_hw_interface',
+        executable='joint_state_relay',
+        name='joint_state_relay',
+        output='screen',
     )
 
     return LaunchDescription([
         use_arm_camera_arg,
         start_enabled_arg,
+        joint_state_relay,
         vision,
         face_follower,
     ])
