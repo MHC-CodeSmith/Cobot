@@ -33,8 +33,9 @@ timeout 10 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTim
   ${NANO_USER}@${NANO_IP} \
   'bash -c "
     export ROS_DOMAIN_ID=42
-    export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-    export CYCLONEDDS_URI=\$HOME/cyclonedds.xml
+    export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+    export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+    unset CYCLONEDDS_URI
     source /opt/ros/galactic/setup.bash
     source \$HOME/custom_ws/install/setup.bash
     nohup ros2 run mycobot_hw_interface arm_camera_node \

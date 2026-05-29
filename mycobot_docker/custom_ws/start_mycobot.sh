@@ -5,7 +5,7 @@ source /home/er/custom_ws/install/setup.bash
 export ROS_DOMAIN_ID=42
 
 # Limpar processos antigos (pkill local)
-pkill -9 -f mycobot_bridge || true
+pkill -9 -x mycobot_bridge || true
 pkill -9 -f udp_bridge_nano || true
 
 # Iniciar Bridge de Hardware em background

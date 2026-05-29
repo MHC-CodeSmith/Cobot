@@ -3,13 +3,13 @@
 # Desativa o visual servo antes, para não haver conflito.
 # Uso: ./ZERO_JOINTS.sh [velocidade 1-100, default 25]
 
-CYCLONE_XML="/root/custom_ws/cyclonedds_pc.xml"
 SPEED=${1:-25}
 
 ROS_ENV="
   export ROS_DOMAIN_ID=42
-  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-  export CYCLONEDDS_URI=$CYCLONE_XML
+  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+  unset CYCLONEDDS_URI
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash
 "

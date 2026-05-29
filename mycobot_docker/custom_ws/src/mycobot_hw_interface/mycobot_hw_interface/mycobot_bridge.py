@@ -28,7 +28,7 @@ class MyCobotBridge(Node):
         self._mock_angles_deg = [0.0] * 6
 
         if not self.mock:
-            self.mc = MyCobot280(self.port, str(self.baud))
+            self.mc = MyCobot280(self.port, self.baud)
             time.sleep(1.0)
             # Fresh mode: sempre executa o comando mais recente,
             # descartando comandos antigos na fila — essencial para
@@ -45,6 +45,7 @@ class MyCobotBridge(Node):
             "joint2_to_joint1", "joint3_to_joint2", "joint4_to_joint3",
             "joint5_to_joint4", "joint6_to_joint5", "joint6output_to_joint6"
         ]
+        self._last_valid_angles_deg = list(self._mock_angles_deg)
 
         # Publica raw para o relay no PC re-carimbar com clock local
         self.joint_pub = self.create_publisher(JointState, 'joint_states_raw', 10)
@@ -77,15 +78,25 @@ class MyCobotBridge(Node):
     def publish_joint_states(self):
         msg = JointState()
         msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = 'mycobot_base_link'
         msg.name = self.joint_names
         if self.mock:
             msg.position = [math.radians(x) for x in self._mock_angles_deg]
         else:
-            angles = self.mc.get_angles()
+            try:
+                angles = self.mc.get_angles()
+            except Exception as e:
+                self.get_logger().warn(f'Falha ao ler ângulos do MyCobot: {e}', throttle_duration_sec=5.0)
+                angles = None
+
             if isinstance(angles, list) and len(angles) == 6:
-                msg.position = [math.radians(x) for x in angles]
+                self._last_valid_angles_deg = [float(x) for x in angles]
             else:
-                return
+                self.get_logger().warn(f'Leitura inválida de ângulos: {angles}', throttle_duration_sec=5.0)
+
+            msg.position = [math.radians(x) for x in self._last_valid_angles_deg]
+        msg.velocity = [0.0] * 6
+        msg.effort = [0.0] * 6
         self.joint_pub.publish(msg)
 
     async def execute_callback(self, goal_handle):

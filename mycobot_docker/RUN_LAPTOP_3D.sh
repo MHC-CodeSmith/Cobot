@@ -14,8 +14,6 @@
 # e mostra os landmarks do braço (sem movimento do robô).
 # ============================================================
 
-CYCLONE_XML="/root/custom_ws/cyclonedds_pc.xml"
-
 echo "========================================"
 echo "  Laptop 3D — webcam analisa o braco"
 echo "  (modo visualizacao — sem movimento)"
@@ -27,8 +25,9 @@ sleep 1
 
 docker exec -d mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
-  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-  export CYCLONEDDS_URI=$CYCLONE_XML
+  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+  unset CYCLONEDDS_URI
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash
   ros2 launch mycobot_vision_teleop 02_face_tracking.launch.py \
@@ -41,7 +40,7 @@ echo "  Vision node rodando com webcam local"
 echo "  Ver landmarks:"
 echo "    docker exec -it mycobot_ros2 bash -c \\"
 echo "      'source /opt/ros/galactic/setup.bash && source /root/custom_ws/install/setup.bash && \\"
-echo "       export ROS_DOMAIN_ID=42 RMW_IMPLEMENTATION=rmw_cyclonedds_cpp CYCLONEDDS_URI=$CYCLONE_XML && \\"
+echo "       export ROS_DOMAIN_ID=42 RMW_IMPLEMENTATION=rmw_fastrtps_cpp && \\"
 echo "       ros2 run image_tools showimage --ros-args -r image:=/human/image_debug'"
 echo ""
 echo "  (movimento do braco via tracking 3D: nao implementado ainda)"

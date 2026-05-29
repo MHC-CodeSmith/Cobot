@@ -45,6 +45,11 @@ def generate_launch_description():
         "moveit_simple_controller_manager": moveit_controllers,
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
     }
+    trajectory_execution = {
+        "trajectory_execution.allowed_execution_duration_scaling": 10.0,
+        "trajectory_execution.allowed_goal_duration_margin": 15.0,
+        "trajectory_execution.allowed_start_tolerance": 0.05,
+    }
 
     return LaunchDescription([
         # Re-carimba timestamps do Nano com clock local do PC
@@ -79,6 +84,7 @@ def generate_launch_description():
                 robot_description,
                 robot_description_semantic,
                 moveit_controller_manager,
+                trajectory_execution,
                 {"robot_description_kinematics": kinematics_yaml},
                 {"publish_robot_description_semantic": True}
             ]

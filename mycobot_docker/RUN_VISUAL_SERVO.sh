@@ -34,7 +34,7 @@ cleanup() {
   if [ "$BRIDGE_STARTED_HERE" -eq 1 ]; then
     sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 \
       ${NANO_USER}@${NANO_IP} \
-      'pkill -9 -f mycobot_bridge 2>/dev/null; true' 2>/dev/null || true
+      'pkill -9 -x mycobot_bridge 2>/dev/null; true' 2>/dev/null || true
     echo "  Bridge parado."
   else
     echo "  Bridge mantido (pertence ao RUN_PLANNING_PC.sh)."
@@ -66,7 +66,7 @@ echo "[2/5] Verificando bridge no Nano..."
 
 BRIDGE_RUNNING=$(sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=6 \
   ${NANO_USER}@${NANO_IP} \
-  'ps aux | grep -v grep | grep -c mycobot_bridge' 2>/dev/null || echo 0)
+  'pgrep -xc mycobot_bridge' 2>/dev/null || echo 0)
 
 if [ "${BRIDGE_RUNNING:-0}" -gt 0 ]; then
   echo "  Bridge já a correr (RUN_PLANNING_PC.sh ativo) — reutilizando."
@@ -77,8 +77,9 @@ else
     ${NANO_USER}@${NANO_IP} \
     'bash -c "
       export ROS_DOMAIN_ID=42
-      export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      export CYCLONEDDS_URI=\$HOME/cyclonedds.xml
+      export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+      export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+      unset CYCLONEDDS_URI
       source /opt/ros/galactic/setup.bash
       source \$HOME/custom_ws/install/setup.bash
       nohup ros2 launch mycobot_hw_interface mycobot_hw.launch.py \
@@ -89,7 +90,7 @@ else
   sleep 4
   BRIDGE_OK=$(sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 \
     ${NANO_USER}@${NANO_IP} \
-    'ps aux | grep -v grep | grep -c mycobot_bridge' 2>/dev/null || echo 0)
+    'pgrep -xc mycobot_bridge' 2>/dev/null || echo 0)
 
   if [ "${BRIDGE_OK:-0}" -gt 0 ]; then
     echo "  Bridge OK"
@@ -112,8 +113,9 @@ timeout 10 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTim
   ${NANO_USER}@${NANO_IP} \
   'bash -c "
     export ROS_DOMAIN_ID=42
-    export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-    export CYCLONEDDS_URI=\$HOME/cyclonedds.xml
+    export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+    export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+    unset CYCLONEDDS_URI
     source /opt/ros/galactic/setup.bash
     source \$HOME/custom_ws/install/setup.bash
     nohup ros2 run mycobot_hw_interface arm_camera_node \
@@ -145,8 +147,9 @@ echo "[5/5] Iniciando pipeline..."
 
 docker exec -d mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
-  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-  export CYCLONEDDS_URI=$CYCLONE_XML
+  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+  unset CYCLONEDDS_URI
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash
   ros2 launch mycobot_vision_teleop 03_visual_servo.launch.py \
@@ -158,8 +161,9 @@ sleep 6
 
 docker exec mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
-  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-  export CYCLONEDDS_URI=$CYCLONE_XML
+  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+  unset CYCLONEDDS_URI
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash
   ros2 topic pub --once /visual_servo/enabled std_msgs/Bool 'data: true'
@@ -168,8 +172,9 @@ docker exec mycobot_ros2 bash -c "
 if [ -n "$DISPLAY" ]; then
   docker exec -d mycobot_ros2 bash -c "
     export ROS_DOMAIN_ID=42
-    export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-    export CYCLONEDDS_URI=$CYCLONE_XML
+    export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+    export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+    unset CYCLONEDDS_URI
     export DISPLAY=$DISPLAY
     source /opt/ros/galactic/setup.bash
     source /root/custom_ws/install/setup.bash

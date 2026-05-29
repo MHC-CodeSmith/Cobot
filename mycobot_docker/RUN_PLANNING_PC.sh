@@ -7,7 +7,6 @@
 # depois lança MoveIt.
 # ============================================================
 
-CYCLONE_XML="/root/custom_ws/cyclonedds_pc.xml"
 NANO_USER="er"
 NANO_IP="192.168.0.250"
 NANO_PASS="Elephant"
@@ -18,7 +17,7 @@ echo "========================================"
 # Passo 1: mata processos antigos (SSH rápido, sem background)
 echo "  Matando bridge anterior..."
 timeout 10 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=8 ${NANO_USER}@${NANO_IP} \
-  'pkill -9 -f mycobot_bridge 2>/dev/null; pkill -9 -f arm_camera_node 2>/dev/null; pkill -9 -f "ros2 launch mycobot_hw_interface" 2>/dev/null; truncate -s 0 /tmp/bridge.log; echo killed' \
+  'pkill -9 -x mycobot_bridge 2>/dev/null; pkill -9 -x arm_camera_node 2>/dev/null; truncate -s 0 /tmp/bridge.log; echo killed' \
   2>/dev/null || true
 
 sleep 2
@@ -33,7 +32,7 @@ timeout 12 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTim
 sleep 6
 
 BRIDGE_OK=$(timeout 8 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=6 ${NANO_USER}@${NANO_IP} \
-  'ps aux | grep -v grep | grep -c mycobot_bridge' 2>/dev/null || echo 0)
+  'pgrep -xc mycobot_bridge' 2>/dev/null || echo 0)
 if [ "${BRIDGE_OK:-0}" -gt 0 ]; then
   echo "  Bridge OK (mycobot_bridge rodando no Nano)"
 else
@@ -59,8 +58,10 @@ echo "  [3/3] Lançando MoveIt 2 + RViz"
 echo "========================================"
 docker exec -it mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
-  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-  export CYCLONEDDS_URI=$CYCLONE_XML
+  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+  unset FASTRTPS_DEFAULT_PROFILES_FILE
+  unset CYCLONEDDS_URI
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash
   ros2 launch mycobot_280_jn_moveit_config galactic_demo.launch.py
