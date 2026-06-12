@@ -1,12 +1,15 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.action import ActionServer
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
+from rclpy.executors import MultiThreadedExecutor
 from sensor_msgs.msg import JointState
 from control_msgs.action import FollowJointTrajectory
 from std_srvs.srv import Trigger
 from std_msgs.msg import Bool
 from pymycobot.mycobot280 import MyCobot280
 import math
+import threading
 import time
 
 # Jetson.GPIO só existe no Nano — import lazy para permitir
@@ -41,6 +44,9 @@ class MyCobotBridge(Node):
         self.tracking_speed = self.get_parameter('tracking_speed').value
         self.moveit_speed   = self.get_parameter('moveit_speed').value
         self._mock_angles_deg = [0.0] * 6
+        # Protege a porta serial: com MultiThreadedExecutor o timer de
+        # joint_states e a execução de trajetória rodam em paralelo.
+        self._serial_lock = threading.Lock()
 
         if not self.mock:
             self.mc = MyCobot280(self.port, self.baud)
@@ -70,11 +76,17 @@ class MyCobotBridge(Node):
         self.cmd_sub = self.create_subscription(
             JointState, 'joint_states_commands', self.command_callback, 10)
 
-        # Action server — MoveIt plan+execute
+        # Action server — MoveIt plan+execute.
+        # Callback group próprio + MultiThreadedExecutor: a execução da
+        # trajetória dorme (time.sleep) e, em grupo único, bloquearia o
+        # timer de /joint_states_raw — RViz congelava e o braço parecia
+        # "teleportar" no fim do movimento.
+        self._exec_group = MutuallyExclusiveCallbackGroup()
         self._action_server = ActionServer(
             self, FollowJointTrajectory,
             'mycobot_arm_controller/follow_joint_trajectory',
-            self.execute_callback)
+            self.execute_callback,
+            callback_group=self._exec_group)
 
         # ── Suction Pump V2.0 (Jetson.GPIO — não há placa Basic no JN,
         #    portanto set_basic_output NÃO funciona neste modelo) ──────
@@ -112,7 +124,8 @@ class MyCobotBridge(Node):
         if self.mock:
             self._mock_angles_deg = angles[:6]
             return
-        self.mc.send_angles(angles[:6], self.tracking_speed)
+        with self._serial_lock:
+            self.mc.send_angles(angles[:6], self.tracking_speed)
 
     def publish_joint_states(self):
         msg = JointState()
@@ -123,7 +136,8 @@ class MyCobotBridge(Node):
             msg.position = [math.radians(x) for x in self._mock_angles_deg]
         else:
             try:
-                angles = self.mc.get_angles()
+                with self._serial_lock:
+                    angles = self.mc.get_angles()
             except Exception as e:
                 self.get_logger().warn(f'Falha ao ler ângulos do MyCobot: {e}', throttle_duration_sec=5.0)
                 angles = None
@@ -169,7 +183,8 @@ class MyCobotBridge(Node):
                         s + (g - s) * a for s, g in zip(start, angles_deg[:6])]
                     time.sleep(dt / steps)
             else:
-                self.mc.send_angles(angles_deg, self.moveit_speed)
+                with self._serial_lock:
+                    self.mc.send_angles(angles_deg, self.moveit_speed)
                 time.sleep(dt)
         goal_handle.succeed()
         return FollowJointTrajectory.Result()
@@ -255,8 +270,9 @@ class MyCobotBridge(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = MyCobotBridge()
+    executor = MultiThreadedExecutor(num_threads=4)
     try:
-        rclpy.spin(node)
+        rclpy.spin(node, executor=executor)
     except KeyboardInterrupt:
         pass
     finally:
