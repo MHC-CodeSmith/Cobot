@@ -3,9 +3,24 @@ from rclpy.node import Node
 from rclpy.action import ActionServer
 from sensor_msgs.msg import JointState
 from control_msgs.action import FollowJointTrajectory
+from std_srvs.srv import Trigger
+from std_msgs.msg import Bool
 from pymycobot.mycobot280 import MyCobot280
 import math
 import time
+
+# Jetson.GPIO só existe no Nano — import lazy para permitir
+# rodar em mock no PC sem a biblioteca instalada.
+try:
+    import Jetson.GPIO as GPIO
+except ImportError:
+    GPIO = None
+
+# Suction Pump V2.0 — fiação oficial 280 JN (BCM):
+#   G5 → pino 20: válvula solenoide (LOW = sucção ON, HIGH = fechada)
+#   G2 → pino 21: válvula de deflação (pulso LOW de ~1s solta o objeto)
+PUMP_SOLENOID_PIN = 20
+PUMP_VALVE_PIN = 21
 
 
 class MyCobotBridge(Node):
@@ -61,9 +76,33 @@ class MyCobotBridge(Node):
             'mycobot_arm_controller/follow_joint_trajectory',
             self.execute_callback)
 
+        # ── Suction Pump V2.0 (Jetson.GPIO — não há placa Basic no JN,
+        #    portanto set_basic_output NÃO funciona neste modelo) ──────
+        self._pump_active = False
+        self._valve_timer = None
+        self._gpio_ready = False
+        if not self.mock:
+            if GPIO is None:
+                self.get_logger().warn(
+                    'Jetson.GPIO indisponível — serviços da pump em modo degradado')
+            else:
+                try:
+                    GPIO.setmode(GPIO.BCM)
+                    # HIGH = válvulas fechadas (pump desligada) no arranque
+                    GPIO.setup(PUMP_SOLENOID_PIN, GPIO.OUT, initial=GPIO.HIGH)
+                    GPIO.setup(PUMP_VALVE_PIN, GPIO.OUT, initial=GPIO.HIGH)
+                    self._gpio_ready = True
+                except Exception as e:
+                    self.get_logger().error(f'Falha ao inicializar GPIO da pump: {e}')
+        self.create_service(Trigger, 'pump_on',  self._pump_on_cb)
+        self.create_service(Trigger, 'pump_off', self._pump_off_cb)
+        self._pump_state_pub = self.create_publisher(Bool, 'pump_state', 10)
+        self.create_timer(0.5, self._publish_pump_state)
+
         self.get_logger().info(
             f'MyCobot Bridge | mock={self.mock} | port={self.port} | '
-            f'tracking_speed={self.tracking_speed} | moveit_speed={self.moveit_speed}')
+            f'tracking_speed={self.tracking_speed} | moveit_speed={self.moveit_speed} | '
+            f'pump services: pump_on / pump_off')
 
     def command_callback(self, msg):
         """Controle direto para face tracking — executa imediatamente."""
@@ -100,28 +139,129 @@ class MyCobotBridge(Node):
         self.joint_pub.publish(msg)
 
     async def execute_callback(self, goal_handle):
-        """Executa trajectória do MoveIt (plan+execute do RViz)."""
+        """Executa trajectória do MoveIt (plan+execute do RViz).
+
+        Respeita o time_from_start de cada ponto (time parameterization
+        do MoveIt) em vez de tocar tudo a 20 pontos/s — sem isso o
+        movimento vira 'teleporte' no RViz e fica brusco no robô real.
+        """
         self.get_logger().info('Trajetória MoveIt recebida')
         trajectory = goal_handle.request.trajectory
+        prev_t = 0.0
         for point in trajectory.points:
             if goal_handle.is_cancel_requested:
                 goal_handle.canceled()
                 return FollowJointTrajectory.Result()
             angles_deg = [math.degrees(p) for p in point.positions]
+            t = point.time_from_start.sec + point.time_from_start.nanosec * 1e-9
+            dt = t - prev_t
+            prev_t = t
+            if dt <= 0.0:
+                dt = 0.1   # fallback: trajetória sem time parameterization
+            dt = min(dt, 2.0)
             if self.mock:
-                self._mock_angles_deg = angles_deg[:6]
+                # interpola entre pontos p/ animação suave no RViz
+                start = list(self._mock_angles_deg)
+                steps = max(int(dt / 0.05), 1)
+                for i in range(1, steps + 1):
+                    a = i / steps
+                    self._mock_angles_deg = [
+                        s + (g - s) * a for s, g in zip(start, angles_deg[:6])]
+                    time.sleep(dt / steps)
             else:
                 self.mc.send_angles(angles_deg, self.moveit_speed)
-            time.sleep(0.05)
+                time.sleep(dt)
         goal_handle.succeed()
         return FollowJointTrajectory.Result()
+
+
+    # ── Pump helpers ───────────────────────────────────────────────────
+
+    def _cancel_valve_timer(self):
+        if self._valve_timer is not None:
+            self._valve_timer.cancel()
+            self._valve_timer = None
+
+    def _close_valve(self):
+        """One-shot: fecha a válvula de deflação após o pulso de 1s."""
+        self._cancel_valve_timer()
+        if self._gpio_ready:
+            GPIO.output(PUMP_VALVE_PIN, GPIO.HIGH)
+
+    def _pump_on_cb(self, request, response):
+        if self._pump_active:
+            response.success = True
+            response.message = 'Pump already active'
+            return response
+        try:
+            if not self.mock:
+                if not self._gpio_ready:
+                    response.success = False
+                    response.message = 'GPIO indisponível (Jetson.GPIO não inicializado)'
+                    return response
+                self._close_valve()                            # garante deflação fechada
+                GPIO.output(PUMP_SOLENOID_PIN, GPIO.LOW)       # abre solenoide → sucção
+                time.sleep(0.05)
+            self._pump_active = True
+            self.get_logger().info('Pump ON')
+            response.success = True
+            response.message = 'Pump activated'
+        except Exception as e:
+            response.success = False
+            response.message = f'pump_on failed: {e}'
+            self.get_logger().error(str(e))
+        return response
+
+    def _pump_off_cb(self, request, response):
+        try:
+            if not self.mock:
+                if not self._gpio_ready:
+                    response.success = False
+                    response.message = 'GPIO indisponível (Jetson.GPIO não inicializado)'
+                    return response
+                GPIO.output(PUMP_SOLENOID_PIN, GPIO.HIGH)      # fecha solenoide
+                time.sleep(0.05)
+                GPIO.output(PUMP_VALVE_PIN, GPIO.LOW)          # abre deflação → solta objeto
+                # Pulso de 1s fechado por timer para não bloquear o
+                # executor (joint_states continuam a 10Hz durante o pulso)
+                self._cancel_valve_timer()
+                self._valve_timer = self.create_timer(1.0, self._close_valve)
+            self._pump_active = False
+            self.get_logger().info('Pump OFF')
+            response.success = True
+            response.message = 'Pump deactivated'
+        except Exception as e:
+            response.success = False
+            response.message = f'pump_off failed: {e}'
+            self.get_logger().error(str(e))
+        return response
+
+    def _publish_pump_state(self):
+        msg = Bool()
+        msg.data = self._pump_active
+        self._pump_state_pub.publish(msg)
+
+    def destroy_node(self):
+        if self._gpio_ready:
+            try:
+                GPIO.output(PUMP_SOLENOID_PIN, GPIO.HIGH)
+                GPIO.output(PUMP_VALVE_PIN, GPIO.HIGH)
+                GPIO.cleanup()
+            except Exception:
+                pass
+        super().destroy_node()
 
 
 def main(args=None):
     rclpy.init(args=args)
     node = MyCobotBridge()
-    rclpy.spin(node)
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()   # fecha válvulas + GPIO.cleanup()
+        rclpy.shutdown()
 
 
 if __name__ == '__main__':

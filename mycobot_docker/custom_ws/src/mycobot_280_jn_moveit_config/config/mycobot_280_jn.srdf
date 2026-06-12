@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot name="mycobot_280_jn">
     <group name="mycobot_arm">
-        <chain base_link="mycobot_base_link" tip_link="link6"/>
+        <chain base_link="mycobot_base_link" tip_link="pump_tcp"/>
     </group>
+
+    <!-- Suction pump end effector group -->
+    <group name="pump">
+        <link name="pump_head"/>
+        <link name="pump_tcp"/>
+    </group>
+    <end_effector name="suction_pump" parent_link="link6" group="pump"/>
     <group_state name="home" group="mycobot_arm">
         <joint name="joint2_to_joint1" value="0"/>
         <joint name="joint3_to_joint2" value="0"/>
@@ -19,4 +26,14 @@
     <disable_collisions link1="link3" link2="link4" reason="Adjacent"/>
     <disable_collisions link1="link4" link2="link5" reason="Adjacent"/>
     <disable_collisions link1="link5" link2="link6" reason="Adjacent"/>
+    <disable_collisions link1="link6" link2="pump_head" reason="Adjacent"/>
+    <disable_collisions link1="link5" link2="pump_head" reason="Never"/>
+    <disable_collisions link1="link6" link2="pump_box" reason="Never"/>
+    <disable_collisions link1="pump_head" link2="pump_tcp" reason="Adjacent"/>
+    <disable_collisions link1="mycobot_base_link" link2="pump_box" reason="Adjacent"/>
+    <disable_collisions link1="link1" link2="pump_box" reason="Never"/>
+    <disable_collisions link1="link2" link2="pump_box" reason="Never"/>
+    <disable_collisions link1="link3" link2="pump_box" reason="Never"/>
+    <disable_collisions link1="link4" link2="pump_box" reason="Never"/>
+    <disable_collisions link1="link5" link2="pump_box" reason="Never"/>
 </robot>

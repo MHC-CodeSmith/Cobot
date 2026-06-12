@@ -9,9 +9,11 @@
       <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint1_jet.dae"/></geometry>
       <origin xyz="0.0 0 0" rpy="0 0 3.14159"/>
     </visual>
+    <!-- Colisão: caixa primitiva (bbox do mesh, 164x131x165mm). joint1_jet.dae
+         também é COLLADA em mm e era carregado 1000x maior pelo MoveIt. -->
     <collision>
-      <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint1_jet.dae"/></geometry>
-      <origin xyz="0.0 0 0" rpy="0 0 3.14159"/>
+      <geometry><box size="0.164 0.131 0.165"/></geometry>
+      <origin xyz="-0.0069 -0.0109 0.0274" rpy="0 0 0"/>
     </collision>
   </link>
 
@@ -21,6 +23,37 @@
   <link name="link4"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint5.dae"/></geometry><origin xyz="0.0 0 -0.03356" rpy="0 -1.5708 1.5708"/></visual></link>
   <link name="link5"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint6.dae"/></geometry><origin xyz="0 0.00 -0.038" rpy="0 0 0"/></visual></link>
   <link name="link6"><visual><geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/joint7.dae"/></geometry><origin xyz="0.0 0 -0.012" rpy="0 0 0"/><material name="grey"/></visual></link>
+
+  <!-- Vertical Suction Pump V2.0 -->
+  <link name="pump_box">
+    <visual>
+      <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/pump_box.dae"/></geometry>
+      <origin xyz="0.0 -0.15 -0.0" rpy="1.5708 3.14159 0"/>
+    </visual>
+    <!-- Colisão: caixa primitiva (bbox do mesh, 72x43x52mm). O loader de
+         colisão do MoveIt (assimp) ignora <unit meter="0.001"> do COLLADA
+         e carregava o mesh 1000x maior -> start state sempre inválido. -->
+    <collision>
+      <geometry><box size="0.072 0.043 0.052"/></geometry>
+      <origin xyz="0.0 -0.15 -0.0135" rpy="1.5708 3.14159 0"/>
+    </collision>
+  </link>
+
+  <link name="pump_head">
+    <visual>
+      <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/pump_head.dae"/></geometry>
+      <origin xyz="0.0 -0.008 0.0" rpy="0 0 0"/>
+    </visual>
+    <!-- Colisão: caixa primitiva (bbox do mesh, 24.5x63x26.7mm), mesmo
+         motivo do pump_box (mesh COLLADA em mm carregado 1000x maior). -->
+    <collision>
+      <geometry><box size="0.0245 0.063 0.0267"/></geometry>
+      <origin xyz="0.0 0.0235 -0.0011" rpy="0 0 0"/>
+    </collision>
+  </link>
+
+  <!-- suction cup tip frame (TCP) -->
+  <link name="pump_tcp"/>
 
   <joint name="joint2_to_joint1" type="revolute">
     <axis xyz="0 0 1"/><limit effort="1000.0" lower="-2.9321" upper="2.9321" velocity="3.14"/>
@@ -50,6 +83,29 @@
   <joint name="joint6output_to_joint6" type="revolute">
     <axis xyz="0 0 1"/><limit effort="1000.0" lower="-3.14159" upper="3.14159" velocity="3.14"/>
     <parent link="link5"/><child link="link6"/><origin xyz="0 0.0456 0" rpy="-1.5708 0 0"/>
+  </joint>
+
+  <!-- Pump box mounted on base link (physical box sits near the robot base) -->
+  <joint name="base_to_pump_box" type="fixed">
+    <parent link="mycobot_base_link"/><child link="pump_box"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Pump head (suction nozzle) at the end effector -->
+  <joint name="link6_to_pump_head" type="fixed">
+    <parent link="link6"/><child link="pump_head"/>
+    <origin xyz="0 0 0.01" rpy="1.579 0 0"/>
+  </joint>
+
+  <!-- TCP at the suction cup face.
+       Mesh analysis (pump_head.dae, mm): cup = Ø20mm ring at (0, 11.66, -14.45),
+       facing -z of the mesh. Visual origin shifts y by -8mm, so in the
+       pump_head frame the cup face is at (0, 0.0037, -0.0145).
+       rpy="pi 0 0" flips z so pump_tcp z points OUT of the cup (into the
+       object being sucked) — in link6 frame that is the +y direction. -->
+  <joint name="pump_head_to_tcp" type="fixed">
+    <parent link="pump_head"/><child link="pump_tcp"/>
+    <origin xyz="0 0.0037 -0.0145" rpy="3.14159 0 0"/>
   </joint>
 
 </robot>
