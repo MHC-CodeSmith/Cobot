@@ -66,6 +66,7 @@ class PickAndPlace(Node):
         self.current = None
         self.latest_pick_pose = None
         self.latest_detection_label = None
+        self.valid_detection_label = None
         self.delivery_state = None
         self.create_subscription(JointState, "/joint_states", self._js_cb, 10)
         self.create_subscription(PointStamped, "/pick_detection_pose", self._on_pick_pose, 10)
@@ -81,7 +82,15 @@ class PickAndPlace(Node):
         self.latest_pick_pose = msg
 
     def _on_detection_label(self, msg):
-        self.latest_detection_label = (msg.data or "unknown").strip().lower()
+        label = (msg.data or "unknown").strip().lower()
+        self.latest_detection_label = label
+        if label in {"tin_valid_red_triangle", "tin_valid_blue_square"}:
+            self.valid_detection_label = label
+        elif label == "tin_invalid":
+            self.valid_detection_label = None
+            self.get_logger().warn("Invalid tin detected (flipped/wrong size/side). Ignoring pick request.")
+        else:
+            self.valid_detection_label = None
 
     def _on_delivery_state(self, msg):
         self.delivery_state = (msg.data or "").strip().lower()
@@ -267,6 +276,10 @@ class PickAndPlace(Node):
         px, py, pz = pick
         qx, qy, qz = place
 
+        if self.valid_detection_label not in {"tin_valid_red_triangle", "tin_valid_blue_square"}:
+            self.get_logger().warn("Invalid or unsupported tin label; skipping pick-and-place sequence.")
+            return
+
         self.move_to_joints("home", [0.0] * 6)
         self.move_to_pose("acima do pick", px, py, pz + hover)
         self.move_to_pose("descendo no objeto", px, py, pz)
@@ -274,15 +287,10 @@ class PickAndPlace(Node):
         time.sleep(settle)
         self.move_to_pose("subindo com objeto", px, py, pz + hover)
 
-        if self.latest_detection_label in {"red", "lata_vermelha", "vermelha"}:
+        if self.valid_detection_label == "tin_valid_red_triangle":
             expected_delivery = "delivery_red"
-        elif self.latest_detection_label in {"blue", "lata_azul", "azul"}:
-            expected_delivery = "delivery_blue"
         else:
             expected_delivery = "delivery_blue"
-            self.get_logger().warn(
-                f"Classe detectada desconhecida ({self.latest_detection_label}); usando delivery_blue como fallback"
-            )
 
         self.get_logger().info(
             f"Objeto preso. Aguardando base em {expected_delivery} antes de soltar"
@@ -306,9 +314,9 @@ class PickAndPlace(Node):
 
         pick = (x, y, z)
         place = args.place
-        if self.latest_detection_label == "red" and args.place_red is not None:
+        if self.valid_detection_label == "tin_valid_red_triangle" and args.place_red is not None:
             place = args.place_red
-        elif self.latest_detection_label == "blue" and args.place_blue is not None:
+        elif self.valid_detection_label == "tin_valid_blue_square" and args.place_blue is not None:
             place = args.place_blue
         self.run(pick, place, args.hover, args.settle, delivery_timeout=args.delivery_timeout)
 
