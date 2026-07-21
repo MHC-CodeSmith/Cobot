@@ -82,15 +82,18 @@ class PickAndPlace(Node):
         self.latest_pick_pose = msg
 
     def _on_detection_label(self, msg):
-        label = (msg.data or "unknown").strip().lower()
-        self.latest_detection_label = label
-        if label in {"tin_valid_red_triangle", "tin_valid_blue_square"}:
-            self.valid_detection_label = label
-        elif label == "tin_invalid":
+        label = (msg.data or "unknown").strip()
+        label_low = label.lower()
+        self.latest_detection_label = label_low
+        if label_low.startswith("tin_valid_"):
+            self.valid_detection_label = label_low
+            self.get_logger().info(f"Valid tin detected: {self.valid_detection_label}")
+        elif label_low == "tin_invalid":
             self.valid_detection_label = None
             self.get_logger().warn("Invalid tin detected (flipped/wrong size/side). Ignoring pick request.")
         else:
             self.valid_detection_label = None
+            self.get_logger().warn(f"Ignoring unsupported label: {label}")
 
     def _on_delivery_state(self, msg):
         self.delivery_state = (msg.data or "").strip().lower()
@@ -276,7 +279,7 @@ class PickAndPlace(Node):
         px, py, pz = pick
         qx, qy, qz = place
 
-        if self.valid_detection_label not in {"tin_valid_red_triangle", "tin_valid_blue_square"}:
+        if not self.valid_detection_label or not self.valid_detection_label.startswith("tin_valid_"):
             self.get_logger().warn("Invalid or unsupported tin label; skipping pick-and-place sequence.")
             return
 
@@ -287,7 +290,7 @@ class PickAndPlace(Node):
         time.sleep(settle)
         self.move_to_pose("subindo com objeto", px, py, pz + hover)
 
-        if self.valid_detection_label == "tin_valid_red_triangle":
+        if self.valid_detection_label.startswith("tin_valid_red"):
             expected_delivery = "delivery_red"
         else:
             expected_delivery = "delivery_blue"
@@ -314,9 +317,9 @@ class PickAndPlace(Node):
 
         pick = (x, y, z)
         place = args.place
-        if self.valid_detection_label == "tin_valid_red_triangle" and args.place_red is not None:
+        if self.valid_detection_label and self.valid_detection_label.startswith("tin_valid_red") and args.place_red is not None:
             place = args.place_red
-        elif self.valid_detection_label == "tin_valid_blue_square" and args.place_blue is not None:
+        elif self.valid_detection_label and self.valid_detection_label.startswith("tin_valid_blue") and args.place_blue is not None:
             place = args.place_blue
         self.run(pick, place, args.hover, args.settle, delivery_timeout=args.delivery_timeout)
 
