@@ -4,7 +4,7 @@
 # o pick & place da branch featnew-yolo em MOCK, sem câmera.
 #
 # Publica na ordem que a rotina espera:
-#   1) /product_class        (tin_valid_red | tin_valid_blue)
+#   1) /product_class        (tin_valid_red | tin_valid_blue | tin_invalid)
 #   2) /pick_detection_pose  (posição da "lata" no frame da base)
 #   3) espera o braço pegar, depois /delivery_state
 #      (delivery_red | delivery_blue) = "base chegou"
@@ -18,6 +18,7 @@
 
 COLOR="${1:-red}"
 X="${2:-0.15}"; Y="${3:-0.12}"; Z="${4:-0.0}"
+WAIT_ARM="${5:-25}"   # segundos até a "base chegar" no ponto de entrega
 
 ROS_ENV="
   export ROS_DOMAIN_ID=42
@@ -29,32 +30,56 @@ ROS_ENV="
   source /root/custom_ws/install/setup.bash
 "
 
-if [ "$COLOR" = "invalid" ]; then
-  LABEL="tin_invalid"
-else
-  LABEL="tin_valid_$COLOR"
-fi
+docker exec -i mycobot_ros2 bash -c "$ROS_ENV
+  python3 - $COLOR $X $Y $Z $WAIT_ARM" <<'PYEOF'
+import sys
+import time
 
-echo "[1/3] Publicando classe: $LABEL"
-docker exec mycobot_ros2 bash -c "$ROS_ENV
-  timeout 6 ros2 topic pub -r 2 /product_class std_msgs/msg/String \"{data: $LABEL}\" >/dev/null
-"
+import rclpy
+from geometry_msgs.msg import PointStamped
+from std_msgs.msg import String
 
-echo "[2/3] Publicando posição da lata: ($X, $Y, $Z)"
-docker exec mycobot_ros2 bash -c "$ROS_ENV
-  timeout 6 ros2 topic pub -r 2 /pick_detection_pose geometry_msgs/msg/PointStamped \
-    \"{header: {frame_id: mycobot_base_link}, point: {x: $X, y: $Y, z: $Z}}\" >/dev/null
-"
+color = sys.argv[1]
+x, y, z = (float(v) for v in sys.argv[2:5])
+wait_arm = float(sys.argv[5])
+label = 'tin_invalid' if color == 'invalid' else f'tin_valid_{color}'
 
-if [ "$COLOR" = "invalid" ]; then
-  echo "Lata inválida publicada — a rotina deve ignorar o pick. Fim."
-  exit 0
-fi
+rclpy.init()
+n = rclpy.create_node('fake_vision')
+pub_label = n.create_publisher(String, '/product_class', 10)
+pub_pose = n.create_publisher(PointStamped, '/pick_detection_pose', 10)
+pub_deliv = n.create_publisher(String, '/delivery_state', 10)
 
-echo "[3/3] Aguardando o braço pegar a lata (25s)..."
-sleep 25
-echo "      Base 'chegou' em delivery_$COLOR"
-docker exec mycobot_ros2 bash -c "$ROS_ENV
-  timeout 15 ros2 topic pub -r 1 /delivery_state std_msgs/msg/String \"{data: delivery_$COLOR}\" >/dev/null
-"
-echo "Simulação completa."
+msg_label = String(data=label)
+msg_pose = PointStamped()
+msg_pose.header.frame_id = 'mycobot_base_link'
+msg_pose.point.x, msg_pose.point.y, msg_pose.point.z = x, y, z
+
+# 1) só o label por 2s (garante que a classe chega antes da pose)
+print(f'[fake_vision] publicando classe: {label}', flush=True)
+for _ in range(4):
+    pub_label.publish(msg_label)
+    time.sleep(0.5)
+
+# 2) label + pose por 8s
+print(f'[fake_vision] publicando pose da lata: ({x}, {y}, {z})', flush=True)
+for _ in range(16):
+    pub_label.publish(msg_label)
+    pub_pose.publish(msg_pose)
+    time.sleep(0.5)
+
+if color == 'invalid':
+    print('[fake_vision] lata invalida — a rotina deve IGNORAR o pick. Fim.', flush=True)
+else:
+    print(f'[fake_vision] aguardando {wait_arm:.0f}s o braco pegar a lata...', flush=True)
+    time.sleep(wait_arm)
+    msg_deliv = String(data=f'delivery_{color}')
+    print(f'[fake_vision] base chegou: {msg_deliv.data}', flush=True)
+    for _ in range(20):
+        pub_deliv.publish(msg_deliv)
+        time.sleep(1.0)
+    print('[fake_vision] simulacao completa.', flush=True)
+
+n.destroy_node()
+rclpy.shutdown()
+PYEOF
