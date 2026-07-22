@@ -326,7 +326,10 @@ class PickAndPlace(Node):
         self.get_logger().info("Pick & place concluído!")
 
     def run_from_target(self, args, poses):
-        """Modo visão: espera detecção YOLO; só pega lata válida."""
+        """Modo visão: vai à pose de observação (câmera olhando a área
+        das latas), espera a detecção YOLO e só pega lata válida."""
+        if args.scan_pose:
+            self.goto("pose de observação (câmera)", pose_target(poses, args.scan_pose))
         target = self.wait_for_pick_target(timeout=args.target_timeout)
         x, y, z = target.point.x, target.point.y, target.point.z
         self.get_logger().info(
@@ -405,6 +408,7 @@ def main():
     ap.add_argument("--delivery-timeout", type=float, default=60.0, help="timeout p/ esperar /delivery_state")
     # modo visão
     ap.add_argument("--wait-for-target", action="store_true", help="espera detecção YOLO em /pick_detection_pose")
+    ap.add_argument("--scan-pose", default=None, help="pose de observação: braço posiciona a câmera olhando as latas antes de detectar (grave com SAVE_POSE.sh scan)")
     ap.add_argument("--target-timeout", type=float, default=30.0, help="timeout p/ esperar /pick_detection_pose")
     ap.add_argument("--settle", type=float, default=1.0, help="pausa após ligar/desligar a pump (s)")
     args = ap.parse_args()

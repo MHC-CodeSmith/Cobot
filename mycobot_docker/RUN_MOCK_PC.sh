@@ -35,8 +35,12 @@ docker exec mycobot_ros2 bash -c "
 echo "  Docker limpo"
 
 echo "========================================"
-echo "  [3/3] Bridge MOCK + MoveIt 2 + RViz"
+echo "  [3/3] Build + Bridge MOCK + MoveIt 2 + RViz"
 echo "========================================"
+# Rebuild rápido: pega mudanças de URDF/SRDF/bridge automaticamente
+docker exec mycobot_ros2 bash -c "$ROS_ENV
+  cd /root/custom_ws && colcon build --packages-select mycobot_description mycobot_280_jn_moveit_config mycobot_hw_interface 2>&1 | tail -1
+"
 # Bridge mock em background (substitui o bridge do Nano)
 docker exec -d mycobot_ros2 bash -c "$ROS_ENV
   ros2 run mycobot_hw_interface mycobot_bridge --ros-args -p mock:=true > /tmp/bridge_mock.log 2>&1

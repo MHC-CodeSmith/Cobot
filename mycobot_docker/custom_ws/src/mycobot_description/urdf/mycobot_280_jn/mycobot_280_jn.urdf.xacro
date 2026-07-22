@@ -55,6 +55,25 @@
   <!-- suction cup tip frame (TCP) -->
   <link name="pump_tcp"/>
 
+  <!-- USB camera module v2.0 (myCobot_cameraHolder_J6), eye-in-hand.
+       Sem mesh oficial: caixa 64x16x36mm + lente. Montada no topo do
+       corpo da pump, olhando na MESMA direção do copo (+y do link6) —
+       quando o copo aponta p/ baixo, a câmera vê a mesa/lata.
+       POSIÇÃO APROXIMADA: ajustar os offsets após montar no robô real
+       (calibração câmera-flange). -->
+  <link name="camera_link">
+    <visual>
+      <geometry><box size="0.064 0.016 0.036"/></geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+    <visual>
+      <geometry><cylinder radius="0.007" length="0.006"/></geometry>
+      <origin xyz="0 0.010 0" rpy="1.5708 0 0"/>
+      <material name="grey"/>
+    </visual>
+  </link>
+
   <joint name="joint2_to_joint1" type="revolute">
     <axis xyz="0 0 1"/><limit effort="1000.0" lower="-2.9321" upper="2.9321" velocity="3.14"/>
     <parent link="mycobot_base_link"/><child link="link1"/><origin xyz="0 0 0.15756" rpy="0 0 0"/>
@@ -106,6 +125,20 @@
   <joint name="pump_head_to_tcp" type="fixed">
     <parent link="pump_head"/><child link="pump_tcp"/>
     <origin xyz="0 0.0037 -0.0145" rpy="3.14159 0 0"/>
+  </joint>
+
+  <!-- Câmera no topo do corpo da pump (acima dos 73mm do corpo) -->
+  <joint name="link6_to_camera" type="fixed">
+    <parent link="link6"/><child link="camera_link"/>
+    <origin xyz="0 -0.002 0.09" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Frame óptico (convenção ROS: z sai da lente, x direita, y baixo).
+       z óptico = +y do link6 = direção do copo de sucção. -->
+  <link name="camera_optical"/>
+  <joint name="camera_to_optical" type="fixed">
+    <parent link="camera_link"/><child link="camera_optical"/>
+    <origin xyz="0 0.013 0" rpy="-1.5708 0 0"/>
   </joint>
 
 </robot>
