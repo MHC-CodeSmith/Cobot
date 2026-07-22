@@ -2,19 +2,25 @@
 # ============================================================
 # pick_and_place.py — rotina pick & place com a Suction Pump
 #
-# Sequência:
-#   home → acima do pick → desce → PUMP ON (suga) → sobe →
-#   aguarda a base chegar ao waypoint de entrega → acima do place →
-#   desce → PUMP OFF (solta) → sobe → home
+# Três modos (podem ser combinados):
 #
-# Usa o move_group (que precisa estar rodando — RUN_MOCK_PC.sh
-# ou RUN_PLANNING_PC.sh) para IK (/compute_ik) e planejamento
-# (/plan_kinematic_path), e executa as trajetórias no bridge
-# (action mycobot_arm_controller/follow_joint_trajectory).
-# Funciona igual em mock e no robô real.
+# 1) POSES FIXAS (recomendado p/ lata em lugar fixo):
+#    Grave as poses com RUN_POSE_TUNER.sh + SAVE_POSE.sh e rode:
+#      --pick-pose pick --place-pose place
+#      [--pick-approach-pose pick_approach]   (pose de aproximação)
+#      [--place-approach-pose place_approach]
+#      [--delivery red|blue]  (espera a base chegar antes de soltar)
 #
-# Poses são do pump_tcp (face do copo de sucção) no frame
-# mycobot_base_link, com o copo apontando para BAIXO.
+# 2) CARTESIANO (xyz no frame da base, copo p/ baixo, IK automático):
+#      --pick 0.15 0.12 0.0 --place 0.15 -0.12 0.0 --hover 0.06
+#
+# 3) VISÃO (YOLO): espera detecção em /pick_detection_pose e classe
+#    em /product_class; separa por cor e espera /delivery_state:
+#      --wait-for-target --place-pose-red vermelho --place-pose-blue azul
+#
+# Precisa do stack rodando (RUN_MOCK_PC.sh ou RUN_PLANNING_PC.sh).
+# Sequência: home → aproximação → pega → PUMP ON → recua →
+# [espera base] → aproximação → solta → PUMP OFF → recua → home
 # ============================================================
 import argparse
 import math
@@ -22,6 +28,7 @@ import sys
 import time
 
 import rclpy
+import yaml
 from rclpy.action import ActionClient
 from rclpy.node import Node
 
@@ -40,6 +47,7 @@ JOINT_NAMES = [
 GROUP = "mycobot_arm"
 TCP_LINK = "pump_tcp"
 BASE_FRAME = "mycobot_base_link"
+POSES_FILE_DEFAULT = "/root/custom_ws/config/arm_poses.yaml"
 
 
 def cup_down_quat(yaw):
@@ -88,14 +96,18 @@ class PickAndPlace(Node):
         label_low = label.lower()
         self.latest_detection_label = label_low
         if label_low.startswith("tin_valid_"):
+            if self.valid_detection_label != label_low:
+                self.get_logger().info(f"Valid tin detected: {label_low}")
             self.valid_detection_label = label_low
-            self.get_logger().info(f"Valid tin detected: {self.valid_detection_label}")
         elif label_low == "tin_invalid":
             self.valid_detection_label = None
-            self.get_logger().warn("Invalid tin detected (flipped/wrong size/side). Ignoring pick request.")
+            self.get_logger().warn(
+                "Invalid tin detected (flipped/wrong size/side). Ignoring pick request.",
+                throttle_duration_sec=2.0)
         else:
             self.valid_detection_label = None
-            self.get_logger().warn(f"Ignoring unsupported label: {label}")
+            self.get_logger().warn(f"Ignoring unsupported label: {label}",
+                                   throttle_duration_sec=2.0)
 
     def _on_delivery_state(self, msg):
         self.delivery_state = (msg.data or "").strip().lower()
@@ -127,6 +139,9 @@ class PickAndPlace(Node):
         return self.latest_pick_pose
 
     def wait_for_delivery_release(self, expected_state, timeout=60.0):
+        # descarta estado antigo (latched de execuções anteriores) e
+        # espera uma mensagem NOVA com o estado esperado
+        self.delivery_state = None
         deadline = self.get_clock().now().nanoseconds + int(timeout * 1e9)
         while self.delivery_state != expected_state:
             rclpy.spin_once(self, timeout_sec=0.2)
@@ -143,7 +158,7 @@ class PickAndPlace(Node):
         rclpy.spin_until_future_complete(self, fut)
         return fut.result()
 
-    # ── blocos da rotina ─────────────────────────────────────────────
+    # ── IK ───────────────────────────────────────────────────────────
     def _ik_once(self, x, y, z, yaw, seed):
         pose = PoseStamped()
         pose.header.frame_id = BASE_FRAME
@@ -189,8 +204,8 @@ class PickAndPlace(Node):
 
     def ik(self, x, y, z):
         """IK do pump_tcp com copo p/ baixo. O yaw do copo é livre:
-        varre yaws e sementes, junta todas as soluções e escolhe a
-        mais natural (evita poses contorcidas)."""
+        varre yaws e sementes, junta as soluções e escolhe a mais
+        natural (evita poses contorcidas)."""
         base_yaw = math.atan2(y, x)
         yaws = [
             base_yaw,
@@ -220,6 +235,7 @@ class PickAndPlace(Node):
             )
         return best
 
+    # ── planejamento e execução ──────────────────────────────────────
     def plan(self, target_joints):
         req = GetMotionPlan.Request()
         mpr = MotionPlanRequest()
@@ -260,13 +276,16 @@ class PickAndPlace(Node):
         last = joint_traj.points[-1].positions
         self.current = list(last)
 
-    def move_to_pose(self, label, x, y, z):
-        self.get_logger().info(f"→ {label}: ({x:.3f}, {y:.3f}, {z:.3f})")
-        self.execute(self.plan(self.ik(x, y, z)))
-
-    def move_to_joints(self, label, joints):
-        self.get_logger().info(f"→ {label} (joint-space)")
-        self.execute(self.plan(joints))
+    def goto(self, label, target):
+        """target: ("joints", [6 floats]) ou ("xyz", (x, y, z))."""
+        kind, value = target
+        if kind == "joints":
+            self.get_logger().info(f"→ {label} (pose gravada)")
+            self.execute(self.plan(value))
+        else:
+            x, y, z = value
+            self.get_logger().info(f"→ {label}: ({x:.3f}, {y:.3f}, {z:.3f})")
+            self.execute(self.plan(self.ik(x, y, z)))
 
     def pump(self, on):
         cli = self.pump_on_cli if on else self.pump_off_cli
@@ -277,76 +296,147 @@ class PickAndPlace(Node):
         self.get_logger().info(f"  Pump {state}")
 
     # ── rotina completa ──────────────────────────────────────────────
-    def run(self, pick, place, hover, settle, delivery_timeout=60.0):
-        px, py, pz = pick
-        qx, qy, qz = place
+    def run(self, pick_t, place_t, settle, pick_app=None, place_app=None,
+            delivery_expected=None, delivery_timeout=60.0):
+        """pick_t/place_t: alvo do contato; pick_app/place_app: alvo de
+        aproximação (opcional — recomendado p/ não arrastar a lata)."""
+        self.goto("home", ("joints", [0.0] * 6))
 
-        if not self.valid_detection_label or not self.valid_detection_label.startswith("tin_valid_"):
-            self.get_logger().warn("Invalid or unsupported tin label; skipping pick-and-place sequence.")
-            return
-
-        self.move_to_joints("home", [0.0] * 6)
-        self.move_to_pose("acima do pick", px, py, pz + hover)
-        self.move_to_pose("descendo no objeto", px, py, pz)
+        if pick_app is not None:
+            self.goto("aproximação do pick", pick_app)
+        self.goto("descendo no objeto", pick_t)
         self.pump(True)
-        time.sleep(settle)
-        self.move_to_pose("subindo com objeto", px, py, pz + hover)
+        time.sleep(settle)  # tempo p/ vácuo pegar
+        if pick_app is not None:
+            self.goto("subindo com objeto", pick_app)
 
-        if self.valid_detection_label.startswith("tin_valid_red"):
-            expected_delivery = "delivery_red"
-        else:
-            expected_delivery = "delivery_blue"
+        if delivery_expected:
+            self.get_logger().info(
+                f"Objeto preso. Aguardando base em {delivery_expected} antes de soltar")
+            self.wait_for_delivery_release(delivery_expected, timeout=delivery_timeout)
 
-        self.get_logger().info(
-            f"Objeto preso. Aguardando base em {expected_delivery} antes de soltar"
-        )
-        self.wait_for_delivery_release(expected_delivery, timeout=delivery_timeout)
-
-        self.move_to_pose("acima do place", qx, qy, qz + hover)
-        self.move_to_pose("descendo p/ soltar", qx, qy, qz)
+        if place_app is not None:
+            self.goto("aproximação do place", place_app)
+        self.goto("descendo p/ soltar", place_t)
         self.pump(False)
-        time.sleep(max(settle, 1.2))
-        self.move_to_pose("subindo vazio", qx, qy, qz + hover)
-        self.move_to_joints("home", [0.0] * 6)
+        time.sleep(max(settle, 1.2))  # pulso de deflação ~1s
+        if place_app is not None:
+            self.goto("subindo vazio", place_app)
+        self.goto("home", ("joints", [0.0] * 6))
         self.get_logger().info("Pick & place concluído!")
 
-    def run_from_target(self, args):
+    def run_from_target(self, args, poses):
+        """Modo visão: espera detecção YOLO; só pega lata válida."""
         target = self.wait_for_pick_target(timeout=args.target_timeout)
         x, y, z = target.point.x, target.point.y, target.point.z
         self.get_logger().info(
             f"Recebi alvo visual em ({x:.3f}, {y:.3f}, {z:.3f}) no frame {target.header.frame_id}"
         )
+        if not self.valid_detection_label or not self.valid_detection_label.startswith("tin_valid_"):
+            self.get_logger().warn("Invalid or unsupported tin label; skipping pick-and-place sequence.")
+            return
 
-        pick = (x, y, z)
-        place = args.place
-        if self.valid_detection_label and self.valid_detection_label.startswith("tin_valid_red") and args.place_red is not None:
-            place = args.place_red
-        elif self.valid_detection_label and self.valid_detection_label.startswith("tin_valid_blue") and args.place_blue is not None:
-            place = args.place_blue
-        self.run(pick, place, args.hover, args.settle, delivery_timeout=args.delivery_timeout)
+        color = "red" if self.valid_detection_label.startswith("tin_valid_red") else "blue"
+        place_t, place_app = resolve_place_for_color(args, poses, color)
+        pick_t = ("xyz", (x, y, z))
+        pick_app = ("xyz", (x, y, z + args.hover))
+        self.run(pick_t, place_t, args.settle,
+                 pick_app=pick_app, place_app=place_app,
+                 delivery_expected=f"delivery_{color}",
+                 delivery_timeout=args.delivery_timeout)
+
+
+# ── resolução de alvos (CLI/poses.yaml) ──────────────────────────────
+def load_poses(path):
+    try:
+        with open(path) as f:
+            poses = yaml.safe_load(f) or {}
+    except FileNotFoundError:
+        poses = {}
+    return poses
+
+
+def pose_target(poses, name):
+    if name not in poses:
+        raise RuntimeError(
+            f"Pose '{name}' não existe em arm_poses.yaml — grave com ./SAVE_POSE.sh {name}")
+    joints = [float(v) for v in poses[name]]
+    if len(joints) != 6:
+        raise RuntimeError(f"Pose '{name}' inválida (precisa de 6 juntas)")
+    return ("joints", joints)
+
+
+def resolve_place_for_color(args, poses, color):
+    """Prioridade: --place-pose-<cor> > --place-<cor> xyz > --place-pose > --place."""
+    name = getattr(args, f"place_pose_{color}")
+    xyz = getattr(args, f"place_{color}")
+    if name:
+        return pose_target(poses, name), maybe_pose(poses, args.place_approach_pose)
+    if xyz is not None:
+        return ("xyz", tuple(xyz)), ("xyz", (xyz[0], xyz[1], xyz[2] + args.hover))
+    if args.place_pose:
+        return pose_target(poses, args.place_pose), maybe_pose(poses, args.place_approach_pose)
+    p = args.place
+    return ("xyz", tuple(p)), ("xyz", (p[0], p[1], p[2] + args.hover))
+
+
+def maybe_pose(poses, name):
+    return pose_target(poses, name) if name else None
 
 
 def main():
     ap = argparse.ArgumentParser(description="Pick & place com suction pump")
+    # modo cartesiano
     ap.add_argument("--pick", nargs=3, type=float, default=[0.15, 0.12, 0.0], metavar=("X", "Y", "Z"), help="pose do objeto (base frame)")
     ap.add_argument("--place", nargs=3, type=float, default=[0.15, -0.12, 0.0], metavar=("X", "Y", "Z"), help="pose de destino padrão")
-    ap.add_argument("--place-red", nargs=3, type=float, default=None, metavar=("X", "Y", "Z"), help="pose de destino para objetos vermelhos")
-    ap.add_argument("--place-blue", nargs=3, type=float, default=None, metavar=("X", "Y", "Z"), help="pose de destino para objetos azuis")
-    ap.add_argument("--hover", type=float, default=0.06, help="altura de aproximação acima das poses (m)")
+    ap.add_argument("--place-red", nargs=3, type=float, default=None, metavar=("X", "Y", "Z"), help="destino xyz para latas vermelhas")
+    ap.add_argument("--place-blue", nargs=3, type=float, default=None, metavar=("X", "Y", "Z"), help="destino xyz para latas azuis")
+    ap.add_argument("--hover", type=float, default=0.06, help="altura de aproximação (m, modo xyz)")
+    # modo poses gravadas (sliders)
+    ap.add_argument("--poses-file", default=POSES_FILE_DEFAULT, help="yaml com poses gravadas")
+    ap.add_argument("--pick-pose", default=None, help="nome da pose de pegar (arm_poses.yaml)")
+    ap.add_argument("--place-pose", default=None, help="nome da pose de soltar")
+    ap.add_argument("--pick-approach-pose", default=None, help="pose de aproximação do pick")
+    ap.add_argument("--place-approach-pose", default=None, help="pose de aproximação do place")
+    ap.add_argument("--place-pose-red", default=None, help="pose de soltar p/ latas vermelhas")
+    ap.add_argument("--place-pose-blue", default=None, help="pose de soltar p/ latas azuis")
+    # entrega/base
+    ap.add_argument("--delivery", choices=["red", "blue"], default=None, help="espera a base chegar em delivery_<cor> antes de soltar")
+    ap.add_argument("--delivery-timeout", type=float, default=60.0, help="timeout p/ esperar /delivery_state")
+    # modo visão
+    ap.add_argument("--wait-for-target", action="store_true", help="espera detecção YOLO em /pick_detection_pose")
+    ap.add_argument("--target-timeout", type=float, default=30.0, help="timeout p/ esperar /pick_detection_pose")
     ap.add_argument("--settle", type=float, default=1.0, help="pausa após ligar/desligar a pump (s)")
-    ap.add_argument("--target-timeout", type=float, default=30.0, help="timeout para esperar /pick_detection_pose")
-    ap.add_argument("--delivery-timeout", type=float, default=60.0, help="timeout para esperar /delivery_state")
-    ap.add_argument("--wait-for-target", action="store_true", help="espera por /pick_detection_pose em vez de usar --pick")
     args = ap.parse_args()
+
+    poses = load_poses(args.poses_file)
 
     rclpy.init()
     node = PickAndPlace()
     try:
         node.wait_ready()
         if args.wait_for_target:
-            node.run_from_target(args)
+            node.run_from_target(args, poses)
         else:
-            node.run(tuple(args.pick), tuple(args.place), args.hover, args.settle, delivery_timeout=args.delivery_timeout)
+            if args.pick_pose:
+                pick_t = pose_target(poses, args.pick_pose)
+                pick_app = maybe_pose(poses, args.pick_approach_pose)
+            else:
+                p = args.pick
+                pick_t = ("xyz", tuple(p))
+                pick_app = ("xyz", (p[0], p[1], p[2] + args.hover))
+            if args.place_pose:
+                place_t = pose_target(poses, args.place_pose)
+                place_app = maybe_pose(poses, args.place_approach_pose)
+            else:
+                q = args.place
+                place_t = ("xyz", tuple(q))
+                place_app = ("xyz", (q[0], q[1], q[2] + args.hover))
+            delivery = f"delivery_{args.delivery}" if args.delivery else None
+            node.run(pick_t, place_t, args.settle,
+                     pick_app=pick_app, place_app=place_app,
+                     delivery_expected=delivery,
+                     delivery_timeout=args.delivery_timeout)
     except Exception as e:
         node.get_logger().error(str(e))
         sys.exit(1)
