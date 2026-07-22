@@ -43,12 +43,14 @@ BASE_FRAME = "mycobot_base_link"
 
 
 def cup_down_quat(yaw):
-    """Quaternion para a orientação do TCP da ventosa.
+    """Quaternion (x,y,z,w) de rpy(pi, 0, yaw).
 
-    A pose do TCP em URDF já é definida com o copo apontando para fora do
-    copo; aqui apenas variamos o yaw em torno do eixo vertical para manter o
-    copo radial ao alvo detectado."""
-    return (0.0, 0.0, math.sin(yaw / 2.0), math.cos(yaw / 2.0))
+    O eixo z do pump_tcp sai do copo de sucção; o roll de pi vira o copo
+    para BAIXO (de frente para o objeto na mesa). O yaw em torno da
+    vertical é livre — variamos para dar opções ao IK.
+    ATENÇÃO: sem o roll de pi (rotação pura de yaw) o copo aponta para
+    CIMA e o IK falha ou acha poses absurdas."""
+    return (math.cos(yaw / 2.0), math.sin(yaw / 2.0), 0.0, 0.0)
 
 
 class PickAndPlace(Node):
