@@ -26,6 +26,9 @@
     <disable_collisions link1="link3" link2="link4" reason="Adjacent"/>
     <disable_collisions link1="link4" link2="link5" reason="Adjacent"/>
     <disable_collisions link1="link5" link2="link6" reason="Adjacent"/>
+    <disable_collisions link1="link6" link2="camera_flange" reason="Adjacent"/>
+    <disable_collisions link1="camera_flange" link2="pump_head" reason="Adjacent"/>
+    <disable_collisions link1="link5" link2="camera_flange" reason="Never"/>
     <disable_collisions link1="link6" link2="pump_head" reason="Adjacent"/>
     <disable_collisions link1="link5" link2="pump_head" reason="Never"/>
     <disable_collisions link1="link6" link2="pump_box" reason="Never"/>

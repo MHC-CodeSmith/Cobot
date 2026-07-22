@@ -39,16 +39,32 @@
     </collision>
   </link>
 
+  <!-- Camera flange oficial (AI Kit): monta ENTRE o flange e a pump.
+       Mesh oficial mycobot_ros/noetic (COLLADA em mm → colisão por box
+       primitiva, bbox 83x9x34.5mm). -->
+  <link name="camera_flange">
+    <visual>
+      <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/camera_flange.dae"/></geometry>
+      <origin xyz="0.024 -0.008 0.0" rpy="0 3.14159 0"/>
+    </visual>
+    <collision>
+      <geometry><box size="0.083 0.009 0.0345"/></geometry>
+      <origin xyz="0.024 -0.0045 -0.0005" rpy="0 3.14159 0"/>
+    </collision>
+  </link>
+
   <link name="pump_head">
+    <!-- Origens do modelo oficial COMBINADO camera_flange + pump
+         (mycobot_280m5_with_camera_flange_pump.urdf) -->
     <visual>
       <geometry><mesh filename="package://mycobot_description/urdf/mycobot_280_jn/pump_head.dae"/></geometry>
-      <origin xyz="0.0 -0.008 0.0" rpy="0 0 0"/>
+      <origin xyz="0.0 0.008 0.009" rpy="1.5708 0 0"/>
     </visual>
     <!-- Colisão: caixa primitiva (bbox do mesh, 24.5x63x26.7mm), mesmo
          motivo do pump_box (mesh COLLADA em mm carregado 1000x maior). -->
     <collision>
       <geometry><box size="0.0245 0.063 0.0267"/></geometry>
-      <origin xyz="0.0 0.0235 -0.0011" rpy="0 0 0"/>
+      <origin xyz="0.0 0.0091 0.0405" rpy="1.5708 0 0"/>
     </collision>
   </link>
 
@@ -91,21 +107,36 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
-  <!-- Pump head (suction nozzle) at the end effector -->
-  <joint name="link6_to_pump_head" type="fixed">
-    <parent link="link6"/><child link="pump_head"/>
+  <!-- Camera flange no flange do link6 (transform oficial) -->
+  <joint name="link6_to_camera_flange" type="fixed">
+    <parent link="link6"/><child link="camera_flange"/>
     <origin xyz="0 0 0.01" rpy="1.579 0 0"/>
   </joint>
 
-  <!-- TCP at the suction cup face.
-       Mesh analysis (pump_head.dae, mm): cup = Ø20mm ring at (0, 11.66, -14.45),
-       facing -z of the mesh. Visual origin shifts y by -8mm, so in the
-       pump_head frame the cup face is at (0, 0.0037, -0.0145).
-       rpy="pi 0 0" flips z so pump_tcp z points OUT of the cup (into the
-       object being sucked) — in link6 frame that is the +y direction. -->
+  <!-- Pump pendurada NA camera flange (transform oficial do combinado) -->
+  <joint name="camera_flange_to_pump_head" type="fixed">
+    <parent link="camera_flange"/><child link="pump_head"/>
+    <origin xyz="0 0 0.01" rpy="-1.579 0 0"/>
+  </joint>
+
+  <!-- TCP na face do copo de sucção.
+       Mesh (mm): anel Ø20 em (0, 11.66, -14.45) olhando -z do mesh.
+       Com a origem visual oficial (0, 0.008, 0.009, rpy 1.5708 0 0),
+       o copo fica em (0, 0.02245, 0.02066) no frame pump_head, sucção
+       para +y_ph. rpy=(-pi/2,0,0) põe o z do TCP saindo do copo —
+       no link6 isso é +y (FK verificado: copo em (0, 0.0125, 0.0306)). -->
   <joint name="pump_head_to_tcp" type="fixed">
     <parent link="pump_head"/><child link="pump_tcp"/>
-    <origin xyz="0 0.0037 -0.0145" rpy="3.14159 0 0"/>
+    <origin xyz="0 0.02245 0.02066" rpy="-1.5708 0 0"/>
+  </joint>
+
+  <!-- Frame óptico da câmera (convenção ROS: z sai da lente).
+       A câmera do flange olha na direção do copo (-z da camera_flange).
+       Posição aproximada no centro da placa — CALIBRAR no robô real. -->
+  <link name="camera_optical"/>
+  <joint name="camera_flange_to_optical" type="fixed">
+    <parent link="camera_flange"/><child link="camera_optical"/>
+    <origin xyz="0.024 -0.0045 -0.017" rpy="3.14159 0 0"/>
   </joint>
 
 </robot>
