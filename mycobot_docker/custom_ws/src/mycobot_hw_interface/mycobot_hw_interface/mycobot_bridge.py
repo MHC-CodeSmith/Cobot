@@ -108,6 +108,10 @@ class MyCobotBridge(Node):
                     self.get_logger().error(f'Falha ao inicializar GPIO da pump: {e}')
         self.create_service(Trigger, 'pump_on',  self._pump_on_cb)
         self.create_service(Trigger, 'pump_off', self._pump_off_cb)
+        # ── Modo ensino (teach): solta/trava os servos para posicionar o
+        #    braço NA MÃO e gravar poses reais com SAVE_POSE.sh ─────────
+        self.create_service(Trigger, 'release_servos', self._release_cb)
+        self.create_service(Trigger, 'lock_servos', self._lock_cb)
         self._pump_state_pub = self.create_publisher(Bool, 'pump_state', 10)
         self.create_timer(0.5, self._publish_pump_state)
 
@@ -249,6 +253,37 @@ class MyCobotBridge(Node):
             response.success = False
             response.message = f'pump_off failed: {e}'
             self.get_logger().error(str(e))
+        return response
+
+    # ── Teach mode ─────────────────────────────────────────────────────
+
+    def _release_cb(self, request, response):
+        """Solta os servos — braço fica livre p/ posicionar na mão.
+        A leitura de ângulos continua, então /joint_states segue real."""
+        try:
+            if not self.mock:
+                with self._serial_lock:
+                    self.mc.release_all_servos()
+            self.get_logger().warn('SERVOS SOLTOS — segure o braço! (lock_servos p/ travar)')
+            response.success = True
+            response.message = 'Servos soltos — posicione na mão e use SAVE_POSE.sh'
+        except Exception as e:
+            response.success = False
+            response.message = f'release falhou: {e}'
+        return response
+
+    def _lock_cb(self, request, response):
+        """Trava os servos de volta na posição atual."""
+        try:
+            if not self.mock:
+                with self._serial_lock:
+                    self.mc.power_on()
+            self.get_logger().info('Servos travados')
+            response.success = True
+            response.message = 'Servos travados'
+        except Exception as e:
+            response.success = False
+            response.message = f'lock falhou: {e}'
         return response
 
     def _publish_pump_state(self):
