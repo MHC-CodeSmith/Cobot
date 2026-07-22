@@ -34,7 +34,9 @@ def delivery_for(label):
 
 def main():
     ap = argparse.ArgumentParser(description="Teste câmera + YOLO (best.pt)")
-    ap.add_argument("--camera", type=int, default=0, help="índice da câmera (/dev/videoN)")
+    ap.add_argument("--camera", type=int, default=0, help="índice da câmera local (/dev/videoN)")
+    ap.add_argument("--url", default=None,
+                    help="URL de stream MJPEG (ex.: câmera no Nano via RUN_NANO_CAMERA.sh)")
     ap.add_argument("--model", default=DEFAULT_MODEL, help="caminho do .pt")
     ap.add_argument("--conf", type=float, default=0.5, help="confiança mínima")
     args = ap.parse_args()
@@ -43,11 +45,18 @@ def main():
     model = YOLO(args.model)
     print(f"Classes do modelo: {model.names}")
 
-    cap = cv2.VideoCapture(args.camera)
+    source = args.url if args.url else args.camera
+    print(f"Abrindo fonte de vídeo: {source}")
+    cap = cv2.VideoCapture(source)
     if not cap.isOpened():
+        if args.url:
+            raise SystemExit(
+                f"ERRO: não abriu o stream {args.url}. O servidor está no ar? "
+                f"(./RUN_NANO_CAMERA.sh status)")
         raise SystemExit(
-            f"ERRO: não abriu /dev/video{args.camera}. A câmera do cobot está "
-            f"plugada no USB do NOTEBOOK? (ls /dev/video*)")
+            f"ERRO: não abriu /dev/video{args.camera}. A câmera está plugada "
+            f"no USB do NOTEBOOK? (ls /dev/video*) — se ela está no COBOT, "
+            f"use: ./RUN_NANO_CAMERA.sh start && ./RUN_CAMERA_TEST.sh --nano")
 
     print("Câmera aberta. q = sair | s = salvar frame")
     last_print = 0.0

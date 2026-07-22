@@ -11,13 +11,26 @@
 # e instala ultralytics (demora alguns minutos — torch é grande).
 #
 # Uso:
-#   ./RUN_CAMERA_TEST.sh                 # câmera 0, conf 0.5
-#   ./RUN_CAMERA_TEST.sh --camera 2      # outra câmera (ls /dev/video*)
+#   ./RUN_CAMERA_TEST.sh                 # câmera USB local (0), conf 0.5
+#   ./RUN_CAMERA_TEST.sh --nano          # câmera plugada no COBOT (stream
+#                                        #  do Nano — antes: RUN_NANO_CAMERA.sh start)
+#   ./RUN_CAMERA_TEST.sh --camera 2      # outra câmera local
 #   ./RUN_CAMERA_TEST.sh --conf 0.35
 # ============================================================
 set -e
 DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV="$DIR/.yolo_venv"
+NANO_STREAM="http://192.168.0.250:8080/stream.mjpg"
+
+# --nano vira --url <stream do Nano>
+ARGS=()
+for a in "$@"; do
+  if [ "$a" = "--nano" ]; then
+    ARGS+=("--url" "$NANO_STREAM")
+  else
+    ARGS+=("$a")
+  fi
+done
 
 if [ ! -x "$VENV/bin/python" ]; then
   echo "[setup] Criando venv em $VENV (primeira vez)..."
@@ -30,4 +43,4 @@ if ! "$VENV/bin/python" -c "import ultralytics, cv2" 2>/dev/null; then
   "$VENV/bin/pip" install ultralytics opencv-python
 fi
 
-exec "$VENV/bin/python" "$DIR/custom_ws/scripts/cam_yolo_test.py" "$@"
+exec "$VENV/bin/python" "$DIR/custom_ws/scripts/cam_yolo_test.py" "${ARGS[@]}"
