@@ -30,6 +30,7 @@ class Camera:
             raise SystemExit("ERRO: nao abriu /dev/video%d" % device)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+        self.cap.set(cv2.CAP_PROP_FPS, fps)
         self.period = 1.0 / max(fps, 1)
         self.quality = quality
         self.lock = threading.Lock()
@@ -103,8 +104,8 @@ def main():
     ap.add_argument("--port", type=int, default=8080)
     ap.add_argument("--width", type=int, default=640)
     ap.add_argument("--height", type=int, default=480)
-    ap.add_argument("--fps", type=int, default=15)
-    ap.add_argument("--quality", type=int, default=80)
+    ap.add_argument("--fps", type=int, default=30)
+    ap.add_argument("--quality", type=int, default=60)
     args = ap.parse_args()
 
     CAM = Camera(args.device, args.width, args.height, args.fps, args.quality)

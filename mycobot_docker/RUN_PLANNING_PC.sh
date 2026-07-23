@@ -32,8 +32,9 @@ timeout 12 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTim
 sleep 6
 
 BRIDGE_OK=$(timeout 8 sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no -o ConnectTimeout=6 ${NANO_USER}@${NANO_IP} \
-  'pgrep -xc mycobot_bridge' 2>/dev/null || echo 0)
-if [ "${BRIDGE_OK:-0}" -gt 0 ]; then
+  'pgrep -fc mycobot_bridge' 2>/dev/null)
+BRIDGE_OK=${BRIDGE_OK:-0}
+if [ "${BRIDGE_OK}" -gt 0 ]; then
   echo "  Bridge OK (mycobot_bridge rodando no Nano)"
 else
   echo "  Bridge FAILED — verifique: sshpass -p Elephant ssh er@192.168.0.250 'cat /tmp/bridge.log'"

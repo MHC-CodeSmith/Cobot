@@ -22,15 +22,25 @@ DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV="$DIR/.yolo_venv"
 NANO_STREAM="http://192.168.0.250:8080/stream.mjpg"
 
-# --nano vira --url <stream do Nano>
+# Se não for passada nenhuma fonte (--nano, --camera, --url), o padrão passa a ser o stream do Nano
 ARGS=()
+HAS_SOURCE=false
+
 for a in "$@"; do
   if [ "$a" = "--nano" ]; then
     ARGS+=("--url" "$NANO_STREAM")
+    HAS_SOURCE=true
+  elif [ "$a" = "--camera" ] || [ "$a" = "--url" ]; then
+    ARGS+=("$a")
+    HAS_SOURCE=true
   else
     ARGS+=("$a")
   fi
 done
+
+if [ "$HAS_SOURCE" = false ]; then
+  ARGS+=("--url" "$NANO_STREAM")
+fi
 
 if [ ! -x "$VENV/bin/python" ]; then
   echo "[setup] Criando venv em $VENV (primeira vez)..."

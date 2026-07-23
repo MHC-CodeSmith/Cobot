@@ -1,7 +1,7 @@
 #!/bin/bash
 # Configurações de Rede
 NANO_IP="192.168.0.250"
-DISCOVERY_IP="192.168.0.79"
+DISCOVERY_IP="192.168.0.204"
 DISCOVERY_PORT="11811"
 XML_PATH="/root/custom_ws/fastdds_super_client.xml"
 

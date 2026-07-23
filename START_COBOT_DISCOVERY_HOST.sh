@@ -3,7 +3,7 @@ set -e
 
 # Se o Nano e o PC estão no mesmo roteador via Wi-Fi, esse deve ser o IP do wlan0 do PC
 # Você pode mudar isso se estiver usando ethernet (eth0)
-export COBOT_DISCOVERY_IP=192.168.0.79
+export COBOT_DISCOVERY_IP=192.168.0.204
 export COBOT_DISCOVERY_PORT=11888
 
 echo "[INFO] Starting MyCobot isolated FastDDS Discovery Server..."

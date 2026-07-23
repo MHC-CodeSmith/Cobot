@@ -24,21 +24,30 @@ SSH="sshpass -p $NANO_PASS ssh -o StrictHostKeyChecking=no ${NANO_USER}@${NANO_I
 
 case "${1:-}" in
   start)
-    echo "[1/3] Enviando servidor para o Nano..."
+    echo "[1/5] Enviando servidor para o Nano..."
     sshpass -p "$NANO_PASS" scp -o StrictHostKeyChecking=no \
       "$DIR/nano_camera_server.py" "${NANO_USER}@${NANO_IP}:~/nano_camera_server.py"
 
-    echo "[2/3] Iniciando no Nano (device 0, ${PORT})..."
-    $SSH '
-      pkill -f nano_camera_server 2>/dev/null || true
-      sleep 1
-      setsid bash -c "python3 ~/nano_camera_server.py --device 0 --port '"$PORT"' > /tmp/camera.log 2>&1" < /dev/null > /dev/null 2>&1 &
-      disown -a
-    '
-    sleep 3
+    echo "[2/5] Limpando processos antigos no Nano..."
+    sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no "${NANO_USER}@${NANO_IP}" \
+      "pkill -9 -f nano_camera_server.py 2>/dev/null || true"
 
-    echo "[3/3] Verificando stream..."
-    CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "http://${NANO_IP}:${PORT}/snapshot.jpg")
+    echo "[3/5] Aguardando liberação do hardware..."
+    sleep 2
+
+    echo "[4/5] Iniciando servidor no Nano em background (unbuffered)..."
+    sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no "${NANO_USER}@${NANO_IP}" \
+      "nohup python3 -u /home/er/nano_camera_server.py --device 0 --port $PORT > /tmp/camera.log 2>&1 &"
+
+    echo "[5/5] Aguardando inicialização e validando stream..."
+    for i in {1..10}; do
+      CODE=$(curl -s -o /dev/null -w '%{http_code}' --max-time 2 "http://${NANO_IP}:${PORT}/snapshot.jpg")
+      if [ "$CODE" = "200" ]; then
+        break
+      fi
+      echo "  Tentativa $i/10: stream indisponível (HTTP $CODE), aguardando..."
+      sleep 1.5
+    done
     if [ "$CODE" = "200" ]; then
       echo ""
       echo "  ✓ Câmera no ar: http://${NANO_IP}:${PORT}/stream.mjpg"
