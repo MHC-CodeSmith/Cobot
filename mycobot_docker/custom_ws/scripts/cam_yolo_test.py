@@ -18,6 +18,15 @@ import threading
 import cv2
 from ultralytics import YOLO
 
+# Tenta importar rclpy para integracao ROS 2
+try:
+    import rclpy
+    from rclpy.node import Node
+    from std_msgs.msg import String
+    has_ros = True
+except ImportError:
+    has_ros = False
+
 # Tenta otimizar CUDA no topo do arquivo se disponível
 try:
     import torch
@@ -159,6 +168,17 @@ def main():
     ap.add_argument("--conf", type=float, default=0.5, help="confiança mínima")
     args = ap.parse_args()
 
+    # Inicializa ROS 2
+    pub_product = None
+    if has_ros:
+        try:
+            rclpy.init()
+            ros_node = Node("camera_yolo_vision")
+            pub_product = ros_node.create_publisher(String, "/product_class", 10)
+            print("✓ Inicializado ROS 2 Publisher no topico /product_class")
+        except Exception as e:
+            print(f"Aviso: Falha ao inicializar o no ROS 2: {e}")
+
     print(f"Carregando modelo YOLO: {args.model}")
     yolo_async = AsyncYOLOInference(args.model, args.conf)
     print(f"Classes do modelo: {yolo_async.model.names}")
@@ -197,16 +217,27 @@ def main():
         # Desenha as detecções sobre o frame fresco atual
         annotated = draw_predictions(frame, res, yolo_async.model.names)
 
-        # Imprime detecções no terminal de forma controlada
+        # Imprime detecções no terminal e publica no ROS 2
         now = time.time()
-        if res is not None and res.boxes is not None and len(res.boxes) > 0 and now - last_print > 0.5:
-            last_print = now
+        if res is not None and res.boxes is not None and len(res.boxes) > 0:
+            should_print = now - last_print > 0.5
+            if should_print:
+                last_print = now
             for box in res.boxes:
                 cls = yolo_async.model.names[int(box.cls[0])]
                 conf = float(box.conf[0])
                 x1, y1, x2, y2 = (float(v) for v in box.xyxy[0])
                 cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
-                print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
+                
+                # Publicacao ROS 2
+                if pub_product is not None:
+                    msg = String()
+                    msg.data = f"{cls} {conf:.2f}"
+                    pub_product.publish(msg)
+                    print(f"[ROS2 PUB] /product_class: {cls} {conf:.2f}")
+                
+                if should_print:
+                    print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
 
         cv2.imshow("Cobot camera + YOLO Async (q sai, s salva)", annotated)
         

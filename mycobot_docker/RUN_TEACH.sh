@@ -38,10 +38,17 @@ case "${1:-}" in
       ros2 service call /lock_servos std_srvs/srv/Trigger {}
     "
     ;;
+  interactive|"")
+    echo "Iniciando modo ensino interativo..."
+    docker exec -it mycobot_ros2 bash -c "$ROS_ENV
+      python3 /root/custom_ws/scripts/teach_poses.py
+    "
+    ;;
   *)
-    echo "Uso: $0 {release|lock}"
-    echo "  release — solta os servos (posicionar na mão) — SEGURE O BRAÇO"
-    echo "  lock    — trava os servos de volta"
+    echo "Uso: $0 {interactive|release|lock}"
+    echo "  (sem argumentos) — Inicia o menu interativo de gravação de poses"
+    echo "  release          — Solta os servos imediatamente (SEGURE O BRAÇO!)"
+    echo "  lock             — Trava os servos de volta"
     exit 1
     ;;
 esac

@@ -42,8 +42,18 @@ case "$CMD" in
       timeout 3 ros2 topic echo /pump_state | head -2
     "
     ;;
+  test)
+    echo "Iniciando teste de hardware da bomba de sucção..."
+    docker exec -it mycobot_ros2 bash -c "$ROS_ENV
+      python3 /root/custom_ws/scripts/test_pump.py
+    "
+    ;;
   *)
-    echo "Uso: $0 {on|off|status}"
+    echo "Uso: $0 {on|off|status|test}"
+    echo "  on     — liga sucção manualmente"
+    echo "  off    — desliga sucção e libera objeto"
+    echo "  status — mostra o estado atual"
+    echo "  test   — executa ciclo completo de teste pick & place físico"
     exit 1
     ;;
 esac

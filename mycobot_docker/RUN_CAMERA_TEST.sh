@@ -53,4 +53,11 @@ if ! "$VENV/bin/python" -c "import ultralytics, cv2" 2>/dev/null; then
   "$VENV/bin/pip" install ultralytics opencv-python
 fi
 
+# Configura rede ROS 2 para comunicacao com o robo
+if [ -f /opt/ros/jazzy/setup.bash ]; then
+  source /opt/ros/jazzy/setup.bash
+fi
+export ROS_DOMAIN_ID=42
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+
 exec "$VENV/bin/python" "$DIR/custom_ws/scripts/cam_yolo_test.py" "${ARGS[@]}"
