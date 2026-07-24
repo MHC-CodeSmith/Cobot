@@ -13,19 +13,22 @@
 # ============================================================
 import argparse
 import os
+import sys
 import time
 import threading
 import cv2
 from ultralytics import YOLO
 
-# Tenta importar rclpy para integracao ROS 2
+# Importa rclpy para integracao ROS 2 (obrigatorio)
 try:
     import rclpy
     from rclpy.node import Node
+    from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
     from std_msgs.msg import String
-    has_ros = True
-except ImportError:
-    has_ros = False
+except ImportError as e:
+    print(f"\n[FATAL] ROS 2 nao inicializado! Certifique-se de que o ambiente ROS 2 esta configurado no host.")
+    print(f"Erro: {e}\n")
+    sys.exit(1)
 
 # Tenta otimizar CUDA no topo do arquivo se disponível
 try:
@@ -166,18 +169,24 @@ def main():
                     help="URL de stream MJPEG (ex.: câmera no Nano via RUN_NANO_CAMERA.sh)")
     ap.add_argument("--model", default=DEFAULT_MODEL, help="caminho do .pt")
     ap.add_argument("--conf", type=float, default=0.5, help="confiança mínima")
+    ap.add_argument("--headless", action="store_true", help="Desativa a exibição da janela do OpenCV (modo headless)")
     args = ap.parse_args()
 
-    # Inicializa ROS 2
-    pub_product = None
-    if has_ros:
-        try:
-            rclpy.init()
-            ros_node = Node("camera_yolo_vision")
-            pub_product = ros_node.create_publisher(String, "/product_class", 10)
-            print("✓ Inicializado ROS 2 Publisher no topico /product_class")
-        except Exception as e:
-            print(f"Aviso: Falha ao inicializar o no ROS 2: {e}")
+    # Inicializa ROS 2 (Obrigatorio)
+    try:
+        rclpy.init()
+        ros_node = Node("camera_yolo_vision")
+        
+        qos_profile = QoSProfile(
+            reliability=ReliabilityPolicy.RELIABLE,
+            history=HistoryPolicy.KEEP_LAST,
+            depth=10
+        )
+        pub_product = ros_node.create_publisher(String, "/product_class", qos_profile)
+        print("✓ Inicializado ROS 2 Publisher no topico /product_class (QoS: RELIABLE)")
+    except Exception as e:
+        print(f"\n[FATAL] Falha ao inicializar o no ROS 2: {e}")
+        sys.exit(1)
 
     print(f"Carregando modelo YOLO: {args.model}")
     yolo_async = AsyncYOLOInference(args.model, args.conf)
@@ -230,32 +239,43 @@ def main():
                 cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
                 
                 # Publicacao ROS 2
-                if pub_product is not None:
-                    msg = String()
-                    msg.data = f"{cls} {conf:.2f}"
-                    pub_product.publish(msg)
-                    print(f"[ROS2 PUB] /product_class: {cls} {conf:.2f}")
+                msg = String()
+                msg.data = f"{cls} {conf:.2f}"
+                pub_product.publish(msg)
+                rclpy.spin_once(ros_node, timeout_sec=0.0)
+                print(f"[ROS2 PUB] /product_class: {cls} {conf:.2f}")
                 
                 if should_print:
                     print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
 
-        cv2.imshow("Cobot camera + YOLO Async (q sai, s salva)", annotated)
-        
-        # Limita taxa de loop para ~30 FPS
-        elapsed = time.time() - t0
-        delay = max(int((0.033 - elapsed) * 1000), 1)
-        k = cv2.waitKey(delay) & 0xFF
-        
-        if k == ord("q"):
-            break
-        if k == ord("s"):
-            path = f"/tmp/cam_yolo_{int(now)}.jpg"
-            cv2.imwrite(path, annotated)
-            print(f"Frame salvo: {path}")
+        if not args.headless:
+            try:
+                cv2.imshow("Cobot camera + YOLO Async (q sai, s salva)", annotated)
+                elapsed = time.time() - t0
+                delay = max(int((0.033 - elapsed) * 1000), 1)
+                k = cv2.waitKey(delay) & 0xFF
+                if k == ord("q"):
+                    break
+                if k == ord("s"):
+                    path = f"/tmp/cam_yolo_{int(now)}.jpg"
+                    cv2.imwrite(path, annotated)
+                    print(f"Frame salvo: {path}")
+            except Exception as e:
+                print(f"Erro ao renderizar janela GUI: {e}. Mudando para modo headless...")
+                args.headless = True
+                
+        if args.headless:
+            elapsed = time.time() - t0
+            sleep_time = max(0.033 - elapsed, 0.001)
+            time.sleep(sleep_time)
 
     cap.release()
     yolo_async.stop()
-    cv2.destroyAllWindows()
+    if not args.headless:
+        try:
+            cv2.destroyAllWindows()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

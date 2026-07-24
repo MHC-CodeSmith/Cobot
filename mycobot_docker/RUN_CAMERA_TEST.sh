@@ -54,9 +54,12 @@ if ! "$VENV/bin/python" -c "import ultralytics, cv2" 2>/dev/null; then
 fi
 
 # Configura rede ROS 2 para comunicacao com o robo
-if [ -f /opt/ros/jazzy/setup.bash ]; then
-  source /opt/ros/jazzy/setup.bash
-fi
+for setup in /opt/ros/*/setup.bash; do
+  if [ -f "$setup" ]; then
+    source "$setup"
+    break
+  fi
+done
 export ROS_DOMAIN_ID=42
 export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 

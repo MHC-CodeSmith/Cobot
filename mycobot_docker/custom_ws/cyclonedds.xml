@@ -8,6 +8,7 @@
         <Discovery>
             <Peers>
                 <Peer address="192.168.0.250"/>
+                <Peer address="127.0.0.1"/>
             </Peers>
         </Discovery>
     </Domain>

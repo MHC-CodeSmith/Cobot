@@ -156,7 +156,7 @@ class MyCobotBridge(Node):
         msg.effort = [0.0] * 6
         self.joint_pub.publish(msg)
 
-    async def execute_callback(self, goal_handle):
+    def execute_callback(self, goal_handle):
         """Executa trajectória do MoveIt (plan+execute do RViz).
 
         Respeita o time_from_start de cada ponto (time parameterization
