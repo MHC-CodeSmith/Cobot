@@ -59,9 +59,7 @@ echo "  [3/3] Lançando MoveIt 2 + RViz"
 echo "========================================"
 docker exec -it mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
-  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-  export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
-  unset FASTRTPS_DEFAULT_PROFILES_FILE
+  export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
   unset CYCLONEDDS_URI
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash

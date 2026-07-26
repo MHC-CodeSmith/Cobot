@@ -25,11 +25,16 @@ NANO_STREAM="http://192.168.0.250:8080/stream.mjpg"
 # Se não for passada nenhuma fonte (--nano, --camera, --url), o padrão passa a ser o stream do Nano
 ARGS=()
 HAS_SOURCE=false
+HEADLESS=true
 
 for a in "$@"; do
   if [ "$a" = "--nano" ]; then
     ARGS+=("--url" "$NANO_STREAM")
     HAS_SOURCE=true
+  elif [ "$a" = "--gui" ]; then
+    HEADLESS=false
+  elif [ "$a" = "--headless" ]; then
+    HEADLESS=true
   elif [ "$a" = "--camera" ] || [ "$a" = "--url" ]; then
     ARGS+=("$a")
     HAS_SOURCE=true
@@ -40,6 +45,10 @@ done
 
 if [ "$HAS_SOURCE" = false ]; then
   ARGS+=("--url" "$NANO_STREAM")
+fi
+
+if [ "$HEADLESS" = true ]; then
+  ARGS+=("--headless")
 fi
 
 if [ ! -x "$VENV/bin/python" ]; then
@@ -61,6 +70,7 @@ for setup in /opt/ros/*/setup.bash; do
   fi
 done
 export ROS_DOMAIN_ID=42
-export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+unset CYCLONEDDS_URI
 
 exec "$VENV/bin/python" "$DIR/custom_ws/scripts/cam_yolo_test.py" "${ARGS[@]}"
