@@ -12,3 +12,5 @@ CC-Session-Logs/
 mycobot_docker/tmp_repo
 mycobot_docker/graphify-out/
 mycobot_docker/custom_ws/src/graphify-out/
+*.yaml.bak
+*.yaml.tmp
