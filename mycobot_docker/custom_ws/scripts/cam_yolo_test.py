@@ -39,6 +39,8 @@ try:
 except ImportError:
     pass
 
+os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "timeout;2000000|rw_timeout;2000000"
+
 DEFAULT_MODEL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "best.pt")
 
 
@@ -55,7 +57,8 @@ def delivery_for(label):
 
 class ThreadedVideoCapture:
     def __init__(self, source):
-        self.cap = cv2.VideoCapture(source)
+        self.source = source
+        self.cap = cv2.VideoCapture(self.source)
         self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         self.ret = False
         self.frame = None
@@ -66,11 +69,24 @@ class ThreadedVideoCapture:
         self.thread.start()
 
     def _reader(self):
+        consecutive_fails = 0
         while self.running:
             ret, frame = self.cap.read()
             if not ret or frame is None:
+                consecutive_fails += 1
+                if consecutive_fails > 15:
+                    try:
+                        self.cap.release()
+                        time.sleep(0.2)
+                        self.cap = cv2.VideoCapture(self.source)
+                        self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+                    except Exception:
+                        pass
+                    consecutive_fails = 0
                 time.sleep(0.02)
                 continue
+            
+            consecutive_fails = 0
             with self.lock:
                 self.ret = ret
                 self.frame = frame
@@ -122,10 +138,11 @@ class AsyncYOLOInference:
                     continue
                 frame_to_process = self.frame.copy()
             
-            res = self.model.predict(frame_to_process, conf=self.conf, verbose=False, imgsz=416)[0]
+            res = self.model.predict(frame_to_process, conf=self.conf, verbose=False, imgsz=640)[0]
             
             with self.lock:
                 self.results = res
+            time.sleep(0.01) # Pausa suave para economizar CPU sem perder FPS ao vivo
 
     def get_latest_results(self):
         with self.lock:
@@ -230,13 +247,13 @@ def main():
             if should_print:
                 last_print = now
             
-            # Ordena as caixas por maior confiança para garantir que o objeto principal seja o publicado
+            # Ordena as caixas por maior confiança para publicar o objeto principal
             sorted_boxes = sorted(res.boxes, key=lambda b: float(b.conf[0]), reverse=True)
             best_box = sorted_boxes[0]
             cls = yolo_async.model.names[int(best_box.cls[0])]
             conf = float(best_box.conf[0])
             
-            # Publicação ROS 2 da melhor detecção do frame
+            # Publicação ROS 2 instantânea sem throttling
             if rclpy.ok():
                 try:
                     msg = String()
@@ -253,10 +270,9 @@ def main():
                 cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
                 print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
         else:
-            # Sem detecções -> publica heartbeat "none 0.00" para manter a interface atualizada em tempo real
-            if rclpy.ok() and (now - last_print > 0.3):
+            # Sem detecções -> publica "none 0.00" imediatamente para limpar a interface em tempo real
+            if rclpy.ok():
                 try:
-                    last_print = now
                     msg = String()
                     msg.data = "none 0.00"
                     pub_product.publish(msg)
