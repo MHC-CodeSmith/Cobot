@@ -56,6 +56,7 @@ def delivery_for(label):
 class ThreadedVideoCapture:
     def __init__(self, source):
         self.cap = cv2.VideoCapture(source)
+        self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         self.ret = False
         self.frame = None
         self.running = True
@@ -67,8 +68,8 @@ class ThreadedVideoCapture:
     def _reader(self):
         while self.running:
             ret, frame = self.cap.read()
-            if not ret:
-                time.sleep(0.01)
+            if not ret or frame is None:
+                time.sleep(0.02)
                 continue
             with self.lock:
                 self.ret = ret
@@ -85,7 +86,8 @@ class ThreadedVideoCapture:
 
     def release(self):
         self.running = False
-        self.thread.join(timeout=1.0)
+        if self.thread.is_alive():
+            self.thread.join(timeout=1.0)
         self.cap.release()
 
 
@@ -120,7 +122,7 @@ class AsyncYOLOInference:
                     continue
                 frame_to_process = self.frame.copy()
             
-            res = self.model.predict(frame_to_process, conf=self.conf, verbose=False, imgsz=640)[0]
+            res = self.model.predict(frame_to_process, conf=self.conf, verbose=False, imgsz=416)[0]
             
             with self.lock:
                 self.results = res
@@ -208,21 +210,14 @@ def main():
 
     print("Câmera aberta. q = sair | s = salvar frame")
     last_print = 0.0
-    consecutive_failures = 0
     
     # Loop de Exibição / Rendering a ~30 FPS
     while True:
         t0 = time.time()
         ok, frame = cap.read()
-        if not ok:
-            consecutive_failures += 1
-            if consecutive_failures > 300: # ~3 segundos sem frames válidos
-                print("[WARN] Câmera indisponível ou stream desconectado por mais de 3s. Encerrando teste YOLO...")
-                break
-            time.sleep(0.01)
+        if not ok or frame is None:
+            time.sleep(0.02)
             continue
-
-        consecutive_failures = 0
 
         # Atualiza o frame da thread de inferência
         yolo_async.update_frame(frame)
@@ -258,6 +253,17 @@ def main():
                 
                 if should_print:
                     print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
+        else:
+            # Sem detecções -> publica heartbeat "none 0.00" para manter a interface atualizada em tempo real
+            if rclpy.ok() and (now - last_print > 0.3):
+                try:
+                    last_print = now
+                    msg = String()
+                    msg.data = "none 0.00"
+                    pub_product.publish(msg)
+                    rclpy.spin_once(ros_node, timeout_sec=0.0)
+                except Exception:
+                    pass
 
         if not args.headless:
             try:
