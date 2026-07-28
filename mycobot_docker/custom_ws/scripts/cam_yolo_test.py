@@ -179,13 +179,8 @@ def main():
         rclpy.init()
         ros_node = Node("camera_yolo_vision")
         
-        qos_profile = QoSProfile(
-            reliability=ReliabilityPolicy.RELIABLE,
-            history=HistoryPolicy.KEEP_LAST,
-            depth=10
-        )
-        pub_product = ros_node.create_publisher(String, "/product_class", qos_profile)
-        print("✓ Inicializado ROS 2 Publisher no topico /product_class (QoS: RELIABLE)")
+        pub_product = ros_node.create_publisher(String, "/product_class", 10)
+        print("✓ Inicializado ROS 2 Publisher no topico /product_class (QoS: 10)")
     except Exception as e:
         print(f"\n[FATAL] Falha ao inicializar o no ROS 2: {e}")
         sys.exit(1)
@@ -234,25 +229,29 @@ def main():
             should_print = now - last_print > 0.5
             if should_print:
                 last_print = now
-            for box in res.boxes:
-                cls = yolo_async.model.names[int(box.cls[0])]
-                conf = float(box.conf[0])
-                x1, y1, x2, y2 = (float(v) for v in box.xyxy[0])
-                cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
-                
-                # Publicacao ROS 2 segura com protecao de contexto
-                if rclpy.ok():
-                    try:
-                        msg = String()
-                        msg.data = f"{cls} {conf:.2f}"
-                        pub_product.publish(msg)
-                        rclpy.spin_once(ros_node, timeout_sec=0.0)
+            
+            # Ordena as caixas por maior confiança para garantir que o objeto principal seja o publicado
+            sorted_boxes = sorted(res.boxes, key=lambda b: float(b.conf[0]), reverse=True)
+            best_box = sorted_boxes[0]
+            cls = yolo_async.model.names[int(best_box.cls[0])]
+            conf = float(best_box.conf[0])
+            
+            # Publicação ROS 2 da melhor detecção do frame
+            if rclpy.ok():
+                try:
+                    msg = String()
+                    msg.data = f"{cls} {conf:.2f}"
+                    pub_product.publish(msg)
+                    rclpy.spin_once(ros_node, timeout_sec=0.0)
+                    if should_print:
                         print(f"[ROS2 PUB] /product_class: {cls} {conf:.2f}")
-                    except Exception as pub_err:
-                        print(f"[WARN] Erro ao publicar no ROS 2: {pub_err}")
-                
-                if should_print:
-                    print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
+                except Exception as pub_err:
+                    print(f"[WARN] Erro ao publicar no ROS 2: {pub_err}")
+            
+            if should_print:
+                x1, y1, x2, y2 = (float(v) for v in best_box.xyxy[0])
+                cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+                print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
         else:
             # Sem detecções -> publica heartbeat "none 0.00" para manter a interface atualizada em tempo real
             if rclpy.ok() and (now - last_print > 0.3):
