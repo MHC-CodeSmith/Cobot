@@ -117,6 +117,13 @@ class AsyncYOLOInference:
         self.running = True
         self.new_frame_event = threading.Event()
         
+        # Warmup do modelo no inicializador para eliminar delay da 1ª detecção
+        try:
+            dummy_frame = np.zeros((480, 640, 3), dtype=np.uint8)
+            self.model.predict(dummy_frame, conf=0.10, verbose=False, imgsz=640)
+        except Exception:
+            pass
+
         self.thread = threading.Thread(target=self._inference_loop)
         self.thread.daemon = True
         self.thread.start()
@@ -242,35 +249,43 @@ def main():
 
         # Imprime detecções no terminal e publica no ROS 2
         now = time.time()
+        valid_boxes = []
         if res is not None and res.boxes is not None and len(res.boxes) > 0:
+            for b in res.boxes:
+                x1, y1, x2, y2 = (float(v) for v in b.xyxy[0])
+                cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
+                conf = float(b.conf[0])
+                # Filtra ruídos de borda extrema (fora da mesa do robô x < 70 ou x > 570) quando a confiança é baixa
+                if conf < 0.50 and (cx < 70 or cx > 570 or cy < 40 or cy > 440):
+                    continue
+                valid_boxes.append((conf, b, cx, cy))
+
+        if len(valid_boxes) > 0:
             should_print = now - last_print > 0.5
             if should_print:
                 last_print = now
             
-            # Ordena as caixas por maior confiança para publicar o objeto principal
-            sorted_boxes = sorted(res.boxes, key=lambda b: float(b.conf[0]), reverse=True)
-            best_box = sorted_boxes[0]
+            # Ordena as caixas válidas por maior confiança
+            valid_boxes.sort(key=lambda item: item[0], reverse=True)
+            best_conf, best_box, cx, cy = valid_boxes[0]
             cls = yolo_async.model.names[int(best_box.cls[0])]
-            conf = float(best_box.conf[0])
             
             # Publicação ROS 2 instantânea sem throttling
             if rclpy.ok():
                 try:
                     msg = String()
-                    msg.data = f"{cls} {conf:.2f}"
+                    msg.data = f"{cls} {best_conf:.2f}"
                     pub_product.publish(msg)
                     rclpy.spin_once(ros_node, timeout_sec=0.0)
                     if should_print:
-                        print(f"[ROS2 PUB] /product_class: {cls} {conf:.2f}")
+                        print(f"[ROS2 PUB] /product_class: {cls} {best_conf:.2f}")
                 except Exception as pub_err:
                     print(f"[WARN] Erro ao publicar no ROS 2: {pub_err}")
             
             if should_print:
-                x1, y1, x2, y2 = (float(v) for v in best_box.xyxy[0])
-                cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
-                print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
+                print(f"  {cls:20s} conf={best_conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
         else:
-            # Sem detecções -> publica "none 0.00" imediatamente para limpar a interface em tempo real
+            # Sem detecções válidas -> publica "none 0.00" imediatamente para limpar a interface em tempo real
             if rclpy.ok():
                 try:
                     msg = String()
