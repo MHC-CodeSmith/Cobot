@@ -208,14 +208,21 @@ def main():
 
     print("Câmera aberta. q = sair | s = salvar frame")
     last_print = 0.0
+    consecutive_failures = 0
     
     # Loop de Exibição / Rendering a ~30 FPS
     while True:
         t0 = time.time()
         ok, frame = cap.read()
         if not ok:
+            consecutive_failures += 1
+            if consecutive_failures > 300: # ~3 segundos sem frames válidos
+                print("[WARN] Câmera indisponível ou stream desconectado por mais de 3s. Encerrando teste YOLO...")
+                break
             time.sleep(0.01)
             continue
+
+        consecutive_failures = 0
 
         # Atualiza o frame da thread de inferência
         yolo_async.update_frame(frame)
@@ -238,12 +245,16 @@ def main():
                 x1, y1, x2, y2 = (float(v) for v in box.xyxy[0])
                 cx, cy = (x1 + x2) / 2, (y1 + y2) / 2
                 
-                # Publicacao ROS 2
-                msg = String()
-                msg.data = f"{cls} {conf:.2f}"
-                pub_product.publish(msg)
-                rclpy.spin_once(ros_node, timeout_sec=0.0)
-                print(f"[ROS2 PUB] /product_class: {cls} {conf:.2f}")
+                # Publicacao ROS 2 segura com protecao de contexto
+                if rclpy.ok():
+                    try:
+                        msg = String()
+                        msg.data = f"{cls} {conf:.2f}"
+                        pub_product.publish(msg)
+                        rclpy.spin_once(ros_node, timeout_sec=0.0)
+                        print(f"[ROS2 PUB] /product_class: {cls} {conf:.2f}")
+                    except Exception as pub_err:
+                        print(f"[WARN] Erro ao publicar no ROS 2: {pub_err}")
                 
                 if should_print:
                     print(f"  {cls:20s} conf={conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
