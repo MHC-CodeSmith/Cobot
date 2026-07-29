@@ -19,16 +19,20 @@ import threading
 import cv2
 from ultralytics import YOLO
 
-# Importa rclpy para integracao ROS 2 (obrigatorio)
+# Importa rclpy para integração ROS 2 (com adição automática do site-packages do ROS 2 Jazzy)
 try:
+    import sys
+    ros_jazzy_path = "/opt/ros/jazzy/lib/python3.12/site-packages"
+    if os.path.exists(ros_jazzy_path) and ros_jazzy_path not in sys.path:
+        sys.path.append(ros_jazzy_path)
     import rclpy
     from rclpy.node import Node
     from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
     from std_msgs.msg import String
-except ImportError as e:
-    print(f"\n[FATAL] ROS 2 nao inicializado! Certifique-se de que o ambiente ROS 2 esta configurado no host.")
-    print(f"Erro: {e}\n")
-    sys.exit(1)
+    HAS_RCLPY = True
+except Exception as e:
+    HAS_RCLPY = False
+    print(f"[WARN] rclpy não carregado ({e}). O script continuará no modo autônomo sem publicação DDS.")
 
 # Tenta otimizar CUDA no topo do arquivo se disponível
 try:
@@ -198,16 +202,18 @@ def main():
     ap.add_argument("--headless", action="store_true", help="Desativa a exibição da janela do OpenCV (modo headless)")
     args = ap.parse_args()
 
-    # Inicializa ROS 2 (Obrigatorio)
-    try:
-        rclpy.init()
-        ros_node = Node("camera_yolo_vision")
-        
-        pub_product = ros_node.create_publisher(String, "/product_class", 10)
-        print("✓ Inicializado ROS 2 Publisher no topico /product_class (QoS: 10)")
-    except Exception as e:
-        print(f"\n[FATAL] Falha ao inicializar o no ROS 2: {e}")
-        sys.exit(1)
+    # Inicializa ROS 2 se disponível
+    pub_product = None
+    ros_node = None
+    if HAS_RCLPY:
+        try:
+            if not rclpy.ok():
+                rclpy.init()
+            ros_node = Node("camera_yolo_vision")
+            pub_product = ros_node.create_publisher(String, "/product_class", 10)
+            print("✓ Inicializado ROS 2 Publisher no topico /product_class (QoS: 10)")
+        except Exception as e:
+            print(f"[WARN] Falha ao inicializar nó ROS 2 em cam_yolo_test.py: {e}")
 
     print(f"Carregando modelo YOLO: {args.model}")
     yolo_async = AsyncYOLOInference(args.model, args.conf)
@@ -271,7 +277,7 @@ def main():
             cls = yolo_async.model.names[int(best_box.cls[0])]
             
             # Publicação ROS 2 instantânea sem throttling
-            if rclpy.ok():
+            if HAS_RCLPY and pub_product is not None and rclpy.ok():
                 try:
                     msg = String()
                     msg.data = f"{cls} {best_conf:.2f}"
@@ -286,7 +292,7 @@ def main():
                 print(f"  {cls:20s} conf={best_conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
         else:
             # Sem detecções válidas -> publica "none 0.00" imediatamente para limpar a interface em tempo real
-            if rclpy.ok():
+            if HAS_RCLPY and pub_product is not None and rclpy.ok():
                 try:
                     msg = String()
                     msg.data = "none 0.00"
