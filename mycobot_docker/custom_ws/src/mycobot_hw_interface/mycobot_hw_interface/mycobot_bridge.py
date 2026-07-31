@@ -32,10 +32,7 @@ class MyCobotBridge(Node):
         self.declare_parameter('port', '/dev/ttyTHS1')
         self.declare_parameter('baud', 1000000)
         self.declare_parameter('mock', False)
-        # Velocidade para comandos diretos (face tracking).
-        # 20-40 = suave para visual servoing; 70-100 = rápido mas brusco.
         self.declare_parameter('tracking_speed', 30)
-        # Velocidade para trajectórias MoveIt (plan+execute).
         self.declare_parameter('moveit_speed', 60)
 
         self.port           = self.get_parameter('port').get_parameter_value().string_value
@@ -43,9 +40,8 @@ class MyCobotBridge(Node):
         self.mock           = self.get_parameter('mock').get_parameter_value().bool_value
         self.tracking_speed = self.get_parameter('tracking_speed').value
         self.moveit_speed   = self.get_parameter('moveit_speed').value
+
         self._mock_angles_deg = [0.0] * 6
-        # Protege a porta serial: com MultiThreadedExecutor o timer de
-        # joint_states e a execução de trajetória rodam em paralelo.
         self._serial_lock = threading.Lock()
 
         if not self.mock:
@@ -117,11 +113,11 @@ class MyCobotBridge(Node):
 
         self.get_logger().info(
             f'MyCobot Bridge | mock={self.mock} | port={self.port} | '
-            f'tracking_speed={self.tracking_speed} | moveit_speed={self.moveit_speed} | '
+            f'moveit_speed={self.moveit_speed} | '
             f'pump services: pump_on / pump_off')
 
     def command_callback(self, msg):
-        """Controle direto para face tracking — executa imediatamente."""
+        """Controle direto — executa imediatamente com a velocidade configurada (1% a 15%)."""
         angles = [math.degrees(x) for x in msg.position]
         if len(angles) < 6:
             return
@@ -129,7 +125,7 @@ class MyCobotBridge(Node):
             self._mock_angles_deg = angles[:6]
             return
         with self._serial_lock:
-            self.mc.send_angles(angles[:6], self.tracking_speed)
+            self.mc.send_angles(angles[:6], self.moveit_speed)
 
     def publish_joint_states(self):
         msg = JointState()
@@ -187,8 +183,9 @@ class MyCobotBridge(Node):
                         s + (g - s) * a for s, g in zip(start, angles_deg[:6])]
                     time.sleep(dt / steps)
             else:
+                spd = max(1, min(15, int(self.moveit_speed)))
                 with self._serial_lock:
-                    self.mc.send_angles(angles_deg, self.moveit_speed)
+                    self.mc.send_angles(angles_deg, spd)
                 time.sleep(dt)
         goal_handle.succeed()
         return FollowJointTrajectory.Result()

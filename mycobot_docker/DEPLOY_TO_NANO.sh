@@ -7,8 +7,20 @@
 # rebuilda lá, e reinicia o bridge.
 # ============================================================
 
+detect_nano_ip() {
+  if [ -n "$JETSON_NANO_IP" ] && ping -c 1 -W 1 "$JETSON_NANO_IP" >/dev/null 2>&1; then
+    echo "$JETSON_NANO_IP"
+  elif ping -c 1 -W 1 192.168.0.62 >/dev/null 2>&1; then
+    echo "192.168.0.62"
+  elif ping -c 1 -W 1 192.168.0.250 >/dev/null 2>&1; then
+    echo "192.168.0.250"
+  else
+    echo "${JETSON_NANO_IP:-192.168.0.62}"
+  fi
+}
+
 NANO_USER="er"
-NANO_IP="192.168.0.250"
+NANO_IP=$(detect_nano_ip)
 NANO_PASS="Elephant"
 SRC_DIR="$(dirname "$0")/custom_ws/src/mycobot_hw_interface"
 PC_IP="$(ip route get "$NANO_IP" 2>/dev/null | awk '{for (i=1; i<=NF; i++) if ($i == "src") print $(i+1)}' | head -1)"
@@ -17,7 +29,7 @@ if [ -z "$PC_IP" ]; then
 fi
 
 echo "========================================"
-echo "  Deploy mycobot_hw_interface → Nano"
+echo "  Deploy mycobot_hw_interface → Nano (${NANO_IP})"
 echo "========================================"
 
 echo "[1/3] Copiando arquivos..."
@@ -32,7 +44,7 @@ sshpass -p "$NANO_PASS" ssh -o StrictHostKeyChecking=no ${NANO_USER}@${NANO_IP} 
 <CycloneDDS xmlns="https://cdds.io/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
     <Domain id="any">
         <General>
-            <NetworkInterfaceAddress>192.168.0.250</NetworkInterfaceAddress>
+            <NetworkInterfaceAddress>${NANO_IP}</NetworkInterfaceAddress>
             <AllowMulticast>false</AllowMulticast>
         </General>
         <Discovery>
@@ -105,6 +117,6 @@ if [ "$ALIVE" -gt 0 ]; then
   echo "  ✓ Bridge OK — código atualizado e rodando"
 else
   echo ""
-  echo "  ✗ Bridge FAILED — checa: sshpass -p Elephant ssh er@192.168.0.250 'cat /tmp/bridge.log'"
+  echo "  ✗ Bridge FAILED — checa: sshpass -p Elephant ssh er@${NANO_IP} 'cat /tmp/bridge.log'"
   exit 1
 fi

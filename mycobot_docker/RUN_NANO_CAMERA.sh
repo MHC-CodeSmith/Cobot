@@ -14,8 +14,20 @@
 #   firefox http://192.168.0.250:8080/stream.mjpg   # só ver
 # ============================================================
 
+detect_nano_ip() {
+  if [ -n "$JETSON_NANO_IP" ] && ping -c 1 -W 1 "$JETSON_NANO_IP" >/dev/null 2>&1; then
+    echo "$JETSON_NANO_IP"
+  elif ping -c 1 -W 1 192.168.0.62 >/dev/null 2>&1; then
+    echo "192.168.0.62"
+  elif ping -c 1 -W 1 192.168.0.250 >/dev/null 2>&1; then
+    echo "192.168.0.250"
+  else
+    echo "${JETSON_NANO_IP:-192.168.0.62}"
+  fi
+}
+
 NANO_USER="er"
-NANO_IP="192.168.0.250"
+NANO_IP=$(detect_nano_ip)
 NANO_PASS="Elephant"
 PORT=8080
 DIR="$(cd "$(dirname "$0")" && pwd)"
