@@ -20,7 +20,8 @@
 set -e
 DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV="$DIR/.yolo_venv"
-NANO_STREAM="http://192.168.0.250:8080/stream.mjpg"
+NANO_IP="${JETSON_NANO_IP:-192.168.0.62}"
+NANO_STREAM="http://${NANO_IP}:8080/stream.mjpg"
 
 # Se não for passada nenhuma fonte (--nano, --camera, --url), o padrão passa a ser o stream do Nano
 ARGS=()
