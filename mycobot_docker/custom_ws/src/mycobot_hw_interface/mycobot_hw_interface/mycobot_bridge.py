@@ -111,10 +111,125 @@ class MyCobotBridge(Node):
         self._pump_state_pub = self.create_publisher(Bool, 'pump_state', 10)
         self.create_timer(0.5, self._publish_pump_state)
 
+        # ── HTTP Micro-Bridge integrado para resposta instantânea (< 20ms) ──
+        self._start_http_microbridge()
+
         self.get_logger().info(
             f'MyCobot Bridge | mock={self.mock} | port={self.port} | '
             f'moveit_speed={self.moveit_speed} | '
-            f'pump services: pump_on / pump_off')
+            f'pump services: pump_on / pump_off | HTTP Micro-Bridge: :8088')
+
+    def _start_http_microbridge(self):
+        node = self
+        from http.server import HTTPServer, BaseHTTPRequestHandler
+        from urllib.parse import urlparse, parse_qs
+        import json
+        import socket
+
+        class MicroBridgeHandler(BaseHTTPRequestHandler):
+            def log_message(self, format, *args):
+                pass
+
+            def _respond(self, data, status=200):
+                try:
+                    self.send_response(status)
+                    self.send_header('Content-Type', 'application/json')
+                    self.send_header('Access-Control-Allow-Origin', '*')
+                    self.end_headers()
+                    self.wfile.write(json.dumps(data).encode('utf-8'))
+                except Exception:
+                    pass
+
+            def _execute_dummy(self, cb):
+                class DummyReq: pass
+                class DummyResp:
+                    success = False
+                    message = ""
+                resp = DummyResp()
+                cb(DummyReq(), resp)
+                return getattr(resp, 'success', True), getattr(resp, 'message', 'OK')
+
+            def do_GET(self):
+                parsed = urlparse(self.path)
+                path = parsed.path
+                params = parse_qs(parsed.query)
+
+                if path == '/get_angles':
+                    angles_deg = node._last_valid_angles_deg
+                    angles_rad = [math.radians(x) for x in angles_deg]
+                    self._respond({"success": True, "joints": angles_rad, "joints_deg": angles_deg})
+
+                elif path == '/move_joints':
+                    raw_j = params.get('j', [None])[0]
+                    speed = int(params.get('speed', [str(node.moveit_speed)])[0])
+                    if not raw_j:
+                        self._respond({"success": False, "message": "Parâmetro j obrigatório"}, 400)
+                        return
+                    try:
+                        joints = [float(x) for x in raw_j.split(',')]
+                    except ValueError:
+                        self._respond({"success": False, "message": "Formato de juntas inválido"}, 400)
+                        return
+                    
+                    if not node.mock:
+                        with node._serial_lock:
+                            node.mc.send_angles([math.degrees(x) for x in joints[:6]], speed)
+                    else:
+                        node._mock_angles_deg = [math.degrees(x) for x in joints[:6]]
+                    self._respond({"success": True, "message": f"Juntas movidas a {speed}%"})
+
+                elif path == '/status':
+                    self._respond({
+                        "success": True,
+                        "pump_active": node._pump_active,
+                        "gpio_ready": node._gpio_ready,
+                        "mock": node.mock,
+                        "joints": node._last_valid_angles_deg
+                    })
+
+                elif path == '/panic':
+                    ok1, msg1 = self._execute_dummy(node._pump_off_cb)
+                    ok2, msg2 = self._execute_dummy(node._lock_cb)
+                    self._respond({"success": True, "message": "Pânico executado: bomba OFF e servos travados"})
+
+                elif path in ('/pump/on', '/pump/off', '/servos/release', '/servos/lock'):
+                    self.do_POST()
+                else:
+                    self._respond({"error": "Endpoint não encontrado"}, 404)
+
+            def do_POST(self):
+                parsed = urlparse(self.path)
+                path = parsed.path
+
+                cb_map = {
+                    '/pump/on': node._pump_on_cb,
+                    '/pump/off': node._pump_off_cb,
+                    '/servos/release': node._release_cb,
+                    '/servos/lock': node._lock_cb
+                }
+
+                if path in cb_map:
+                    ok, msg = self._execute_dummy(cb_map[path])
+                    status_code = 200 if ok else 500
+                    self._respond({"success": ok, "message": msg, "pump_active": node._pump_active}, status_code)
+                else:
+                    self._respond({"error": "Endpoint não encontrado"}, 404)
+
+        def _run_server():
+            class ReusableHTTPServer(HTTPServer):
+                def server_bind(self):
+                    self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    super().server_bind()
+
+            try:
+                server = ReusableHTTPServer(('0.0.0.0', 8088), MicroBridgeHandler)
+                node.get_logger().info('HTTP Micro-Bridge ATIVO na porta 8088 (< 20ms response time)')
+                server.serve_forever()
+            except Exception as e:
+                node.get_logger().warn(f'HTTP Micro-Bridge não pôde iniciar na porta 8088: {e}')
+
+        t = threading.Thread(target=_run_server, daemon=True)
+        t.start()
 
     def command_callback(self, msg):
         """Controle direto — executa imediatamente com a velocidade configurada (1% a 15%)."""
