@@ -173,6 +173,11 @@ class MyCobotBridge(Node):
                     
                     if not node.mock:
                         with node._serial_lock:
+                            try:
+                                node.mc.power_on()
+                                time.sleep(0.05)
+                            except Exception:
+                                pass
                             node.mc.send_angles([math.degrees(x) for x in joints[:6]], speed)
                     else:
                         node._mock_angles_deg = [math.degrees(x) for x in joints[:6]]
