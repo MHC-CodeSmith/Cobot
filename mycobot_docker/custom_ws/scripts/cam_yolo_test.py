@@ -287,19 +287,37 @@ def main():
                         print(f"[ROS2 PUB] /product_class: {cls} {best_conf:.2f}")
                 except Exception as pub_err:
                     print(f"[WARN] Erro ao publicar no ROS 2: {pub_err}")
-            
+
+            # Grava estado em arquivo JSON atomicamente em cada quadro detectado
+            last_valid_detection_time = now
+            try:
+                import json
+                tmp_json_path = "/tmp/last_yolo_detection.json.tmp"
+                with open(tmp_json_path, "w") as f_json:
+                    json.dump({"class": cls, "confidence": float(best_conf), "timestamp": now}, f_json)
+                os.replace(tmp_json_path, "/tmp/last_yolo_detection.json")
+            except Exception:
+                pass
+
             if should_print:
                 print(f"  {cls:20s} conf={best_conf:.2f} centro=({cx:.0f},{cy:.0f})px  {delivery_for(cls)}")
         else:
-            # Sem detecções válidas -> publica "none 0.00" imediatamente para limpar a interface em tempo real
-            if HAS_RCLPY and pub_product is not None and rclpy.ok():
+            # Sem detecções válidas no frame atual -> remove o arquivo JSON apenas se o tempo sem detecção exceder 2.5s
+            if 'last_valid_detection_time' not in locals() or (now - last_valid_detection_time > 2.5):
                 try:
-                    msg = String()
-                    msg.data = "none 0.00"
-                    pub_product.publish(msg)
-                    rclpy.spin_once(ros_node, timeout_sec=0.0)
+                    if os.path.exists("/tmp/last_yolo_detection.json"):
+                        os.remove("/tmp/last_yolo_detection.json")
                 except Exception:
                     pass
+
+                if HAS_RCLPY and pub_product is not None and rclpy.ok():
+                    try:
+                        msg = String()
+                        msg.data = "none 0.00"
+                        pub_product.publish(msg)
+                        rclpy.spin_once(ros_node, timeout_sec=0.0)
+                    except Exception:
+                        pass
 
         if not args.headless:
             try:
