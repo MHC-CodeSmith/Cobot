@@ -70,8 +70,8 @@ for setup in /opt/ros/*/setup.bash; do
     break
   fi
 done
-export ROS_DOMAIN_ID=42
-export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+export ROS_DOMAIN_ID=0
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 unset CYCLONEDDS_URI
 
 exec "$VENV/bin/python" "$DIR/custom_ws/scripts/cam_yolo_test.py" "${ARGS[@]}"
