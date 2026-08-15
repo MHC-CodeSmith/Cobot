@@ -27,7 +27,24 @@ echo "========================================"
 echo "  [1/4] Garantindo contêiner Docker rodando"
 echo "========================================"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-docker compose -f "${SCRIPT_DIR}/docker-compose.yml" up -d
+if docker inspect mycobot_ros2 >/dev/null 2>&1; then
+  # O backend monta apenas o socket e o cliente Docker; nesse ambiente o
+  # plugin `docker compose` pode não existir, mas o contêiner já criado existe.
+  docker start mycobot_ros2 >/dev/null
+elif docker compose version >/dev/null 2>&1; then
+  docker compose -f "${SCRIPT_DIR}/docker-compose.yml" up -d
+elif command -v docker-compose >/dev/null 2>&1; then
+  docker-compose -f "${SCRIPT_DIR}/docker-compose.yml" up -d
+else
+  echo "  Docker FAILED — contêiner mycobot_ros2 ausente e Compose indisponível."
+  exit 1
+fi
+
+if [ "$(docker inspect -f '{{.State.Running}}' mycobot_ros2 2>/dev/null)" != "true" ]; then
+  echo "  Docker FAILED — mycobot_ros2 não confirmou estado Running."
+  exit 1
+fi
+echo "  Docker OK (mycobot_ros2 em execução)"
 
 echo ""
 echo "========================================"
@@ -75,11 +92,16 @@ echo ""
 echo "========================================"
 echo "  [4/4] Lançando MoveIt 2 + RViz2"
 echo "========================================"
-docker exec -d -e DISPLAY="${DISPLAY:-:0}" mycobot_ros2 bash -c "
+if ! docker exec -d -e DISPLAY="${DISPLAY:-:0}" mycobot_ros2 bash -c "
   export ROS_DOMAIN_ID=42
   export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
   unset CYCLONEDDS_URI
   source /opt/ros/galactic/setup.bash
   source /root/custom_ws/install/setup.bash
   ros2 launch mycobot_280_jn_moveit_config galactic_demo.launch.py
-"
+"; then
+  echo "  MoveIt FAILED — docker exec não foi aceito."
+  exit 1
+fi
+
+echo "  Solicitação MoveIt/RViz aceita pelo contêiner."
